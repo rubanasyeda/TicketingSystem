@@ -1,0 +1,1 @@
+#will have all the routes for authorization pages#

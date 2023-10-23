@@ -1,0 +1,1 @@
+#will have all the routes for pages that does not have authorization#
