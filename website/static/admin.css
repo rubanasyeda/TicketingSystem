@@ -1,0 +1,146 @@
+* {
+    margin: 0;
+    padding: 0;
+    outline: none;
+    border: none;
+    font-family: 'Roboto', sans-serif;
+    box-sizing: border-box;
+    scroll-behavior: smooth;
+    list-style: none;
+    text-decoration: none;
+}
+
+:root {
+    --main-color: rgb(202, 164, 66);
+    --text-color: #fff;
+    --bg-color: #000000;
+    --big-font: 5rem;
+    --h2-font: 2.5rem;
+    --p-font: 0.9rem;
+}
+
+body {
+    color: var(--main-color);
+    background-color: #000000;
+    background-image: url(images/trt.png);
+    background-size: auto;
+    background-repeat: repeat;
+    min-height: 100vh;
+}
+/*side bar options*/
+nav {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    height: 100%;
+    left: 0;
+    background: #ffffff94;
+    width: 75px;
+    overflow: hidden;
+    transition: width 0.2s linear;
+    box-shadow: 0 20px 35px #000;
+}
+
+.logo {
+    text-align: center;
+    display: flex;
+    transition: all 0.5s ease;
+    margin: 10px 0 0 10px;
+}
+
+.logo img{
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+}
+
+.logo span{
+    font-weight: bold;
+    padding-left: 15px;
+    font-size: 18px;
+    text-transform: uppercase;
+}
+/*text within sidebar*/
+a {
+    position: relative;
+    color: #000;
+    font-size: 14px;
+    width: 300px;
+    padding: 10px;
+    display: block;
+}
+/*icons*/
+.bx {
+    position: relative;
+    width: 70px;
+    height: 40px;
+    top: 4px;
+    font-size: 20px;
+    text-align: center;
+}
+
+.nav-item {
+    position: relative;
+    top: 0;
+    margin-left: 10px;
+}
+
+a:hover{
+    background: #4c47477f;
+}
+nav:hover{
+    width: 200px;
+    transition: all 0.5s ease;
+}
+
+.logout {
+    position: absolute;
+    bottom: 0;
+}
+
+/*main ticket display
+/* Main content area */
+.main {
+    margin-left: 300px; /* Adjust for the width of the left and sidebar columns */
+    padding: 20px;
+}
+
+.ticket-display {
+    background-color: #ffffff8c;
+    padding: 20px;
+    box-shadow: 0px 0px 10px rgb(202, 164, 66);
+}
+
+/* Horizontal ticket layout */
+.ticket-list {
+    display: inline-block;
+    flex-wrap: nowrap; /* Prevent wrapping to new lines */
+    overflow-x: auto; /* Enable horizontal scrolling if needed */
+}
+
+/* Vertical ticket layout with horizontal bars */
+.ticket-item {
+    background-color: #000000cc;
+    padding: 10px;
+    border: 1px solid #ddd;
+    margin-bottom: 10px; /* Add margin to separate tickets vertically */
+}
+
+.ticket-info {
+    display: inline-block;
+    flex-wrap: nowrap;
+    align-items: center;
+}
+
+.ticket-info strong {
+    display: inline-block;
+}
+
+.ticket-info button {
+    margin-left: 10px;
+}
+
+.ticket-description {
+    margin-top: 10px;
+}
+
