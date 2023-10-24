@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device=width, initial-scale=1.0" />
+    <title>TRT
+    </title>
+    <link rel="stylesheet" href="../static/landing.css">
+    <link href="https://fonts.googleleapis.com/css2?family=Roboto:wght@400;700&dispaly=swap" rel="stylesheet">
+    <link rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
+    <!-- or -->
+    <link rel="stylesheet"
+    href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
+      </head>
+<body>
+    <header>
+        <a href="#" class="logo">TRT TECHNOLOGIES</a>
+        <div class="bx bx-menu" id="menu-icon"></div>
+        <ul class="navbar">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#services">Services</a></li>
+            <li><a href="#contact">Contact</a></li>
+            <li><a href="{{url_for('auth.login') }}">Login</a></li>
+        </ul>
+    </header>
+    <section class="home" id="home">
+        <div class="home-text">
+        <h1>WE'RE HERE TO HELP!</h1>
+        <h2>Dont worry, <br> we got it. From bug fixing to 
+        web developemnt, we'll handle it.</h2>
+        <a href="{{url_for('views.createTicket') }}" class="btn">Submit a Request</a>
+    </div>
+    <div class="home-img">
+        <img src="../static/Helping-Hands-PNG-Picture.png" alt="logo">
+    </div>
+    </section>
+    <section class="about" id="about">
+        <div class="about-img">
+            <img src="../static/happy.png">
+        </div>
+        <div class="about-text">
+            <span>About Us</span>
+            <h2>We Satisfy our <br> Customers</h2>
+            <p>We are a web development company based in Saskatoon with over 80+ trusted clients from across Saskatchewan.
+                Our team is the right choice.
+            </p>
+            <a href="#services" class="btn">Veiw our Services!</a>
+        </div>
+    </section>
+
+    <section class="specialties" id="specialties">
+        <div class="heading">
+            <span>Specialties</span>
+            <h2>Widespread Capabilities</h2>
+        </div>
+        <div class="specialties-container">
+            <div class="box">
+                <div class="box-img">
+                    <img src="../static/website-development-process-full-guide-1-fb.jpg">
+                </div>
+                <h2>Web Development</h2>
+                </h3>
+            </div>
+
+            <div class="box">
+                <div class="box-img">
+                    <img src="../static/MM-Web-Design-1-768x512.png">
+                </div>
+                <h2>Web Design</h2>
+                </h3>
+            </div>
+
+            <div class="box">
+                <div class="box-img">
+                    <img src="../static/marketing.png">
+                </div>
+                <h2>Digital Marketing</h2>
+            </div>
+        </div>
+    </section>
+
+    <section class="services" id="services">
+        <div class="heading">
+            <span>All Services</span>
+            <h2>What We Do!</h2>
+        </div>
+        <div class="service-cont">
+            <div class="s-box">
+                <h3>WEB DEVELOPMENT, WEB DESIGN AND WEB APPLICATION</h3>
+                <p> From creating simple websites to full on web applicatiions, we have you covered.
+                    Our team will build a website of your needs and specifications. From a simple
+                    home page to a full web application. 
+                </p>
+            </div>
+            <div class="s-box">
+                <h3>BRANDING AND DIGITAL MARKETING</h3>
+                <p>Want some help getting your businsess recognized? We can help 
+                    with that. From helping with visual designs and anything else
+                    that will help distingush your brand. We can also help with markketing by
+                    creating your specified advertistements in a unique way!
+
+                </p>
+            </div>
+            <div class="s-box">
+                <h3>UI/UX AND MOBILE APPLICATION</h3>
+                <p>Product Strtaegy, User research, information arcitecture, testing 
+                    and iteration, design thninking, protoytyping, typography, desitgn patterns,
+                    interactivity and aniamtion.
+                </p>
+            </div>
+        </div>
+    </section>
+    <section class="serviceBox">
+        <h2>Don't see your needs of service? <br> Send us a ticket anyways and we'll get back to you.</h2>
+        <a href="{{url_for('views.createTicket') }}" class="btn2">Submit a Request!</a>
+    </section>
+
+    <section id="PageLinks">
+        <div class="footer">
+            <div class="main">
+                <div class="col">
+                    <h4>Page Links</h4>
+                    <ul>
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#about">About</a></li>
+                        <li><a href="#services">Services</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="col">
+                    <h4>Contact Us</h4>
+                    <div class="social" id="contact">
+                        <p>Phone: +1 (306) 261-5188</p>
+                        <p>mail@trttechnologies.ca</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <script src="../static/landing.js"></script>
+</body>
+</html>
