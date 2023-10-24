@@ -1,1 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Ticket</title>
+</head>
+
+<body>
+    <div class="form-container">
+        <h2>Create New Ticket</h2>
+        <form action="#" method="post">
+            <div class="form-group">
+                <label for="subject">Subject:</label>
+                <input type="text" id="subject" name="subject" required>
+            </div>
+            <div class="form-group">
+                <label for="customer_first_name">Customer First Name:</label>
+                <input type="text" id="customer_first_name" name="customer_first_name" required>
+            </div>
+            <div class="form-group">
+                <label for="customer_last_name">Customer Last Name:</label>
+                <input type="text" id="customer_last_name" name="customer_last_name" required>
+            </div>
+            <div class="form-group">
+                <label for="customer_email">Customer Email:</label>
+                <input type="email" id="customer_email" name="customer_email" required pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}">
+                <small>Please enter a valid email address (e.g., example@example.com).</small>
+            </div>
+            <div class="form-group">
+                <label for="business_name">Business Name:</label>
+                <input type="text" id="business_name" name="business_name" required>
+            </div>
+            <div class="form-group">
+                <label for="customer_phone">Customer Phone Number:</label>
+                <input type="tel" id="customer_phone" name="customer_phone" required pattern="[0-9]+">
+                <small>Please enter numbers only (e.g., 1234567890).</small>
+            </div>
+            <div class="form-group">
+                <label for="description">Description:</label>
+                <textarea id="description" name="description" rows="6" required></textarea>
+            </div>
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+</body>
+</html>
 
