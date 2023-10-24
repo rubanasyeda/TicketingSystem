@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TRT DASHBOARD</title>
+    <link rel="stylesheet" href="../static/dashboard.css">
+</head>
+<body>
+    <div class="sidebar">
+        <header>
+            <h2>TRT TICKETS</h2>
+        </header>
+        <div class="scrollbox">
+            <div class="scrollbox-inner">
+                <ul>
+                    <li><a href="#" id="allTickets">All Tickets</a></li>
+                    <li><a href="#" id="unresolvedTickets">Unresolved</a></li>
+                    <li><a href="#" id="highPriorityTickets">High Priority</a></li>
+                    <li><a href="#" id="lowPriorityTickets">Low Priority</a></li>
+                    <li><a href="#" id="resolvedTickets">Resolved</a></li>
+                    <li><a href="#" id="assignedTickets">Assigned To Me</a></li>
+                </ul>
+            </div>
+        </div>
+        <footer>
+            <ul class="navbar">
+                <li><a href="{{url_for('views.home') }}" target="_blank">Home-page</a></li>
+                <li><a href="{{url_for('views.createTicket') }}" target="_blank">Submit A Ticket</a></li>
+                <li><a href="{{url_for('auth.login') }}">Admin Login</a></li>
+                <li><a href="#logout">Log-out</a></li>
+            </ul>
+        </footer>
+    </div>
+    <div class="main">
+        <section class="ticket-display">
+            <div class="ticket-list">
+            </div>
+        </section>
+    </div>
+    <script src="../static/dashboard.js"></script>
+</body>
+</html>
