@@ -1,0 +1,169 @@
+/* Basic styling */
+* {
+    margin: 0;
+    padding: 0;
+    font-family: 'Roboto', sans-serif;
+    box-sizing: border-box;
+    scroll-behavior: smooth;
+    list-style: none;
+    text-decoration: none;
+}
+
+:root {
+    --main-color: rgb(202, 164, 66);
+    --text-color: #fff;
+    --bg-color: #000000;
+    --big-font: 5rem;
+    --h2-font: 2.5rem;
+    --p-font: 0.9rem;
+}
+
+body {
+    color: var(--main-color);
+    background-color: #000000;
+    background-image: url(../static/trt.png);
+    background-size: auto;
+    background-repeat: repeat;
+    min-height: 100vh;
+}
+/*side bar header*/
+header h2{
+    font-size: 32px;
+    color: VAR(--main-color);
+    text-shadow: 2px 4px 3px #000000;
+    text-align: center;
+}
+
+::-webkit-scrollbar {
+    width: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #fff;
+    border-radius: 10px;
+}
+/*sidebar*/
+.sidebar {
+    text-align: center;
+    left: 5px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 250px;
+    height: 100%;
+    background: #ffffff8c;
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding-top: 25px;
+}
+
+.sidebar li {
+    margin-bottom: 10px;
+}
+
+.sidebar a {
+    text-decoration: none;
+    color: #fff;
+    display: block;
+    padding: 5px 10px;
+    color: black;
+    font-size: 1.1rem;
+    padding: 10px 20px;
+    font-weight: 500;
+}
+
+
+.sidebar a:hover {
+    color: rgb(202, 164, 66);
+    transition: .8s;
+}
+
+
+.sidebar a:hover {
+    background-color: #dddddd9a;
+}
+/*inside text*/
+.scrollbox {
+    overflow: auto;
+    padding-right: 10px;
+    visibility: hidden;
+}
+
+.scrollbox-inner,
+.scrollbox:hover {
+    visibility: visible;
+}
+
+.scrollbox-inner ul{
+    font-size: 16px;
+    color: #fff;
+}
+
+/*bottom part of side bar(logout, admin etc)*/
+.navbar {
+    text-align: center;
+
+}
+
+.navbar a{
+    color: black;
+    font-size: 1.1rem;
+    font-weight: 500;
+    text-align: center;
+
+}
+
+.navbar a:hover {
+    color: var(--main-color);
+    transition: .8s;
+}
+
+footer {
+    padding-top: 250px;
+    bottom: 0;
+}
+
+/* Main content area */
+.main {
+    margin-left: 300px; /* Adjust for the width of the left and sidebar columns */
+    padding: 20px;
+}
+
+.ticket-display {
+    background-color: #ffffff8c;
+    padding: 20px;
+    box-shadow: 0px 0px 10px rgb(202, 164, 66);
+}
+
+/* Horizontal ticket layout */
+.ticket-list {
+    display: inline-block;
+    flex-wrap: nowrap; /* Prevent wrapping to new lines */
+    overflow-x: auto; /* Enable horizontal scrolling if needed */
+}
+
+/* Vertical ticket layout with horizontal bars */
+.ticket-item {
+    background-color: #000000cc;
+    padding: 10px;
+    border: 1px solid #ddd;
+    margin-bottom: 10px; /* Add margin to separate tickets vertically */
+}
+
+.ticket-info {
+    display: inline-block;
+    flex-wrap: nowrap;
+    align-items: center;
+}
+
+.ticket-info strong {
+    display: inline-block;
+}
+
+.ticket-info button {
+    margin-left: 10px;
+}
