@@ -4,6 +4,8 @@ from . import db
 from sqlalchemy.sql import func
 from sqlalchemy import Column , Enum
 from enum import Enum as EnumBase
+from flask_login import UserMixin
+
 
 #priority for status of my tickets
 class statusEnum(EnumBase):
@@ -29,3 +31,11 @@ class CusomterTickerInformation(db.Model):
     status = Column(Enum(statusEnum),default=statusEnum.UNRESOLVED)
     priority = Column(Enum(priorityOrder),default=priorityOrder.NONE)
     date = db.Column(db.DateTime(timezone=True), default=func.now())
+
+
+class User(UserMixin,db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100))
+    username = db.Column(db.String(100), unique=True)
+    password = db.Column(db.String(100))
+    role = db.Column(db.String(100))
