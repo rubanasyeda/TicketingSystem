@@ -10,3 +10,9 @@ class statusEnum(EnumBase):
     RESOLVED = "resolved"
     UNRESOLVED = "unresolved"
 
+
+#Enum for my priority of the tickets
+class priorityOrder(EnumBase):
+    HIGHPRIORITY = "highpriority"
+    LOWPRIORITY = "lowpriority"
+    NONE = "none"
