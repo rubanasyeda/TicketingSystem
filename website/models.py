@@ -48,3 +48,33 @@ class sendEmail:
         self.email = reciever_email
         self.link = "login.html"
         self.subject = subject
+
+    def tickets_recieved_email(self):
+        self.msg = MIMEMultipart()
+        self.msg['From'] = smtp_username
+        self.msg['To'] = self.email
+        self.msg['Subject'] = "Ticket Recieved"
+        self.html = """<html>
+                <body>
+                    <p> Greetings """ + self.businessName + """, <br>
+                        We have received your ticket on """ + self.date + """ regarding the following subject:<br>""" + self.subject + """<br>
+                        Please use the following information when referencing your request:<br>
+                        Ticket ID : <a href=""" + self.link + """>Ticket ID</a><br>
+                        We will resolve this issue as soon as possible.
+                    </p>
+                </body>
+                </html>
+            """
+        self.msg.attach(MIMEText(self.html, 'html'))
+        try:
+            self.server = smtplib.SMTP(smtp_server, smtp_port)
+            self.server.starttls()  # Use STARTTLS for encryption
+            self.server.login(smtp_username, smtp_password)
+
+            # Send the email
+            self.server.sendmail(smtp_username, self.email, self.msg.as_string())
+            print("Email sent successfully!")
+        except Exception as e:
+            print(f"An error occurred: {str(e)}")
+        finally:
+            self.server.quit()
