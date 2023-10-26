@@ -15,6 +15,11 @@ def home():
 def dashboard():
     return render_template("dashboard.html")
 
+@views.route('/submitted',methods=['GET','POST'])
+def submitted():
+    return render_template("submitted.html")
+
+
 @views.route('/createTicket',methods=['GET','POST'])
 def createTicket():
     if request.method == "POST":
@@ -35,7 +40,7 @@ def createTicket():
         date_time = now.strftime("%m/%d/%Y")
         emailToCustomer = sendEmail(businessName,date_time,reciever_email=customerEmail,subject=subject)
         emailToCustomer.tickets_recieved_email()
-        return redirect(url_for('views.home'))
+        return redirect(url_for('views.submitted'))
     return render_template("createTicket.html")
 
 @views.route("/getAllTickets")
