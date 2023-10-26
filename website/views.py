@@ -3,7 +3,7 @@
 from flask import Blueprint,render_template,request,redirect,url_for,jsonify
 from datetime import datetime
 from . import db
-from .models import CusomterTickerInformation
+from .models import CusomterTickerInformation,sendEmail
 
 views = Blueprint('views', __name__)
 
@@ -31,6 +31,10 @@ def createTicket():
                                                  description=problemDescription)
         db.session.add(customerInfo)
         db.session.commit()
+        now = datetime.now()
+        date_time = now.strftime("%m/%d/%Y")
+        emailToCustomer = sendEmail(businessName,date_time,reciever_email=customerEmail,subject=subject)
+        emailToCustomer.tickets_recieved_email()
         return redirect(url_for('views.home'))
     return render_template("createTicket.html")
 
