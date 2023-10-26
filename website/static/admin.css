@@ -22,7 +22,7 @@
 body {
     color: var(--main-color);
     background-color: #000000;
-    background-image: url(images/trt.png);
+    background-image: url(../static/trt.png);
     background-size: auto;
     background-repeat: repeat;
     min-height: 100vh;
