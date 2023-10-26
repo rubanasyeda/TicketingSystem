@@ -21,7 +21,7 @@ def login():
 
 
 @auth.route('/signup',methods=['GET', 'POST'])
-@login_required  # remove if no inital acocunt is in data base
+# @login_required  # remove if no inital acocunt is in data base
 def signup():
     
     if current_user.is_authenticated == False:
@@ -50,7 +50,7 @@ def signup():
 
 
 @auth.route('/logout')
-@login_required
+# @login_required
 def logout():
     logout_user()
     return redirect(url_for('views.home'))

@@ -38,3 +38,11 @@ def createTicket():
         return redirect(url_for('views.home'))
     return render_template("createTicket.html")
 
+@views.route("/getAllTickets")
+def getAllTickets():
+    ticketDetails = CusomterTickerInformation.query.all()
+    tickets = [{'id': ticket.id , 'subject':ticket.subject,'name':ticket.firstName, 'email':ticket.email,"phoneNumber":ticket.phoneNumber,
+                "businessName":ticket.businessName,'date':ticket.date,"status":ticket.status.value,"priority":ticket.priority.value,
+                'description':ticket.description} for ticket in ticketDetails]
+    return jsonify(tickets)
+    #route that will pass all tickets that are in database -- so that front end people can use that in javascript
