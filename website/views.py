@@ -3,7 +3,7 @@
 from flask import Blueprint,render_template,request,redirect,url_for,jsonify
 from datetime import datetime
 from . import db
-from .models import CusomterTickerInformation,sendEmail
+from .models import CusomterTickerInformation,sendEmail,User
 
 views = Blueprint('views', __name__)
 
@@ -46,3 +46,9 @@ def getAllTickets():
                 'description':ticket.description} for ticket in ticketDetails]
     return jsonify(tickets)
     #route that will pass all tickets that are in database -- so that front end people can use that in javascript
+
+@views.route("/getAllEmployees")
+def getAllEmployees():
+    workers = User.query.all()
+    companyWorkers = [{'id':worker.id,"name":worker.name,"username":worker.username,"role":worker.role} for worker in workers]
+    return jsonify(companyWorkers)
