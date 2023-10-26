@@ -3,7 +3,7 @@
 from flask import Blueprint,render_template,request,redirect,url_for,jsonify
 from datetime import datetime
 from . import db
-from .models import CusomterTickerInformation
+from .models import CusomterTickerInformation,sendEmail
 
 views = Blueprint('views', __name__)
 

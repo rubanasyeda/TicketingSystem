@@ -1,3 +1,8 @@
+smtp_server = 'smtp.office365.com'  # for Microsoft 365
+smtp_port = 587
+smtp_username = 'TRTticketsystem@outlook.com'  # Your Outlook email address
+smtp_password = 'ibdhs13jd82'  # Your Outlook password
+
 #Will have all classes for database#
 
 from . import db
@@ -5,7 +10,9 @@ from sqlalchemy.sql import func
 from sqlalchemy import Column , Enum
 from enum import Enum as EnumBase
 from flask_login import UserMixin
-
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
 
 #priority for status of my tickets
 class statusEnum(EnumBase):
