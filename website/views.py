@@ -31,6 +31,10 @@ def createTicket():
                                                  description=problemDescription)
         db.session.add(customerInfo)
         db.session.commit()
+        now = datetime.now()
+        date_time = now.strftime("%m/%d/%Y")
+        emailToCustomer = sendEmail(businessName,date_time,reciever_email=customerEmail,subject=subject)
+        emailToCustomer.tickets_recieved_email()
         return redirect(url_for('views.home'))
     return render_template("createTicket.html")
 
