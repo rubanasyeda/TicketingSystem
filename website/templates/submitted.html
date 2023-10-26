@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Ticket Submitted</title>
+</head>
+<body>
+    <div class="container">
+        <h1>Your Ticket has been Submitted</h1>
+        <p>Thank you for submitting your ticket. Our team will review it shortly.</p>
+        <form method="POST" action="{{url_for('views.home') }}">
+            <button type="submit" class="btn">Go Back to Home Page</button>
+        </form>
+    </div>
+</body>
+</html>
