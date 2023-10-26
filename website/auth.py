@@ -7,6 +7,20 @@ from flask_login import login_user,login_required, current_user, logout_user
 auth = Blueprint('auth',__name__)
 
 
+@auth.route('/admin-dashboard', methods=['GET','POST'])
+def admin():
+    if request.method == 'GET':
+
+        if current_user.is_authenticated == False:
+            return redirect(url_for('auth.login'))
+
+        user = User.query.filter_by(id=current_user.get_id()).first()
+        if user.role == "admin":
+            return render_template('admin.html')
+        
+        return redirect(url_for('views.home'))
+
+
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
@@ -21,7 +35,7 @@ def login():
 
 
 @auth.route('/signup',methods=['GET', 'POST'])
-# @login_required  # remove if no inital acocunt is in data base
+@login_required  # remove if no inital acocunt is in data base
 def signup():
     
     if current_user.is_authenticated == False:
@@ -50,7 +64,7 @@ def signup():
 
 
 @auth.route('/logout')
-# @login_required
+@login_required
 def logout():
     logout_user()
     return redirect(url_for('views.home'))
