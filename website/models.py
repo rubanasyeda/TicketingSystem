@@ -39,3 +39,12 @@ class User(UserMixin,db.Model):
     username = db.Column(db.String(100), unique=True)
     password = db.Column(db.String(100))
     role = db.Column(db.String(100))
+
+
+class sendEmail:
+    def __init__(self,businessName,date,reciever_email,subject):
+        self.businessName = businessName
+        self.date = date
+        self.email = reciever_email
+        self.link = "login.html"
+        self.subject = subject
