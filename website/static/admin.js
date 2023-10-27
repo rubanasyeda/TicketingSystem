@@ -66,4 +66,12 @@ function deleteEmployee(employeeId) {
 document.getElementById('getUsers').addEventListener('click', async function () {
     const employeeData = await fetchAllEmployees();
     displayEmployees(employeeData);
+
+    const mainDiv = document.querySelector('.main');
+    mainDiv.classList.add('users-background');
+    // Show the table when "Get Users" button is clicked
+    const employeeTable = document.querySelector('.employee-table');
+    employeeTable.style.display = 'table'; // Display the table
 });
+
+

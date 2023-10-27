@@ -109,6 +109,7 @@ nav:hover{
 .employee-table {
     width: 100%;
     border-collapse: collapse;
+    display: none; /* Hide the table initially */
 }
 
 .employee-table th, .employee-table td {
