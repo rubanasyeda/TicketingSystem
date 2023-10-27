@@ -40,21 +40,28 @@ function createEmployeeRow(employee) {
 
 
 function deleteEmployee(employeeId) {
-    fetch(`/deleteUser/${employeeId}`, {
+    const confirmed = window.confirm('Are you sure you want to delete this user?');
+
+    if(confirmed){
+        fetch(`/deleteUser/${employeeId}`, {
         method: 'DELETE',
-    })
-    .then(response => {
-        if (response.status === 200) {
-            // Provide user feedback for successful deletion if needed.
-        } else {
-            // Handle other response status codes or errors.
-        }
-    })
-    .catch(error => {
-        console.error('Error deleting employee:', error);
-        // Provide user feedback for the error if needed.
-    });
+        })
+        .then(response => {
+            if (response.status === 200) {
+                location.reload();
+                // Provide user feedback for successful deletion if needed.
+            } else {
+                // Handle other response status codes or errors.
+                console.log("Could not delete user")
+            }
+        })
+        .catch(error => {
+            console.error('Error deleting employee:', error);
+            // Provide user feedback for the error if needed.
+        });
+    }
 }
+    
 
 document.getElementById('getUsers').addEventListener('click', async function () {
     const employeeData = await fetchAllEmployees();
