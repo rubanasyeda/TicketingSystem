@@ -12,44 +12,36 @@ async function fetchAllEmployees() {
 }
 
 function displayEmployees(employeeDetails) {
-    const employeelistContainer = document.querySelector('.Employee-list');
+    const employeelistContainer = document.querySelector('.employee-list');
     employeelistContainer.innerHTML = '';
 
     if (employeeDetails) {
         employeeDetails.forEach(employee => {
-            const employeeItem = createEmployeeItem(employee);
-            employeelistContainer.appendChild(employeeItem);
+            const employeeRow = createEmployeeRow(employee);
+            employeelistContainer.appendChild(employeeRow);
         });
     }
 }
 
-function createEmployeeItem(employee) {
-    const employeeItem = document.createElement('div');
-    employeeItem.classList.add('employee-item');
-    employeeItem.innerHTML = `
-        <div class="employee-info">
-            <strong>FirstName:</strong> ${employee.name}
-            <strong>UserName:</strong> ${employee.username}
-            <strong>Role:</strong> ${employee.role}
-        </div>
+function createEmployeeRow(employee) {
+    const employeeRow = document.createElement('tr');
+    employeeRow.innerHTML = `
+        <td>${employee.name}</td>
+        <td>${employee.username}</td>
+        <td>${employee.role}</td>
+        <td>
+            ${employee.role !== 'admin' ? 
+                `<button class="delete-button" onclick="deleteEmployee(${employee.id})">Delete</button>` : ''}
+        </td>
     `;
 
-    if (employee.role !== 'admin') {
-        const deleteButton = document.createElement('button');
-        deleteButton.classList.add('delete-button');
-        deleteButton.textContent = 'Delete';
-        deleteButton.addEventListener('click', () => {
-            deleteEmployee(employee.id);
-        });
-        employeeItem.appendChild(deleteButton);
-    }
-
-    return employeeItem;
+    return employeeRow;
 }
+
 
 function deleteEmployee(employeeId) {
     fetch(`/deleteUser/${employeeId}`, {
-        method: 'POST',
+        method: 'DELETE',
     })
     .then(response => {
         if (response.status === 200) {
