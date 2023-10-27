@@ -1,110 +1,77 @@
-// Dummy ticket data (you should fetch this from an external source)
-const tickets = [
-    {
-        id: 1,
-        sender: 'User 1',
-        issue: 'Network Problem',
-        priority: 'High',
-        dateSubmitted: '2023-09-27',
-        assigned: false,
-        resolved: false,
-    },
-    {
-        id: 2,
-        sender: 'User 2',
-        issue: 'Software Bug',
-        priority: 'Medium',
-        dateSubmitted: '2023-09-28',
-        assigned: true,
-        resolved: false,
-    },
-    // Add more ticket objects here
-];
-
-// Function to display tickets based on status
-function displayTickets(ticketList, status) {
-    const ticketListContainer = document.querySelector('.ticket-list');
-    ticketListContainer.innerHTML = '';
-
-    const filteredTickets = ticketList.filter((ticket) => {
-        if (status === 'resolved') {
-            return ticket.resolved === true;
-        } else if (status === 'assigned') {
-            return ticket.assigned === true;
-        } else if (status === 'unresolved') {
-            return !ticket.resolved;
+async function fetchAllEmployees() {
+    try {
+        const response = await fetch('/getAllEmployees');
+        if (!response.ok) {
+            throw new Error('Failed to fetch employee data. Please try again later.');
         }
-        // Default: Display all tickets
-        return true;
-    });
-
-    filteredTickets.forEach((ticket) => {
-        const ticketItem = document.createElement('div');
-        ticketItem.classList.add('ticket-item');
-        ticketItem.innerHTML = `
-            <div class="ticket-info">
-                <strong>Sender:</strong> ${ticket.sender}
-                <strong>Issue:</strong> ${ticket.issue}
-                <strong>Priority:</strong> ${ticket.priority}
-                <strong>Date Submitted:</strong> ${ticket.dateSubmitted}
-                <button class="assign-button">${ticket.assigned ? 'Unassign' : 'Assign'}</button>
-                <button class="resolve-button">${ticket.resolved ? 'Resolved' : 'Resolve'}</button>
-                <a href="${getTicketPageLink(ticket.id)}" class="ticket-link" target="_blank">Ticket Details</a>
-            </div>
-        `;
-
-        // Add event listener for "Resolve" button
-        const resolveButton = ticketItem.querySelector('.resolve-button');
-        resolveButton.addEventListener('click', () => {
-            // Toggle the resolved status and update the button text
-            ticket.resolved = !ticket.resolved;
-            resolveButton.textContent = ticket.resolved ? 'Resolved' : 'Resolve';
-
-            // Display tickets based on their status
-            displayTickets(tickets, status);
-        });
-
-        // Add event listener for "Assign" button
-        const assignButton = ticketItem.querySelector('.assign-button');
-        assignButton.addEventListener('click', () => {
-            // Toggle the assigned status and update the button text
-            ticket.assigned = !ticket.assigned;
-            assignButton.textContent = ticket.assigned ? 'Unassign' : 'Assign';
-
-            // Display tickets based on their status
-            displayTickets(tickets, status);
-        });
-
-        ticketListContainer.appendChild(ticketItem);
-    });
+        return await response.json();
+    } catch (error) {
+        console.error('Error fetching data:', error);
+        return null;
+    }
 }
 
-// Function to generate an external link for a ticket
-function getTicketPageLink(ticketId) {
-    // Replace this with the actual external link format
-    return `https://example.com/tickets/${ticketId}`;
+function displayEmployees(employeeDetails) {
+    const employeelistContainer = document.querySelector('.employee-list');
+    employeelistContainer.innerHTML = '';
+
+    if (employeeDetails) {
+        employeeDetails.forEach(employee => {
+            const employeeRow = createEmployeeRow(employee);
+            employeelistContainer.appendChild(employeeRow);
+        });
+    }
 }
 
-// Add event listeners for ticket sorting buttons
-document.getElementById('allTickets').addEventListener('click', function () {
-    // Display all tickets
-    displayTickets(tickets, 'all');
+function createEmployeeRow(employee) {
+    const employeeRow = document.createElement('tr');
+    employeeRow.innerHTML = `
+        <td>${employee.name}</td>
+        <td>${employee.username}</td>
+        <td>${employee.role}</td>
+        <td>
+            ${employee.role !== 'admin' ? 
+                `<button class="delete-button" onclick="deleteEmployee(${employee.id})">Delete</button>` : ''}
+        </td>
+    `;
+
+    return employeeRow;
+}
+
+
+function deleteEmployee(employeeId) {
+    const confirmed = window.confirm('Are you sure you want to delete this user?');
+
+    if(confirmed){
+        fetch(`/deleteUser/${employeeId}`, {
+        method: 'DELETE',
+        })
+        .then(response => {
+            if (response.status === 200) {
+                location.reload();
+                // Provide user feedback for successful deletion if needed.
+            } else {
+                // Handle other response status codes or errors.
+                console.log("Could not delete user")
+            }
+        })
+        .catch(error => {
+            console.error('Error deleting employee:', error);
+            // Provide user feedback for the error if needed.
+        });
+    }
+}
+    
+
+document.getElementById('getUsers').addEventListener('click', async function () {
+    const employeeData = await fetchAllEmployees();
+    displayEmployees(employeeData);
+
+    const mainDiv = document.querySelector('.main');
+    mainDiv.classList.add('users-background');
+    // Show the table when "Get Users" button is clicked
+    const employeeTable = document.querySelector('.employee-table');
+    employeeTable.style.display = 'table'; // Display the table
 });
 
-document.getElementById('resolvedTickets').addEventListener('click', function () {
-    // Display resolved tickets
-    displayTickets(tickets, 'resolved');
-});
 
-document.getElementById('unresolvedTickets').addEventListener('click', function () {
-    // Display unresolved tickets
-    displayTickets(tickets, 'unresolved');
-});
-
-document.getElementById('assignedTickets').addEventListener('click', function () {
-    // Display assigned tickets
-    displayTickets(tickets, 'assigned');
-});
-
-// Initial display of all tickets
-displayTickets(tickets, 'all');

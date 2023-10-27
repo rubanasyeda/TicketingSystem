@@ -57,3 +57,15 @@ def getAllEmployees():
     workers = User.query.all()
     companyWorkers = [{'id':worker.id,"name":worker.name,"username":worker.username,"role":worker.role} for worker in workers]
     return jsonify(companyWorkers)
+
+
+@views.route("/deleteUser/<int:employee_id>", methods=['DELETE'])
+def deleteUser(employee_id):
+    user = User.query.filter_by(id=employee_id).first()
+
+    if user is not None:
+        db.session.delete(user)  # Mark the user for deletion
+        db.session.commit()  # Commit the transaction
+        return jsonify({"message": "User deleted successfully"})
+    else:
+        return jsonify({"error": "User not found"}, 404)

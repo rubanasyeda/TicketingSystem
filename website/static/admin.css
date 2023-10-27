@@ -105,42 +105,68 @@ nav:hover{
     padding: 20px;
 }
 
+/* CSS for the table */
+.employee-table {
+    width: 100%;
+    border-collapse: collapse;
+    display: none; /* Hide the table initially */
+}
+
+.employee-table th, .employee-table td {
+    border: 1px solid #000;
+    padding: 10px;
+    text-align: left;
+}
+
+/* Style the buttons in the Action column */
+.employee-table button {
+    background-color: #d9534f;
+    color: #fff;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.employee-table td .delete-button {
+    margin: 0;
+}
+
+/* Style the Ticket Display Section */
 .ticket-display {
     background-color: #ffffff8c;
     padding: 20px;
     box-shadow: 0px 0px 10px rgb(202, 164, 66);
 }
 
-/* Horizontal ticket layout */
-.ticket-list {
+.Employee-list {
     display: inline-block;
-    flex-wrap: nowrap; /* Prevent wrapping to new lines */
-    overflow-x: auto; /* Enable horizontal scrolling if needed */
+    flex-wrap: nowrap;
+    overflow-x: auto;
 }
 
-/* Vertical ticket layout with horizontal bars */
-.ticket-item {
+.employee-item {
     background-color: #000000cc;
     padding: 10px;
-    border: 1px solid #ddd;
-    margin-bottom: 10px; /* Add margin to separate tickets vertically */
+    border: 2px solid #dddddd;
+    margin-bottom: 10px;
 }
 
-.ticket-info {
+
+
+.employee-info {
     display: inline-block;
     flex-wrap: nowrap;
     align-items: center;
 }
 
-.ticket-info strong {
+.employee-info strong {
     display: inline-block;
 }
 
-.ticket-info button {
+.employee-info button {
     margin-left: 10px;
 }
 
 .ticket-description {
     margin-top: 10px;
 }
-

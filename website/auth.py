@@ -16,7 +16,7 @@ def admin():
 
         user = User.query.filter_by(id=current_user.get_id()).first()
         if user.role == "admin":
-            return render_template('admin.html')
+            return render_template("admin.html")
         
         return redirect(url_for('views.home'))
 
