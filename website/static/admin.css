@@ -105,42 +105,41 @@ nav:hover{
     padding: 20px;
 }
 
-.ticket-display {
+.Employee-Display {
     background-color: #ffffff8c;
     padding: 20px;
     box-shadow: 0px 0px 10px rgb(202, 164, 66);
 }
 
 /* Horizontal ticket layout */
-.ticket-list {
+.Employee-list {
     display: inline-block;
     flex-wrap: nowrap; /* Prevent wrapping to new lines */
     overflow-x: auto; /* Enable horizontal scrolling if needed */
 }
 
 /* Vertical ticket layout with horizontal bars */
-.ticket-item {
+.employee-item {
     background-color: #000000cc;
     padding: 10px;
     border: 1px solid #ddd;
     margin-bottom: 10px; /* Add margin to separate tickets vertically */
 }
 
-.ticket-info {
+.employee-info {
     display: inline-block;
     flex-wrap: nowrap;
     align-items: center;
 }
 
-.ticket-info strong {
+.employee-info strong {
     display: inline-block;
 }
 
-.ticket-info button {
+.employee-info button {
     margin-left: 10px;
 }
 
 .ticket-description {
     margin-top: 10px;
 }
-
