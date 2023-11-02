@@ -103,3 +103,12 @@ def highPriorityTicket(ticket_id):
     db.session.commit()
     return "Ticket resolved successfully"
 
+#added routes for lowPriority Ticket
+@views.route("/lowPriorityTicket/<int:ticket_id>",methods=['POST'])
+def lowPriorityTicket(ticket_id):
+    ticket = CusomterTickerInformation.query.get(ticket_id)
+    if ticket is None:
+        return "Ticket not found", 404
+    ticket.priority = priorityOrder.LOWPRIORITY
+    db.session.commit()
+    return "Ticket resolved successfully"
