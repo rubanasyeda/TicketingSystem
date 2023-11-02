@@ -71,6 +71,69 @@ function resolveTicket(ticketId) {
     }
 }
 
+function unresolveTicket(ticketId) {
+    const confirmed = window.confirm('Are you sure you want to change ticket status to unresolved?');
+
+    if(confirmed){
+        fetch(`/unresolveTicket/${ticketId}`, {
+        method: 'POST',
+        })
+        .then(response => {
+            if (response.status === 200) {
+                location.reload();
+            } else {
+                console.log("Could not change the status")
+            }
+        })
+        .catch(error => {
+            console.error('Error changing the status:', error);
+        });
+    }
+}
+
+
+function highPriorityTicket(ticketId) {
+    const confirmed = window.confirm('Are you sure you want to change ticket status to highpriority?');
+
+    if(confirmed){
+        fetch(`/highPriorityTicket/${ticketId}`, {
+        method: 'POST',
+        })
+        .then(response => {
+            if (response.status === 200) {
+                location.reload();
+            } else {
+                console.log("Could not change the status")
+            }
+        })
+        .catch(error => {
+            console.error('Error changing the status:', error);
+        });
+    }
+}
+
+
+function lowPriorityTicket(ticketId) {
+    const confirmed = window.confirm('Are you sure you want to change ticket status to lowpriority?');
+
+    if(confirmed){
+        fetch(`/lowPriorityTicket/${ticketId}`, {
+        method: 'POST',
+        })
+        .then(response => {
+            if (response.status === 200) {
+                location.reload();
+            } else {
+                console.log("Could not change the status")
+            }
+        })
+        .catch(error => {
+            console.error('Error changing the status:', error);
+        });
+    }
+}
+
+
 document.getElementById('allTickets').addEventListener('click', async function () {
     const ticketData = await fetchAllTickets();
     displayTickets(ticketData, "all");
