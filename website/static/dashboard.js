@@ -30,6 +30,18 @@ function displayTickets(ticketList, status) {
                     <strong>Priority:</strong> ${ticket.priority}
                     <strong>Date:</strong> ${ticket.date}
                     <a href="${getTicketPageLink(ticket.id)}" class="ticket-link" target="_blank">Ticket Details</a>
+                    <td>
+                        <button class="unresolved-button" onclick="unresolveTicket(${ticket.id})">Unresolve</button>
+                    </td>
+                    <td>
+                        <button class="resolve-button" onclick="resolveTicket(${ticket.id})">Resolve</button>
+                    </td>
+                    <td>
+                        <button class="highpriority-button" onclick="highPriorityTicket(${ticket.id})">HighPriority</button>
+                    </td>
+                    <td>
+                        <button class="lowpriority-button" onclick="lowPriorityTicket(${ticket.id})">LowPriority</button>
+                    </td>
                 </div>
             `;
             ticketListContainer.appendChild(ticketItem);
