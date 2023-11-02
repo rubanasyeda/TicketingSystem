@@ -18,7 +18,7 @@ function displayTickets(ticketList, status) {
 
     if (ticketList) {
         ticketList.forEach(ticket => {
-            if (status === 'all' || ticket.status === status){
+            if (status === 'all' || ticket.status === status || ticket.priority === status){
                 const ticketItem = document.createElement('div');
             ticketItem.classList.add('ticket-item');
             ticketItem.innerHTML = `
@@ -62,15 +62,14 @@ function resolveTicket(ticketId) {
             if (response.status === 200) {
                 location.reload();
             } else {
-                console.log("Could not delete user")
+                console.log("Could not change the status")
             }
         })
         .catch(error => {
-            console.error('Error deleting employee:', error);
+            console.error('Error changing the status:', error);
         });
     }
 }
-
 
 document.getElementById('allTickets').addEventListener('click', async function () {
     const ticketData = await fetchAllTickets();
