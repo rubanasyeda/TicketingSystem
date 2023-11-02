@@ -93,5 +93,13 @@ def unresolveTicket(ticket_id):
     db.session.commit()
     return "Ticket resolved successfully"
 
-
+#added routes for highPriority Ticket
+@views.route("/highPriorityTicket/<int:ticket_id>",methods=['POST'])
+def highPriorityTicket(ticket_id):
+    ticket = CusomterTickerInformation.query.get(ticket_id)
+    if ticket is None:
+        return "Ticket not found", 404
+    ticket.priority = priorityOrder.HIGHPRIORITY
+    db.session.commit()
+    return "Ticket resolved successfully"
 
