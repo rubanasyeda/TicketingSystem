@@ -51,6 +51,27 @@ function displayTickets(ticketList, status) {
 }
 
 
+function resolveTicket(ticketId) {
+    const confirmed = window.confirm('Are you sure you want to change ticket status to resolve?');
+
+    if(confirmed){
+        fetch(`/resolveTicket/${ticketId}`, {
+        method: 'POST',
+        })
+        .then(response => {
+            if (response.status === 200) {
+                location.reload();
+            } else {
+                console.log("Could not delete user")
+            }
+        })
+        .catch(error => {
+            console.error('Error deleting employee:', error);
+        });
+    }
+}
+
+
 document.getElementById('allTickets').addEventListener('click', async function () {
     const ticketData = await fetchAllTickets();
     displayTickets(ticketData, "all");
