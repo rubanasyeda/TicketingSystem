@@ -12,6 +12,58 @@ async function fetchAllTickets() {
 }
 
 
+
+
+// a method to fetch team members
+// async function fetchTeamMembers() {
+//     try {
+//         const response = await fetch('/getTeamMembers'); // Assuming you have an endpoint for this
+//         if (!response.ok) {
+//             throw new Error('Failed to fetch data');
+//         }
+//         return await response.json();
+//     } catch (error) {
+//         console.error('Error fetching data:', error);
+//         return null;
+//     }
+// }
+
+const teamMembers = [
+    { name: 'John', assignedTickets: 3 },
+    { name: 'Jane', assignedTickets: 5 },
+    { name: 'Doe', assignedTickets: 2 },
+];
+
+function generateTeamMembersDropdown() {
+    let dropdownHtml = '<div class="dropdown-container">'; 
+    dropdownHtml += '<button class="assign-ticket-btn">Assign Ticket</button>';
+    dropdownHtml += '<div class="team-dropdown">';
+    teamMembers.forEach(member => {
+        dropdownHtml += `
+            <div class="team-member">
+                ${member.name} (${member.assignedTickets} tickets)
+                <button class="assign-btn" onclick="assignTicket(this, '${member.name}')">Assign</button>
+            </div>
+        `;
+    });
+    dropdownHtml += '</div>';
+    dropdownHtml += '</div>';  
+    return dropdownHtml;
+}
+
+
+function assignTicket(buttonElement, memberName) {
+    if (buttonElement.innerText === 'Assign') {
+        buttonElement.innerText = 'Unassign';
+        buttonElement.classList.add('unassign-btn');
+        alert(`Ticket has been assigned to ${memberName}`);
+    } else {
+        buttonElement.innerText = 'Assign';
+        buttonElement.classList.remove('unassign-btn');
+    }
+}
+
+
 function displayTickets(ticketList, status) {
     const ticketListContainer = document.querySelector('.ticket-list');
     ticketListContainer.innerHTML = '';
@@ -44,6 +96,12 @@ function displayTickets(ticketList, status) {
                     </td>
                 </div>
             `;
+
+            ticketItem.innerHTML += `
+
+                ${generateTeamMembersDropdown()}
+            `;
+            
             ticketListContainer.appendChild(ticketItem);
             }
         });
