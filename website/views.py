@@ -4,6 +4,7 @@ from flask import Blueprint,render_template,request,redirect,url_for,jsonify
 from datetime import datetime
 from . import db
 from .models import CusomterTickerInformation,sendEmail,User
+from .models import statusEnum,priorityOrder
 
 views = Blueprint('views', __name__)
 
@@ -69,3 +70,15 @@ def deleteUser(employee_id):
         return jsonify({"message": "User deleted successfully"})
     else:
         return jsonify({"error": "User not found"}, 404)
+
+
+#route created for resolveTicket
+@views.route("/resolveTicket/<int:ticket_id>",methods=['POST'])
+def resolveTicket(ticket_id):
+    ticket = CusomterTickerInformation.query.get(ticket_id)
+    if ticket is None:
+        return "Ticket not found", 404
+    ticket.status = statusEnum.RESOLVED
+    ticket.priority = priorityOrder.NONE
+    db.session.commit()
+    return "Ticket resolved successfully"

@@ -28,7 +28,7 @@ def create_app():
      app.register_blueprint(auth, url_prefix='/')
 
 
-     from .models import CusomterTickerInformation
+     from .models import CusomterTickerInformation,statusEnum,priorityOrder
 
      @login_manager.user_loader
      def load_user(user_id):
