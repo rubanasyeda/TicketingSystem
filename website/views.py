@@ -112,3 +112,5 @@ def lowPriorityTicket(ticket_id):
     ticket.priority = priorityOrder.LOWPRIORITY
     db.session.commit()
     return "Ticket resolved successfully"
+
+#completed the changing the status and the priority of the tickets
