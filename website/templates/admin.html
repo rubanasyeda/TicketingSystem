@@ -1,70 +1,79 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Admin</title>
-        <link rel="stylesheet" href="../static/admin.css">
-        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
-    </head>
-      <body>
-        <nav>
-            <ul>
-                <li>
-                    <a class="logo">
-                        <img src="..\static\TRTTechnology.png" alt="">
-                        <span class="nav-item">Admin</span>
-                    </a>
-                </li>
-                <li><a href="/dashboard" id="Home">
-                    <i class='bx bx-home-alt-2' ></i>            
-                    <span class="nav-item">Home</span>
-                </a></li>
-                <li><a href="#" id="getUsers">
-                    <i class='bx bx-user' ></i>            
-                    <span class="nav-item">All Users</span>
-                </a></li>
-                <li><a href="signup">
-                    <i class='bx bx-user-plus' ></i>
-                    <span class="nav-item">Create User</span>
-                </a></li>
-                <li><a href="/admin">
-                    <i class='bx bx-hdd'></i>
-                    <span class="nav-item">Database</span>
-                </a></li>
-                <li><a href="#">
-                    <i class='bx bx-cog'></i>
-                    <span class="nav-item">AssignTickets</span>
-                </a></li>
-                <li><a href="#">
-                    <i class="fas fa-controls"></i>
-                    <span class="nav-item"></span>
-                </a></li>
-                <li><a href="logout" class="logout">
-                    <i class='bx bx-log-out'></i>
-                    <span class="nav-item">Logout</span>
-                </a></li>
-            </ul>
-        </nav>
-        <div class="main">
-            <!-- Employee Display Section (Table) -->
-            <section class="Employee-Display">
-                <table class="employee-table">
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Username</th>
-                            <th>Role</th>
-                            <th>Action</th> <!-- Add a column for actions, e.g., delete button -->
-                        </tr>
-                    </thead>
-                    <tbody class="employee-list">
-                        <!-- Employee items will be added here dynamically -->
-                    </tbody>
-                </table>
-            </section>
-        </div>
-      </body>
-      <script src="../static/admin.js"></script>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin</title>
+    <link rel="stylesheet" href="../static/admin.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
+</head>
+<body>
+    <nav>
+        <ul>
+            <li>
+                <a class="logo">
+                    <img src="..\static\TRTTechnology.png" alt="">
+                    <span class="nav-item">Admin</span>
+                </a>
+            </li>
+            <li><a href="/dashboard" id="Home">
+                <i class='bx bx-home-alt-2' ></i>
+                <span class="nav-item">Home</span>
+            </a></li>
+            <li><a href="#" id="getUsers">
+                <i class='bx bx-user' ></i>
+                <span class="nav-item">All Users</span>
+            </a></li>
+            <li><a href="signup">
+                <i class='bx bx-user-plus' ></i>
+                <span class="nav-item">Create User</span>
+            </a></li>
+            <li><a href="/admin">
+                <i class='bx bx-hdd'></i>
+                <span class="nav-item">Database</span>
+            </a></li>
+            <li><a href="#" id="assignTickets">
+                <i class='bx bx-cog'></i>
+                <span class="nav-item">Assign Tickets</span>
+            </a></li>
+            <li><a href="logout" class="logout">
+                <i class='bx bx-log-out'></i>
+                <span class="nav-item">Logout</span>
+            </a></li>
+        </ul>
+    </nav>
+    <div class="main">
+        <section class="Employee-Display">
+            <table class="employee-table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Username</th>
+                        <th>Role</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody class="employee-list">
+                </tbody>
+            </table>
+        </section>
+        <section class="ticket-display">
+            <table class="ticket-table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Business Name</th>
+                        <th>Cell Number</th>
+                        <th>Assign Tickets</th>
+                    </tr>
+                </thead>
+                <tbody class="ticket-list">
+                </tbody>
+            </table>
+        </section>
+    </div>
+</body>
+<script src="../static/admin.js"></script>
 </html>

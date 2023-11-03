@@ -131,12 +131,6 @@ nav:hover{
     margin: 0;
 }
 
-/* Style the Ticket Display Section */
-.ticket-display {
-    background-color: #ffffff8c;
-    padding: 20px;
-    box-shadow: 0px 0px 10px rgb(202, 164, 66);
-}
 
 .Employee-list {
     display: inline-block;
@@ -150,8 +144,6 @@ nav:hover{
     border: 2px solid #dddddd;
     margin-bottom: 10px;
 }
-
-
 
 .employee-info {
     display: inline-block;
@@ -167,6 +159,10 @@ nav:hover{
     margin-left: 10px;
 }
 
-.ticket-description {
-    margin-top: 10px;
+.ticket-table {
+    width: 85%;
+}
+.ticket-table td,th{
+    padding: 10px;
+    text-align: left;
 }
