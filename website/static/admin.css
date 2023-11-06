@@ -52,6 +52,7 @@ nav {
     width: 45px;
     height: 45px;
     border-radius: 50%;
+    
 }
 
 .logo span{
@@ -166,3 +167,14 @@ nav:hover{
     padding: 10px;
     text-align: left;
 }
+
+/* new */
+
+.assign-ticket-dropdown {
+    width: 100%;
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+
+  }
+  

@@ -71,29 +71,43 @@ async function fetchAllTickets() {
   }
 }
 
-function displayTickets(ticketDetails) {
+async function displayTickets(ticketDetails) {
   const ticketlistContainer = document.querySelector('.ticket-list');
   ticketlistContainer.innerHTML = '';
 
+  const employees = await fetchAllEmployees();
   if (ticketDetails) {
     ticketDetails.forEach(ticket => {
-      const ticketRow = createTicketRow(ticket);
+      const ticketRow = createTicketRow(ticket, employees);
       ticketlistContainer.appendChild(ticketRow);
     });
   }
 }
 
-function createTicketRow(ticket) {
+
+
+function createTicketRow(ticket, employees) {
   const ticketRow = document.createElement('tr');
+  
+  // e dropdown menu for assigning employees
+  let dropdown = '<select class="assign-to-dropdown">';
+  dropdown += '<option value="">Assign to..</option>'; // Default option
+  for (let employee of employees) {
+    dropdown += `<option value="${employee.id}">${employee.name}</option>`;
+  }
+  dropdown += '</select>';
+
   ticketRow.innerHTML = `
     <td>${ticket.name}</td>
     <td>${ticket.email}</td>
     <td>${ticket.businessName}</td>
     <td>${ticket.phoneNumber}</td>
+    <td>${dropdown}</td> 
   `;
 
   return ticketRow;
 }
+
 
 document.getElementById('getUsers').addEventListener('click', async function () {
   const employeeData = await fetchAllEmployees();
@@ -110,3 +124,5 @@ document.getElementById('assignTickets').addEventListener('click', async functio
   document.querySelector('.employee-table').style.display = 'none';
   document.querySelector('.ticket-table').style.display = 'table';
 });
+
+
