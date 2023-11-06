@@ -60,6 +60,10 @@ def getAllEmployees():
     return jsonify(companyWorkers)
 
 
+
+
+
+
 @views.route("/deleteUser/<int:employee_id>", methods=['DELETE'])
 def deleteUser(employee_id):
     user = User.query.filter_by(id=employee_id).first()
@@ -112,3 +116,5 @@ def lowPriorityTicket(ticket_id):
     ticket.priority = priorityOrder.LOWPRIORITY
     db.session.commit()
     return "Ticket resolved successfully"
+
+#completed the changing the status and the priority of the tickets
