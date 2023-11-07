@@ -58,6 +58,7 @@ function deleteEmployee(employeeId) {
   }
 }
 
+// Function to fetch all tickets
 async function fetchAllTickets() {
   try {
     const response = await fetch('/getAllTickets');
@@ -72,6 +73,7 @@ async function fetchAllTickets() {
 }
 
 async function displayTickets(ticketDetails) {
+  console.log('Displaying tickets:',ticketDetails);
   const ticketlistContainer = document.querySelector('.ticket-list');
   ticketlistContainer.innerHTML = '';
 
@@ -86,14 +88,19 @@ async function displayTickets(ticketDetails) {
 
 
 
+
+
+// Function to create a row for a ticket
 function createTicketRow(ticket, employees) {
   const ticketRow = document.createElement('tr');
-  
-  // e dropdown menu for assigning employees
-  let dropdown = '<select class="assign-to-dropdown">';
-  dropdown += '<option value="">Assign to..</option>'; // Default option
+
+  // Create a set to keep track of assigned user IDs for this ticket
+  const assignedUsers = new Set(ticket.users.map(user => user.id));
+
+  // Dropdown menu for assigning and removing employees
+  let dropdown = `<select id="assignDropdown_${ticket.id}" class="assign-to-dropdown" multiple>`;
   for (let employee of employees) {
-    dropdown += `<option value="${employee.id}">${employee.name}</option>`;
+    dropdown += `<option value="${employee.id}" ${assignedUsers.has(employee.id) ? 'selected' : ''}>${employee.name}</option>`;
   }
   dropdown += '</select>';
 
@@ -102,13 +109,82 @@ function createTicketRow(ticket, employees) {
     <td>${ticket.email}</td>
     <td>${ticket.businessName}</td>
     <td>${ticket.phoneNumber}</td>
-    <td>${dropdown}</td> 
+    <td>${dropdown}</td>
+    <td>
+      <button class="assign-button" data-ticket-id="${ticket.id}">Assign</button>
+      <button class="remove-button" data-ticket-id="${ticket.id}">Remove</button>
+    </td>
   `;
 
   return ticketRow;
 }
 
 
+// Function to fetch all employees
+async function fetchAllEmployees() {
+  try {
+    const response = await fetch('/getAllEmployees');
+    if (!response.ok) {
+      throw new Error('Failed to fetch employee data. Please try again later.');
+    }
+    return await response.json();
+  } catch (error) {
+    console.error('Error fetching employee data:', error);
+    return null;
+  }
+}
+
+// Function to fetch all tickets
+async function fetchAllTickets() {
+  try {
+    const response = await fetch('/getAllTickets');
+    if (!response.ok) {
+      throw new Error('Failed to fetch ticket data. Please try again later.');
+    }
+    return await response.json();
+  } catch (error) {
+    console.error('Error fetching ticket data:', error);
+    return null;
+  }
+}
+
+// Function to assign employees to a ticket
+async function assignEmployeesToTicket(ticketId) {
+  const selectElement = document.querySelector(`#assignDropdown_${ticketId}`);
+  const selectedEmployeeIds = Array.from(selectElement.selectedOptions).map(option => option.value);
+
+  await fetch(`/assignEmployeesToTicket/${ticketId}`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ employeeIds: selectedEmployeeIds }),
+  });
+
+  // Refresh the ticket display after assigning employees
+  const ticketData = await fetchAllTickets();
+  displayTickets(ticketData);
+}
+
+// Function to remove employees from a ticket
+async function removeEmployeesFromTicket(ticketId) {
+  const selectElement = document.querySelector(`#assignDropdown_${ticketId}`);
+  const selectedEmployeeIds = Array.from(selectElement.selectedOptions).map(option => option.value);
+
+  await fetch(`/removeEmployeesFromTicket/${ticketId}`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ employeeIds: selectedEmployeeIds }),
+  });
+
+  // Refresh the ticket display after removing employees
+  const ticketData = await fetchAllTickets();
+  displayTickets(ticketData);
+}
+
+// Event listener for fetching and displaying employees
 document.getElementById('getUsers').addEventListener('click', async function () {
   const employeeData = await fetchAllEmployees();
   displayEmployees(employeeData);
@@ -117,6 +193,7 @@ document.getElementById('getUsers').addEventListener('click', async function () 
   document.querySelector('.ticket-table').style.display = 'none';
 });
 
+// Event listener for fetching and displaying tickets
 document.getElementById('assignTickets').addEventListener('click', async function () {
   const ticketData = await fetchAllTickets();
   displayTickets(ticketData);
@@ -125,4 +202,15 @@ document.getElementById('assignTickets').addEventListener('click', async functio
   document.querySelector('.ticket-table').style.display = 'table';
 });
 
+// Event listener for assigning and removing employees
+document.addEventListener('click', function (event) {
+  if (event.target.classList.contains('assign-button')) {
+    const ticketId = event.target.getAttribute('data-ticket-id');
+    assignEmployeesToTicket(ticketId);
+  }
 
+  if (event.target.classList.contains('remove-button')) {
+    const ticketId = event.target.getAttribute('data-ticket-id');
+    removeEmployeesFromTicket(ticketId);
+  }
+});
