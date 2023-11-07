@@ -3,7 +3,7 @@
 from flask import Blueprint,render_template,request,redirect,url_for,jsonify
 from datetime import datetime
 from . import db
-from .models import CusomterTickerInformation,sendEmail,User
+from .models import CustomerTicketInformation,sendEmail,User
 from .models import statusEnum,priorityOrder
 
 views = Blueprint('views', __name__)
@@ -32,7 +32,7 @@ def createTicket():
         customerNumber = request.form.get('customer_phone')
         problemDescription = request.form.get('description')
 
-        customerInfo = CusomterTickerInformation(subject=subject,firstName=customerFirstName,lastName=customerLastName,
+        customerInfo = CustomerTicketInformation(subject=subject,firstName=customerFirstName,lastName=customerLastName,
                                                  email=customerEmail,businessName=businessName,phoneNumber=customerNumber,
                                                  description=problemDescription)
         db.session.add(customerInfo)
@@ -44,20 +44,62 @@ def createTicket():
         return redirect(url_for('views.submitted'))
     return render_template("createTicket.html")
 
+
+
+
+
 @views.route("/getAllTickets")
 def getAllTickets():
-    ticketDetails = CusomterTickerInformation.query.all()
-    tickets = [{'id': ticket.id , 'subject':ticket.subject,'name':ticket.firstName, 'email':ticket.email,"phoneNumber":ticket.phoneNumber,
-                "businessName":ticket.businessName,'date':ticket.date,"status":ticket.status.value,"priority":ticket.priority.value,
-                'description':ticket.description} for ticket in ticketDetails]
+    ticketDetails = CustomerTicketInformation.query.all()
+    tickets = []
+
+    for ticket in ticketDetails:
+        # Extract user information for each ticket
+        users = [{'id': user.id, 'name': user.name, 'username': user.username, 'role': user.role} for user in ticket.users]
+
+        # Create a dictionary for each ticket
+        ticket_dict = {
+            'id': ticket.id,
+            'subject': ticket.subject,
+            'name': ticket.firstName,
+            'email': ticket.email,
+            'phoneNumber': ticket.phoneNumber,
+            'businessName': ticket.businessName,
+            'date': ticket.date.strftime("%Y-%m-%d %H:%M:%S"),
+            'status': ticket.status.value,
+            'priority': ticket.priority.value,
+            'description': ticket.description,
+            'users': users  # Include user information
+        }
+
+        tickets.append(ticket_dict)
+
     return jsonify(tickets)
-    #route that will pass all tickets that are in database -- so that front end people can use that in javascript
+
 
 @views.route("/getAllEmployees")
 def getAllEmployees():
     workers = User.query.all()
-    companyWorkers = [{'id':worker.id,"name":worker.name,"username":worker.username,"role":worker.role} for worker in workers]
+    companyWorkers = []
+
+    for worker in workers:
+        # Extract ticket information for each employee
+        tickets = [{'id': ticket.id, 'subject': ticket.subject, 'status': ticket.status.value} for ticket in worker.tickets]
+
+        # Create a dictionary for each employee
+        worker_dict = {
+            'id': worker.id,
+            'name': worker.name,
+            'username': worker.username,
+            'role': worker.role,
+            'tickets': tickets  # Include ticket information
+        }
+
+        companyWorkers.append(worker_dict)
+
     return jsonify(companyWorkers)
+
+
 
 
 
@@ -79,7 +121,7 @@ def deleteUser(employee_id):
 #route created for resolveTicket
 @views.route("/resolveTicket/<int:ticket_id>",methods=['POST'])
 def resolveTicket(ticket_id):
-    ticket = CusomterTickerInformation.query.get(ticket_id)
+    ticket = CustomerTicketInformation.query.get(ticket_id)
     if ticket is None:
         return "Ticket not found", 404
     ticket.status = statusEnum.RESOLVED
@@ -90,7 +132,7 @@ def resolveTicket(ticket_id):
 #added routes for unresolve Ticket
 @views.route("/unresolveTicket/<int:ticket_id>",methods=['POST'])
 def unresolveTicket(ticket_id):
-    ticket = CusomterTickerInformation.query.get(ticket_id)
+    ticket = CustomerTicketInformation.query.get(ticket_id)
     if ticket is None:
         return "Ticket not found", 404
     ticket.status = statusEnum.UNRESOLVED
@@ -100,7 +142,7 @@ def unresolveTicket(ticket_id):
 #added routes for highPriority Ticket
 @views.route("/highPriorityTicket/<int:ticket_id>",methods=['POST'])
 def highPriorityTicket(ticket_id):
-    ticket = CusomterTickerInformation.query.get(ticket_id)
+    ticket = CustomerTicketInformation.query.get(ticket_id)
     if ticket is None:
         return "Ticket not found", 404
     ticket.priority = priorityOrder.HIGHPRIORITY
@@ -110,7 +152,7 @@ def highPriorityTicket(ticket_id):
 #added routes for lowPriority Ticket
 @views.route("/lowPriorityTicket/<int:ticket_id>",methods=['POST'])
 def lowPriorityTicket(ticket_id):
-    ticket = CusomterTickerInformation.query.get(ticket_id)
+    ticket = CustomerTicketInformation.query.get(ticket_id)
     if ticket is None:
         return "Ticket not found", 404
     ticket.priority = priorityOrder.LOWPRIORITY
@@ -118,3 +160,42 @@ def lowPriorityTicket(ticket_id):
     return "Ticket resolved successfully"
 
 #completed the changing the status and the priority of the tickets
+
+
+@views.route("/assignEmployeesToTicket/<int:ticket_id>", methods=['POST'])
+def assign_employees_to_ticket(ticket_id):
+    ticket = CustomerTicketInformation.query.get(ticket_id)
+    if ticket is None:
+        return "Ticket not found", 404
+
+    data = request.get_json()
+    employee_ids = data.get('employeeIds', [])
+
+    # Clear existing associations and add the new ones
+    ticket.users = []
+    for employee_id in employee_ids:
+        employee = User.query.get(employee_id)
+        if employee:
+            ticket.users.append(employee)
+
+    db.session.commit()
+    return "Employees assigned to the ticket successfully"
+
+
+@views.route("/removeEmployeesFromTicket/<int:ticket_id>", methods=['POST'])
+def remove_employees_from_ticket(ticket_id):
+    ticket = CustomerTicketInformation.query.get(ticket_id)
+    if ticket is None:
+        return "Ticket not found", 404
+
+    data = request.get_json()
+    employee_ids = data.get('employeeIds', [])
+
+    # Remove the specified employees from the ticket
+    for employee_id in employee_ids:
+        employee = User.query.get(employee_id)
+        if employee and employee in ticket.users:
+            ticket.users.remove(employee)
+
+    db.session.commit()
+    return "Employees removed from the ticket successfully"
