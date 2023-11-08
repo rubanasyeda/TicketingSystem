@@ -118,3 +118,10 @@ def lowPriorityTicket(ticket_id):
     return "Ticket resolved successfully"
 
 #completed the changing the status and the priority of the tickets
+
+@views.route('/customerComment/<int:ticket_id>',methods=['GET'])
+def customerComments(ticket_id):
+    ticket = CusomterTickerInformation.query.get(ticket_id)
+    if ticket is None:
+        return "Ticket not found",404
+    return jsonify(ticket)
