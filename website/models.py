@@ -20,11 +20,11 @@ class statusEnum(EnumBase):
     UNRESOLVED = "unresolved"
 
 
-#Enum for my priority of the tickets
-class priorityOrder(EnumBase):
-    HIGHPRIORITY = "highpriority"
-    LOWPRIORITY = "lowpriority"
-    NONE = "none"
+# #Enum for my priority of the tickets
+# class priorityOrder(EnumBase):
+#     HIGHPRIORITY = "highpriority"
+#     LOWPRIORITY = "lowpriority"
+#     NONE = "none"
 
 class CusomterTickerInformation(db.Model):
     id = db.Column(db.Integer,primary_key=True)
