@@ -159,9 +159,12 @@ document.getElementById('lowPriorityTickets').addEventListener('click', async fu
     displayTickets(ticketData, "lowpriority");
 });
 
-
+///////Will change////
 function getTicketPageLink(ticketId) {
     return `/ticketDetails/${ticketId}`;
 }
-
+///to this
+// function getTicketPageLink(ticketId) {
+//     return `adminComments?ticketId=${ticketId}`;
+// }
 

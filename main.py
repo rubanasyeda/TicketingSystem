@@ -1,6 +1,6 @@
 #From this file is where our webserver will run
 from website import create_app, db
-from website.models import User, CusomterTickerInformation
+from website.models import User, CustomerTicketInformation
 from flask_admin import Admin, AdminIndexView
 from flask_admin.contrib.sqla import ModelView
 from flask_login import current_user
@@ -29,7 +29,7 @@ app.config['FLASK_ADMIN_SWATCH'] = 'cerulean'
 
 admin = Admin(app, index_view=MyAdminIndexView())
 admin.add_view(MyModelView(User, db.session))
-admin.add_view(MyModelView(CusomterTickerInformation, db.session))
+admin.add_view(MyModelView(CustomerTicketInformation, db.session))
 
 if (__name__) == '__main__':
     app.run(debug=True)

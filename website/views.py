@@ -3,8 +3,9 @@
 from flask import Blueprint,render_template,request,redirect,url_for,jsonify
 from datetime import datetime
 from . import db
-from .models import CusomterTickerInformation,sendEmail,User
+from .models import CustomerTicketInformation,sendEmail,User
 from .models import statusEnum,priorityOrder
+from flask_login import login_required
 
 views = Blueprint('views', __name__)
 
@@ -32,7 +33,7 @@ def createTicket():
         customerNumber = request.form.get('customer_phone')
         problemDescription = request.form.get('description')
 
-        customerInfo = CusomterTickerInformation(subject=subject,firstName=customerFirstName,lastName=customerLastName,
+        customerInfo = CustomerTicketInformation(subject=subject,firstName=customerFirstName,lastName=customerLastName,
                                                  email=customerEmail,businessName=businessName,phoneNumber=customerNumber,
                                                  description=problemDescription)
         db.session.add(customerInfo)
@@ -46,7 +47,7 @@ def createTicket():
 
 @views.route("/getAllTickets")
 def getAllTickets():
-    ticketDetails = CusomterTickerInformation.query.all()
+    ticketDetails = CustomerTicketInformation.query.all()
     tickets = [{'id': ticket.id , 'subject':ticket.subject,'name':ticket.firstName, 'email':ticket.email,"phoneNumber":ticket.phoneNumber,
                 "businessName":ticket.businessName,'date':ticket.date,"status":ticket.status.value,"priority":ticket.priority.value,
                 'description':ticket.description} for ticket in ticketDetails]
@@ -79,7 +80,7 @@ def deleteUser(employee_id):
 #route created for resolveTicket
 @views.route("/resolveTicket/<int:ticket_id>",methods=['POST'])
 def resolveTicket(ticket_id):
-    ticket = CusomterTickerInformation.query.get(ticket_id)
+    ticket = CustomerTicketInformation.query.get(ticket_id)
     if ticket is None:
         return "Ticket not found", 404
     ticket.status = statusEnum.RESOLVED
@@ -90,7 +91,7 @@ def resolveTicket(ticket_id):
 #added routes for unresolve Ticket
 @views.route("/unresolveTicket/<int:ticket_id>",methods=['POST'])
 def unresolveTicket(ticket_id):
-    ticket = CusomterTickerInformation.query.get(ticket_id)
+    ticket = CustomerTicketInformation.query.get(ticket_id)
     if ticket is None:
         return "Ticket not found", 404
     ticket.status = statusEnum.UNRESOLVED
@@ -100,7 +101,7 @@ def unresolveTicket(ticket_id):
 #added routes for highPriority Ticket
 @views.route("/highPriorityTicket/<int:ticket_id>",methods=['POST'])
 def highPriorityTicket(ticket_id):
-    ticket = CusomterTickerInformation.query.get(ticket_id)
+    ticket = CustomerTicketInformation.query.get(ticket_id)
     if ticket is None:
         return "Ticket not found", 404
     ticket.priority = priorityOrder.HIGHPRIORITY
@@ -110,7 +111,7 @@ def highPriorityTicket(ticket_id):
 #added routes for lowPriority Ticket
 @views.route("/lowPriorityTicket/<int:ticket_id>",methods=['POST'])
 def lowPriorityTicket(ticket_id):
-    ticket = CusomterTickerInformation.query.get(ticket_id)
+    ticket = CustomerTicketInformation.query.get(ticket_id)
     if ticket is None:
         return "Ticket not found", 404
     ticket.priority = priorityOrder.LOWPRIORITY
@@ -121,7 +122,7 @@ def lowPriorityTicket(ticket_id):
 
 @views.route('/customerComment/<int:ticket_id>',methods=['GET'])
 def customerComments(ticket_id):
-    ticket = CusomterTickerInformation.query.get(ticket_id)
+    ticket = CustomerTicketInformation.query.get(ticket_id)
     if ticket is None:
         return "Ticket not found",404
     return jsonify(ticket)

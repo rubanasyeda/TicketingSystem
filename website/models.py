@@ -26,7 +26,7 @@ class priorityOrder(EnumBase):
     LOWPRIORITY = "lowpriority"
     NONE = "none"
 
-class CusomterTickerInformation(db.Model):
+class CustomerTicketInformation(db.Model):
     id = db.Column(db.Integer,primary_key=True)
     subject = db.Column(db.String(150))
     firstName = db.Column(db.String(150))
