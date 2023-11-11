@@ -1,6 +1,6 @@
 #will have all the routes for pages that does not have authorization#
 
-from flask import Blueprint,render_template,request,redirect,url_for,jsonify
+from flask import Blueprint,render_template,request,redirect,url_for,jsonify,flash
 from datetime import datetime
 from . import db
 from .models import CustomerTicketInformation,sendEmail,User
@@ -32,15 +32,26 @@ def createTicket():
         customerNumber = request.form.get('customer_phone')
         problemDescription = request.form.get('description')
 
-        customerInfo = CustomerTicketInformation(subject=subject,firstName=customerFirstName,lastName=customerLastName,
+        ticketInfo = CustomerTicketInformation(subject=subject,firstName=customerFirstName,lastName=customerLastName,
                                                  email=customerEmail,businessName=businessName,phoneNumber=customerNumber,
                                                  description=problemDescription)
-        db.session.add(customerInfo)
+        
+        # Establish a relationship with the admin user based on role
+        admin_user = User.query.filter(User.role == 'admin').first()
+        if admin_user:
+            ticketInfo.users.append(admin_user)
+
+        
+        db.session.add(ticketInfo)
         db.session.commit()
-        now = datetime.now()
+        now = datetime.utcnow()
         date_time = now.strftime("%m/%d/%Y")
         emailToCustomer = sendEmail(businessName,date_time,reciever_email=customerEmail,subject=subject)
-        emailToCustomer.tickets_recieved_email()
+        try:
+            emailToCustomer.tickets_recieved_email()
+            flash('Ticket created successfully', 'success')
+        except Exception as e:
+            flash(f'Error sending email: {str(e)}', 'error')
         return redirect(url_for('views.submitted'))
     return render_template("createTicket.html")
 
@@ -169,11 +180,11 @@ def assign_employees_to_ticket(ticket_id):
         return "Ticket not found", 404
 
     data = request.get_json()
-    employee_ids = data.get('employeeIds', [])
+    employeeIds = data.get('employeeIds', [])
 
     # Clear existing associations and add the new ones
     ticket.users = []
-    for employee_id in employee_ids:
+    for employee_id in employeeIds:
         employee = User.query.get(employee_id)
         if employee:
             ticket.users.append(employee)
@@ -189,10 +200,10 @@ def remove_employees_from_ticket(ticket_id):
         return "Ticket not found", 404
 
     data = request.get_json()
-    employee_ids = data.get('employeeIds', [])
+    employeeIds = data.get('employeeIds', [])
 
     # Remove the specified employees from the ticket
-    for employee_id in employee_ids:
+    for employee_id in employeeIds:
         employee = User.query.get(employee_id)
         if employee and employee in ticket.users:
             ticket.users.remove(employee)
