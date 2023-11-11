@@ -36,12 +36,13 @@ def createTicket():
                                                  email=customerEmail,businessName=businessName,phoneNumber=customerNumber,
                                                  description=problemDescription)
         
-        # Establish a relationship with the admin user based on role
-        admin_user = User.query.filter(User.role == 'admin').first()
-        if admin_user:
-            ticketInfo.users.append(admin_user)
+        # Establish a relationship with all admin users based on role
+        admin_users = User.query.filter(User.role == 'admin').all()
 
-        
+        if admin_users:
+            ticketInfo.users.extend(admin_users)
+
+
         db.session.add(ticketInfo)
         db.session.commit()
         now = datetime.utcnow()
