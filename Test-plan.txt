@@ -41,7 +41,8 @@ Worker:
 	    -resolved
 	    -Unresolved
 	    -priority
-		-send post req to route that returns tickets with "filter" and check if 		matches db
+		-send post req to route that returns tickets with "filter" and check if 		
+		matches db
 
 	View Internal comments
 		-post request to / and check if matches db
@@ -73,7 +74,8 @@ Admin:
 		-login as admin account though /login
 	
 	Creation of worker accounts
-		- create account by going to admin-dashbord then click create user			this should lead to /signup, create an account and check db		
+		- create account by going to admin-dashbord then click create user			
+		this should lead to /signup, create an account and check db		
 
 	Deleting worker accounts
 		- go to admin dashboard and click on delete, this should show all users,
