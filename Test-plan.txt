@@ -1,0 +1,250 @@
+370 testing
+
+					---UNIT TESTING---
+
+Tools:
+   -DB view in /admin
+
+Automated:
+   - Create python program that sends post requests to server, so manual checks required
+
+Manual:
+   -go through plan below
+
+Admin:		
+	Creation of worker accounts
+		-send post to /signup route, check if worker is created in DB view 
+
+	Deleting worker accounts
+		-send post to /deleteUser in admin dashboard and check DB view
+
+	Assign Tickets to Worker
+		-send post to /assignEmployeesToTicket and /removeEmployeesFromTicket
+		check DB view
+
+	Create Tickets
+		-post request to /createTicket and check DB view
+
+	Updates on employee progress of tickets
+		-send post to / and check if returned matches db
+
+	View Internal comments
+		-post request to / and check if matches db
+
+	
+
+Worker:
+	View my assigned tickets
+		-post req to /getUserTickets and check if matches db
+
+	Filter my tickets
+	    -resolved
+	    -Unresolved
+	    -priority
+		-send post req to route that returns tickets with "filter" and check if 		matches db
+
+	View Internal comments
+		-post request to / and check if matches db
+
+	Reply/Add internal comments
+		-post req to route for internal comments check db
+
+	Mark tickets as resolved or unresolved
+		- post req to route for resolve/unresolve check db
+
+	Mark priority of ticket
+		- post req to route for marking priority
+
+User:
+	submiting ticket without creating account
+		-post request to /createTicket and check DB view
+
+	link to ticket in email
+		- get request to link in email check return status
+
+	edit ticket after submiting
+		- post request to link check db
+
+
+				---INTEGRATION TESTING---
+
+Admin:
+	admin login
+		-login as admin account though /login
+	
+	Creation of worker accounts
+		- create account by going to admin-dashbord then click create user			this should lead to /signup, create an account and check db		
+
+	Deleting worker accounts
+		- go to admin dashboard and click on delete, this should show all users,
+		click on user to delete then check db
+
+	Assign Tickets to Worker
+		- in admin dashboard go to assign ticket, assign a user to the ticket
+		then check db
+
+	Create Tickets
+		- in admin daashboard click create ticket, then check db
+
+	Updates on employee progress of tickets
+		- in admin dashboard, view all tickets in home compare with db
+
+	View Internal comments
+		- in home click on a ticket to expand it and view comments compare with db
+
+
+Worker:
+	View my assigned tickets
+		-login as worker and go to /dashboard to view all tickets assigned
+		compare with db
+
+	Filter my tickets
+	    -resolved
+	    -Unresolved
+	    -priority
+		- in dashboard click the filter to filter tickets
+		comapre with db
+
+	View Internal comments
+		- click on ticket to expand and view comments compare wtih db
+
+	Reply/Add internal comments
+		- click on ticket to expand, from there you can add comments check db
+
+	Mark tickets as resolved or unresolved
+		- from dashboard mark a ticket then check db
+
+	Mark priority of ticket
+		- from dashboard mark prio of ticket then check db
+
+User:
+	submiting ticket without creating account
+		- click on submit a tickt from the home page, fill out ticket and submit
+		check db
+
+	Email notification for submited ticket
+		- check email to see if notification is recieved/sent
+
+	link to ticket in email
+		- check email if link is in email and leads to ticket compare with db
+
+	edit ticket after submiting
+		- from the link edit the ticket then check db 
+
+	view all activity of ticket
+		- refresh link and see if ticket is updated
+
+
+				--SYSTEM TESTING---
+
+User:
+	-go to trt homepage and scroll down to submit ticket, click the button
+	-fill out the ticket form and click submit, you should recieve a notification
+	-check email for notification
+	-in email click link that leads to ticket
+	-edit ticket and refresh the page
+	-wait for worker to update ticket, you should recieve notification
+	-go back to link and check if ticket has been updated
+
+Worker:
+	-go to /login and login, this should redirect you to /dashboard
+	-check if you have any tickets assigned to you, filter by filters
+	-check ticket for internal comments, add an internal comment
+	-re check ticket to see if internal comment is added and if user edited ticket
+	-add comment to ticket check if user can see it
+	-resolve ticket when done
+
+Admin:
+	-go to /login and login as admin account, this will redirect to dashboard
+	-click on admin login to go to admin dashboard
+	-create or delete worker accounts using the side buttons
+	-check if any new tickets have appeard
+	-set priority of ticket and assign worker to ticket
+	-check progress of workers on tickets
+
+
+				---ACEPTANCE TESTING---
+
+Acceptance test:  
+Assign a ticket to a team member and verify it reflects that on the ticket. 
+
+Acceptance test:  
+Create a ticket with all required fields in and ensure it appears in the database. Verify the ticket is successfully created and in the system.  
+
+Acceptance test:  
+Show the tickets progress and ensure it reflects the updated. Progress, whether it be in-progress or resolved.  
+
+Acceptance test: 
+Submit a ticket then make sure it is possible to go back and add to the description of the ticket  
+Comment on the ticket from two or more perspectives and make sure the initial user can see each comment and add to it 
+
+Acceptance Test: 
+When ticket status is changed, test that it can be seen from the ticket requester’s perspective 
+Test that each status change is being reflected in the ticket summary by changing the ticket status internally and then checking the summary 
+
+Acceptance Test: 
+Test that all comments added to the ticket for the customer can be seen from the initial requester’s end 
+Check that all submits, and changes can be seen on the same page 
+
+Acceptance Test: 
+Mark a ticket as high priority and check if it comes up labeled as high priority 
+
+Acceptance Test: 
+Mark a ticket as low priority and check if it comes up labeled as low priority, and lower if the queue 
+
+Acceptance Test: 
+Mark a ticket as resolved and check if it comes up labeled as resolved and is in the resolved folder 
+
+Acceptance Test: 
+Mark a ticket as unresolved and check if it comes up labeled as unresolved 
+
+Acceptance Test: 
+Filter all the tickets by high priortiy and see if all the tickets are in the filtered section 
+
+Acceptance Test: 
+Filter the issues as unresolved and check each ticket’s status 
+
+Acceptance Test: 
+Filter the tickets by “resolved” and review 
+
+Acceptnce test:  
+Verify that the platform allows for secure internal commenting among team members.   
+
+Acceptance test:   
+Confirm that team members can access and review the internal comments submitted by young players. 
+
+Acceptance test:   
+Ensure that team members can reply to internal comments, providing updates on problem resolution.   
+
+Acceptance Test: 
+Checking if confirmation mail is sent after submitting a request form. 
+
+Acceptance Test:  
+The submission process does not require creating an account. 
+
+Acceptance Test:  
+Ticket submission form can be accessed directly via a URL or Link. 
+
+Acceptance Test:  
+User is provided a link to the ticket after submitting it. 
+
+Acceptance test:  
+Create a worker account and see if you can assign a ticket to the account. 
+
+Acceptance test:  
+Delete a worker account and see if you can assign tickets to it still.  
+
+
+				---SECURITY TESTING---
+
+-All post methods that access the database must check if current user is Authenticated
+-All post methods that access the database must check if current user is Authorized
+-Only post availble to user should be submit/edit ticket
+-Only authorized admin should be able to view /admin-dashboard and /admin
+-Only authorized admin should be able to create and delete accounts
+-Only authenticated worker and admins should be able to view /dashboard
+-Only authenticated worker/admin should be able to view/add internal comments
+-Only workers with the ticket assigned to them should be able to view the ticket
+-Only Admin should be able to delete tickets
+-Only Admin should be able to assign tickets to workers
+-Worker 1 should not be able to view Worker 2 dashboard
