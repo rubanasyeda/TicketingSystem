@@ -147,4 +147,33 @@ class sendEmail:
         finally:
             self.server.quit()
 
+    def statusChange(self):
+        self.msg = MIMEMultipart()
+        self.msg['From'] = smtp_username
+        self.msg['To'] = self.email
+        self.msg['Subject'] = f"Update on Ticket ID: {self.ticketId}" 
+        self.html = f"""<html>
+                        <body>
+                            <p> Greetings {self.businessName}, <br><br>
+                                There has been a Status change to your ticket regarding the following subject:<br>{self.subject}<br><br>
+                                Please use the following information when referencing your request:<br>
+                                Ticket ID : <a href="{self.link}">{self.ticketId}</a><br><br>
+                                Regards,<br> TRT Support
+                            </p>
+                        </body>
+                        </html>
+                    """
+        self.msg.attach(MIMEText(self.html, 'html'))
+        try:
+            self.server = smtplib.SMTP(smtp_server, smtp_port)
+            self.server.starttls()  # Use STARTTLS for encryption
+            self.server.login(smtp_username, smtp_password)
 
+            # Send the email
+            self.server.sendmail(smtp_username, self.email, self.msg.as_string())
+            print("Email sent successfully!")
+        except Exception as e:
+            print(f"An error occurred: {str(e)}")
+        finally:
+            self.server.quit()    
+        
