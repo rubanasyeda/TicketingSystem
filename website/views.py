@@ -88,6 +88,64 @@ def getAllTickets():
 
     return jsonify(tickets)
 
+@views.route("/getAssignedTickets")
+def getAllTickets():
+    ticketDetails = CustomerTicketInformation.query.all()
+    tickets = []
+
+    for ticket in ticketDetails:
+        # Extract user information for each ticket
+        users = [{'id': user.id, 'name': user.name, 'username': user.username, 'role': user.role} for user in ticket.users]
+
+        # Create a dictionary for each ticket
+        ticket_dict = {
+            'id': ticket.id,
+            'subject': ticket.subject,
+            'name': ticket.firstName,
+            'email': ticket.email,
+            'phoneNumber': ticket.phoneNumber,
+            'businessName': ticket.businessName,
+            'date': ticket.date.strftime("%Y-%m-%d %H:%M:%S"),
+            'status': ticket.status.value,
+            'priority': ticket.priority.value,
+            'description': ticket.description,
+            'users': users  # Include user information
+        }
+
+        if len(users) > 0:
+            tickets.append(ticket_dict)
+
+    return jsonify(tickets)
+
+@views.route("/getUnAssignedTickets")
+def getAllTickets():
+    ticketDetails = CustomerTicketInformation.query.all()
+    tickets = []
+
+    for ticket in ticketDetails:
+        # Extract user information for each ticket
+        users = [{'id': user.id, 'name': user.name, 'username': user.username, 'role': user.role} for user in ticket.users]
+
+        # Create a dictionary for each ticket
+        ticket_dict = {
+            'id': ticket.id,
+            'subject': ticket.subject,
+            'name': ticket.firstName,
+            'email': ticket.email,
+            'phoneNumber': ticket.phoneNumber,
+            'businessName': ticket.businessName,
+            'date': ticket.date.strftime("%Y-%m-%d %H:%M:%S"),
+            'status': ticket.status.value,
+            'priority': ticket.priority.value,
+            'description': ticket.description,
+            'users': users  # Include user information
+        }
+
+        if len(users) == 0:
+            tickets.append(ticket_dict)
+
+    return jsonify(tickets)
+
 
 @views.route("/getAllEmployees")
 def getAllEmployees():
