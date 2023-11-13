@@ -13,6 +13,8 @@ from flask_login import UserMixin
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
+from sqlalchemy import Column , Enum, String, JSON, ForeignKey,Integer
+from sqlalchemy.orm import relationship
 
 #priority for status of my tickets
 class statusEnum(EnumBase):
@@ -26,6 +28,28 @@ class priorityOrder(EnumBase):
     LOWPRIORITY = "lowpriority"
     NONE = "none"
 
+# Message object representing each message sent for a ticket in the Database
+class Message(db.Model):
+    __tablename__ = "messages"
+
+    id = db.Column(db.Integer, primary_key=True)
+    text = db.Column(db.String)  # Assuming 'text' is a string
+    sender = db.Column(db.String)
+    timestamp = db.Column(db.String)
+    ticket_id = db.Column(db.Integer, db.ForeignKey("customer_ticket_information.id"))
+    ticket = db.relationship("CustomerTicketInformation", back_populates="messages")
+
+# InternalMessage object representing each internal message sent for a ticket in the Database
+class InternalMessage(db.Model):
+    __tablename__ = "internal_messages"
+
+    id = db.Column(Integer, primary_key=True)
+    text = db.Column(JSON)  # JSON column for message data
+    sender = db.Column(db.String)
+    timestamp = db.Column(db.String)
+    ticket_id = db.Column(Integer, ForeignKey("customer_ticket_information.id"))
+    ticket = relationship("CustomerTicketInformation", back_populates="internalMessages")
+
 class CustomerTicketInformation(db.Model):
     id = db.Column(db.Integer,primary_key=True)
     subject = db.Column(db.String(150))
@@ -38,6 +62,8 @@ class CustomerTicketInformation(db.Model):
     status = Column(Enum(statusEnum),default=statusEnum.UNRESOLVED)
     priority = Column(Enum(priorityOrder),default=priorityOrder.NONE)
     date = db.Column(db.DateTime(timezone=True), default=func.now())
+    messages = relationship("Message", back_populates="ticket")
+    internalMessages = relationship("InternalMessage", back_populates="ticket")
 
 
 class User(UserMixin,db.Model):

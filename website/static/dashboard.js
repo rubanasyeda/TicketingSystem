@@ -160,11 +160,11 @@ document.getElementById('lowPriorityTickets').addEventListener('click', async fu
 });
 
 ///////Will change////
-function getTicketPageLink(ticketId) {
-    return `/ticketDetails/${ticketId}`;
-}
-///to this
 // function getTicketPageLink(ticketId) {
-//     return `adminComments?ticketId=${ticketId}`;
+//     return `/ticketDetails/${ticketId}`;
 // }
+
+function getTicketPageLink(ticketId) {
+    return `adminComments?ticketId=${ticketId}`;
+}
 
