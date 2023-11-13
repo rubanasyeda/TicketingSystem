@@ -40,7 +40,7 @@ def createTicket():
         db.session.commit()
         now = datetime.now()
         date_time = now.strftime("%m/%d/%Y")
-        emailToCustomer = sendEmail(businessName,date_time,reciever_email=customerEmail,subject=subject,ticketId=customerInfo.id)
+        emailToCustomer = sendEmail(businessName,date_time,reciever_email=customerEmail,subject=subject)
         emailToCustomer.tickets_recieved_email()
         return redirect(url_for('views.submitted'))
     return render_template("createTicket.html")
@@ -85,10 +85,6 @@ def resolveTicket(ticket_id):
         return "Ticket not found", 404
     ticket.status = statusEnum.RESOLVED
     ticket.priority = priorityOrder.NONE
-    now = datetime.now()
-    date_time = now.strftime("%m/%d/%Y")
-    emailToCustomer = sendEmail(ticket.businessName,date_time,reciever_email=ticket.email,subject=ticket.subject,ticketId=ticket.id)
-    emailToCustomer.statusChange()
     db.session.commit()
     return "Ticket resolved successfully"
 
