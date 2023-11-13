@@ -3,7 +3,7 @@
 from flask import Blueprint,render_template,request,redirect,url_for,jsonify
 from datetime import datetime
 from . import db
-from .models import CustomerTicketInformation,sendEmail,User
+from .models import CustomerTicketInformation,sendEmail,User, Message, InternalMessage
 from .models import statusEnum,priorityOrder
 from flask_login import login_required
 
@@ -118,11 +118,131 @@ def lowPriorityTicket(ticket_id):
     db.session.commit()
     return "Ticket resolved successfully"
 
-#completed the changing the status and the priority of the tickets
+# #completed the changing the status and the priority of the tickets
 
-@views.route('/customerComment/<int:ticket_id>',methods=['GET'])
-def customerComments(ticket_id):
-    ticket = CustomerTicketInformation.query.get(ticket_id)
-    if ticket is None:
-        return "Ticket not found",404
-    return jsonify(ticket)
+# @views.route('/customerComment/<int:ticket_id>',methods=['GET'])
+# def customerComments(ticket_id):
+#     ticket = CustomerTicketInformation.query.get(ticket_id)
+#     if ticket is None:
+#         return "Ticket not found",404
+#     return jsonify(ticket)
+
+
+######Ticket Commenting####
+
+@views.route("/customerComments",methods=['GET'])
+def customerComments():
+    return render_template("customerComments.html")
+
+@views.route("/adminComments",methods=['GET'])
+def adminComments():
+    return render_template('adminComments.html')
+
+
+# this will return the ticket the main chat messages -- for a particular ticketId
+@views.route("/<int:ticket_id>/getMessages")
+def getTicketMessagesById(ticket_id):
+    ticket = db.session.query(CustomerTicketInformation).filter(CustomerTicketInformation.id == ticket_id).first()
+    if ticket:
+        # Access the ARRAY of JSON strings
+        messages = [{"text": message.text, "sender": message.sender, "timestamp": message.timestamp} for message in ticket.messages]
+        return jsonify(messages)
+    else:
+        return []
+
+
+#This will get the internal messages for a ticket --> the internal messages are not seen by customers only team members can see those messages
+@views.route("/<int:ticket_id>/getInternalMessages")
+def getInternalMessagesById(ticket_id):
+    ticket = db.session.query(CustomerTicketInformation).filter(CustomerTicketInformation.id == ticket_id).first()
+    if ticket:
+        messages = [{"text": message.text, "sender": message.sender, "timestamp": message.timestamp} for message in ticket.internalMessages]
+        return jsonify(messages)
+    else:
+        return []
+
+
+#this will get the ticket by their id's
+@views.route("/<int:ticket_id>")
+def getTicketById(ticket_id):
+    ticket = db.session.query(CustomerTicketInformation).filter(CustomerTicketInformation.id == ticket_id).first()
+    if ticket is not None:
+        ticket_info = {
+            'id': ticket.id,
+            'subject': ticket.subject,
+            'name': ticket.firstName +" "+ ticket.lastName,
+            'email': ticket.email,
+            'phoneNumber': ticket.phoneNumber,
+            'businessName': ticket.businessName,
+            'date': ticket.date,
+            'status': ticket.status.value,
+            'priority': ticket.priority.value,
+            'description': ticket.description
+        }
+        return jsonify(ticket_info)
+    else:
+        return "Ticket not found", 404
+
+
+#Post request called when a new main massage is to be submitted to database
+@views.route('/submitNewMessage', methods=['POST'])
+def submitMessage():
+    if request.method == "POST":
+        
+        message = request.get_json()
+
+        messageText = message.get("text")
+        currentSender = message.get("sender")
+        currentTime = message.get("timestamp")
+        ticketNum = message.get("ticketNum")
+
+        ticket = db.session.query(CustomerTicketInformation).filter(CustomerTicketInformation.id == ticketNum).first()
+        if ticket:
+            # Create a new message object
+            new_message = Message(text=messageText, sender=currentSender, timestamp=currentTime)
+            new_message.ticket = ticket
+            ticket.messages.append(new_message)
+
+            db.session.commit()
+
+            # Check if the custom header 'X-Page' is present and has the value 'adminComments'
+            if request.headers.get('X-Page') == 'adminComments':
+                # The request was sent from the "adminComments.html" page #send email update
+                emailToCustomer = sendEmail(ticket.businessName,ticket.date,ticket.email,ticket.subject,ticket.id)
+                emailToCustomer.adminAddedNewMessage_email()
+
+            return jsonify({"message": "Message added successfully"})
+        else:
+            return jsonify({"message": "Not a valid ticket number"})
+
+    return jsonify({"message": "Invalid request"})
+
+
+
+
+#this will store the internal comments that customer cannot see, only team members can see those messages
+@views.route('/submitNewInternalMessage', methods=['POST'])
+def submitInternalMessage():
+    if request.method == "POST":
+        message = request.get_json()
+
+        messageText = message.get("text")
+        currentSender = message.get("sender")
+        currentTime = message.get("timestamp")
+        ticketNum = message.get("ticketNum")
+
+        ticket = db.session.query(CustomerTicketInformation).filter(CustomerTicketInformation.id == ticketNum).first()
+
+        if ticket:
+            # Create a new message object
+            new_message = InternalMessage(text=messageText, sender=currentSender, timestamp=currentTime)
+            new_message.ticket = ticket
+            ticket.internalMessages.append(new_message)
+
+            db.session.commit()
+
+            return jsonify({"message": "Message added successfully"})
+        else:
+            return jsonify({"message": "Not a valid ticket number"})
+
+    return jsonify({"message": "Invalid request"})
