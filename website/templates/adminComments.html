@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatbox-Admin</title>
+    <link rel="stylesheet" href="../static/adminComments.css">
+</head>
+<body>
+    <div class="chat-container">
+        <div class="chat-left">
+            <div class="chat-header">
+                <h2>TRT Support - Ticket <span id="ticket-number">Details</span></h2>
+            </div>
+            <div class="chat-messages" id="chat-messages">
+                <!-- Existing customer messages go here -->
+            </div>
+            <div class="chat-input">
+                <textarea type="textArea" id="user-message" placeholder="Type your message..."> </textarea>
+                <button id="send-button">Send</button>
+                <select id="status-dropdown">
+                    <option value="Unresolved">Unresolved</option>
+                    <option value="Resolved">Resolved</option>
+                </select>
+            </div>
+        </div>
+        <div class="chat-right">
+            <div class="chat-right-header">
+                <h2>Internal Comments</h2>
+            </div>
+            <div id="admin-comments">
+                <div id="admin-comment">
+                </div>
+                <textarea type="text" id="admin-comment-input" placeholder="Add an internal comment..."> </textarea>
+                <button id="admin-comment-upload">Upload</button>
+            </div>
+        </div>
+    </div>
+    <script src="../static/adminComments.js"></script>
+</body>
+</html>
