@@ -1,0 +1,144 @@
+/* styles.css */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f0f0f0;
+    /* display: flex; */
+    align-items: center;
+    justify-content: center;
+    /* min-height: 100vh; */
+}
+
+.chat-container {
+
+    background-color: rgb(255, 255, 255);
+    border-radius: 5px;
+    overflow: hidden;
+    max-width: 1000px;
+    margin: 0 auto; 
+    padding: 20px;
+    background-color: #ffffff; /* Set the background color */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Add a subtle shadow */
+}
+
+.chat-header {
+    background-color: #000000;
+    color: #DFB343;
+    padding: 10px;
+    text-align: center;
+    border-radius: 5px;
+}
+
+.chat-messages {
+    padding: 10px;
+    /* text-align: center; */
+    overflow-y: scroll;
+    white-space: pre-wrap;
+    /* max-height: 300px; */
+}
+
+.message {
+    /* margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 5px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1); /* Add a faded line 
+    overflow-x: auto; */
+
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 5px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1); /* Add a faded line */
+    word-wrap: break-word;
+}
+
+.message-sender {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+/* .message-text {
+    word-wrap: break-word;
+} */
+
+.message-text-auto{
+    text-align: center;
+}
+
+.chat-input {
+    display: flex;
+    align-items: center;
+    background-color: #f7f7f7;
+    padding: 10px;
+}
+
+#user-message {
+    flex-grow: 1;
+    border: none;
+    padding: 8px;
+    border-radius: 5px;
+}
+
+#send-button {
+    background-color: #000000;
+    color: #DFB343;
+    border: none;
+    padding: 8px 12px;
+    margin-left: 10px;
+    cursor: pointer;
+}
+
+.timestamp{
+    text-align: right;
+    font-size:x-small;
+}
+
+/* Styles for the chat container */
+.chat-container {
+    display: flex;
+}
+
+/* Style for the left section (customer interaction)
+.chat-left {
+    flex: 1;
+    padding: 30px;
+    border-right: 1px solid #ccc;
+} */
+
+/* Style for the left section (customer interaction) */
+.chat-left {
+    flex: 1;
+    padding: 30px;
+    border-right: 1px solid #ccc;
+    max-width: 70%; /* Set a maximum width for the left chat */
+    overflow-y: auto; /* Add a vertical scroll bar when content overflows */
+}
+
+
+/* Style for the right section (admin comments) */
+.chat-right {
+    flex: 1;
+    padding: 20px;
+    max-width: 200px
+}
+
+/* .chat-left, .chat-right {
+    max-height: 100%; /* Set a maximum height for both chat sections */
+    
+#admin-comments {
+    display: flex;
+    flex-direction: column;
+    white-space: pre-wrap;
+}
+
+#admin-comment-input {
+    margin-top: 10px; /* Adjust this margin as needed for spacing */
+}
+
+#status-dropdown{
+    padding: 8px 12px;
+}
+
+.chat-right-header{
+    font-size: medium;
+}
