@@ -108,7 +108,7 @@ function createTicketRow(ticket, employees) {
 
   // Placeholder for assigned users
   const assignedUsers = `<div class="assigned-users" id="assigned-users-${ticket.id}"></div>`;
-
+  
   ticketRow.innerHTML = `
       <td>${ticket.name}</td>
       <td>${ticket.email}</td>

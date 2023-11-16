@@ -39,12 +39,12 @@ def createTicket():
         
         # Establish a relationship with all admin users based on role
         admin_users = User.query.filter(User.role == 'admin').all()
-
+        
         if admin_users:
-            ticketInfo.users.extend(admin_users)
+            customerInfo.users.extend(admin_users)
 
 
-        db.session.add(ticketInfo)
+        db.session.add(customerInfo)
         db.session.commit()
         now = datetime.utcnow()
         date_time = now.strftime("%m/%d/%Y")
@@ -288,3 +288,32 @@ def submitInternalMessage():
             return jsonify({"message": "Not a valid ticket number"})
 
     return jsonify({"message": "Invalid request"})
+
+
+
+
+#Assigning user Routes
+
+@views.route('/assignTicket/<int:ticketId>/<int:employeeId>',methods=['POST'])
+def assignTicket(ticketId,employeeId):
+    ticket = CustomerTicketInformation.query.get(ticketId)
+    employee = User.query.get(employeeId)
+    if (employee and ticket is None):
+        return "Invalid employee or ticket", 404
+    if employee in ticket.users:
+        return "Employee is already assigned to the ticket",400
+    
+    ticket.users.append(employee)
+    db.session.commit()
+    return "Ticket assigned successfully"
+
+
+@views.route('/getAssignedUsers/<int:ticketId>',methods=['GET','POST']) #/getAssignedUsers/${ticketId}
+def getAssignedUsers(ticketId):
+    ticket = CustomerTicketInformation.query.get(ticketId)
+    if (ticket is None):
+        return "Invalid ticket", 404
+    
+    assigned_users = [{'name': user.name} for user in ticket.users]
+    
+    return jsonify(assigned_users)
