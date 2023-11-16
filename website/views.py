@@ -1,6 +1,6 @@
 #will have all the routes for pages that does not have authorization#
 
-from flask import Blueprint,render_template,request,redirect,url_for,jsonify
+from flask import Blueprint,render_template,request,redirect,url_for,jsonify,flash
 from datetime import datetime
 from . import db
 from .models import CustomerTicketInformation,sendEmail,User, Message, InternalMessage
@@ -36,14 +36,30 @@ def createTicket():
         customerInfo = CustomerTicketInformation(subject=subject,firstName=customerFirstName,lastName=customerLastName,
                                                  email=customerEmail,businessName=businessName,phoneNumber=customerNumber,
                                                  description=problemDescription)
-        db.session.add(customerInfo)
+        
+        # Establish a relationship with all admin users based on role
+        admin_users = User.query.filter(User.role == 'admin').all()
+
+        if admin_users:
+            ticketInfo.users.extend(admin_users)
+
+
+        db.session.add(ticketInfo)
         db.session.commit()
-        now = datetime.now()
+        now = datetime.utcnow()
         date_time = now.strftime("%m/%d/%Y")
-        emailToCustomer = sendEmail(businessName,date_time,reciever_email=customerEmail,subject=subject,ticketId=customerInfo.id)
-        emailToCustomer.tickets_recieved_email()
+        emailToCustomer = sendEmail(businessName,date_time,reciever_email=customerEmail,subject=subject)
+        try:
+            emailToCustomer.tickets_recieved_email()
+            flash('Ticket created successfully', 'success')
+        except Exception as e:
+            flash(f'Error sending email: {str(e)}', 'error')
         return redirect(url_for('views.submitted'))
     return render_template("createTicket.html")
+
+
+
+
 
 @views.route("/getAllTickets")
 def getAllTickets():
@@ -52,13 +68,31 @@ def getAllTickets():
                 "businessName":ticket.businessName,'date':ticket.date,"status":ticket.status.value,"priority":ticket.priority.value,
                 'description':ticket.description} for ticket in ticketDetails]
     return jsonify(tickets)
-    #route that will pass all tickets that are in database -- so that front end people can use that in javascript
+
 
 @views.route("/getAllEmployees")
 def getAllEmployees():
     workers = User.query.all()
-    companyWorkers = [{'id':worker.id,"name":worker.name,"username":worker.username,"role":worker.role} for worker in workers]
+    companyWorkers = []
+
+    for worker in workers:
+        # Extract ticket information for each employee
+        tickets = [{'id': ticket.id, 'subject': ticket.subject, 'status': ticket.status.value} for ticket in worker.tickets]
+
+        # Create a dictionary for each employee
+        worker_dict = {
+            'id': worker.id,
+            'name': worker.name,
+            'username': worker.username,
+            'role': worker.role,
+            'tickets': tickets  # Include ticket information
+        }
+
+        companyWorkers.append(worker_dict)
+
     return jsonify(companyWorkers)
+
+
 
 
 
@@ -81,6 +115,7 @@ def deleteUser(employee_id):
 @views.route("/resolveTicket/<int:ticket_id>",methods=['POST'])
 def resolveTicket(ticket_id):
     ticket = CustomerTicketInformation.query.get(ticket_id)
+    ticket = CustomerTicketInformation.query.get(ticket_id)
     if ticket is None:
         return "Ticket not found", 404
     ticket.status = statusEnum.RESOLVED
@@ -96,6 +131,7 @@ def resolveTicket(ticket_id):
 @views.route("/unresolveTicket/<int:ticket_id>",methods=['POST'])
 def unresolveTicket(ticket_id):
     ticket = CustomerTicketInformation.query.get(ticket_id)
+    ticket = CustomerTicketInformation.query.get(ticket_id)
     if ticket is None:
         return "Ticket not found", 404
     ticket.status = statusEnum.UNRESOLVED
@@ -106,6 +142,7 @@ def unresolveTicket(ticket_id):
 @views.route("/highPriorityTicket/<int:ticket_id>",methods=['POST'])
 def highPriorityTicket(ticket_id):
     ticket = CustomerTicketInformation.query.get(ticket_id)
+    ticket = CustomerTicketInformation.query.get(ticket_id)
     if ticket is None:
         return "Ticket not found", 404
     ticket.priority = priorityOrder.HIGHPRIORITY
@@ -115,6 +152,7 @@ def highPriorityTicket(ticket_id):
 #added routes for lowPriority Ticket
 @views.route("/lowPriorityTicket/<int:ticket_id>",methods=['POST'])
 def lowPriorityTicket(ticket_id):
+    ticket = CustomerTicketInformation.query.get(ticket_id)
     ticket = CustomerTicketInformation.query.get(ticket_id)
     if ticket is None:
         return "Ticket not found", 404

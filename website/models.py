@@ -16,6 +16,15 @@ from sqlalchemy.ext.declarative import declarative_base
 
 from enum import Enum as EnumBase
 
+from flask_sqlalchemy import SQLAlchemy
+
+
+# Define the association table
+ticket_user_association = db.Table('ticket_user_association',
+    db.Column('ticket_id', db.Integer, db.ForeignKey('customer_ticket_information.id')),
+    db.Column('user_id', db.Integer, db.ForeignKey('user.id'))
+)
+
 
 #priority for status of my tickets
 class statusEnum(EnumBase):
@@ -66,6 +75,7 @@ class CustomerTicketInformation(db.Model):
     date = db.Column(db.DateTime(timezone=True), default=func.now())
     messages = relationship("Message", back_populates="ticket")
     internalMessages = relationship("InternalMessage", back_populates="ticket")
+    users = db.relationship('User', secondary=ticket_user_association, back_populates='tickets')
 
 # Object to represent each user account created
 class User(UserMixin,db.Model):
@@ -74,6 +84,7 @@ class User(UserMixin,db.Model):
     username = db.Column(db.String(100), unique=True)
     password = db.Column(db.String(100))
     role = db.Column(db.String(100))
+    tickets = db.relationship('CustomerTicketInformation', secondary=ticket_user_association, back_populates='users')
 
 # Object to send email upon submitted ticket
 class sendEmail:

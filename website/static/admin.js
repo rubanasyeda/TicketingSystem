@@ -58,6 +58,7 @@ function deleteEmployee(employeeId) {
   }
 }
 
+// Function to fetch all tickets
 async function fetchAllTickets() {
   try {
     const response = await fetch('/getAllTickets');
@@ -72,6 +73,7 @@ async function fetchAllTickets() {
 }
 
 async function displayTickets(ticketDetails) {
+  console.log('Displaying tickets:',ticketDetails);
   const ticketlistContainer = document.querySelector('.ticket-list');
   ticketlistContainer.innerHTML = '';
 
@@ -86,6 +88,9 @@ async function displayTickets(ticketDetails) {
 
 
 
+
+
+// Function to create a row for a ticket
 function createTicketRow(ticket, employees) {
   const ticketRow = document.createElement('tr');
 
@@ -182,6 +187,7 @@ document.getElementById('getUsers').addEventListener('click', async function () 
   document.querySelector('.ticket-table').style.display = 'none';
 });
 
+// Event listener for fetching and displaying tickets
 document.getElementById('assignTickets').addEventListener('click', async function () {
   const ticketData = await fetchAllTickets();
   displayTickets(ticketData);
@@ -190,4 +196,15 @@ document.getElementById('assignTickets').addEventListener('click', async functio
   document.querySelector('.ticket-table').style.display = 'table';
 });
 
+// Event listener for assigning and removing employees
+document.addEventListener('click', function (event) {
+  if (event.target.classList.contains('assign-button')) {
+    const ticketId = event.target.getAttribute('data-ticket-id');
+    assignEmployeesToTicket(ticketId);
+  }
 
+  if (event.target.classList.contains('remove-button')) {
+    const ticketId = event.target.getAttribute('data-ticket-id');
+    removeEmployeesFromTicket(ticketId);
+  }
+});
