@@ -1,3 +1,4 @@
+
 async function fetchAllTickets() {
     try {
         const response = await fetch('/getAllTickets');
@@ -51,25 +52,67 @@ function displayTickets(ticketList, status) {
 }
 
 
-function resolveTicket(ticketId) {
-    const confirmed = window.confirm('Are you sure you want to change ticket status to resolve?');
+// function resolveTicket(ticketId) {
+//     const confirmed = window.confirm('Are you sure you want to change ticket status to resolve?');
 
-    if(confirmed){
-        fetch(`/resolveTicket/${ticketId}`, {
-        method: 'POST',
-        })
+//     if(confirmed){
+//         fetch(`/resolveTicket/${ticketId}`, {
+//         method: 'POST',
+//         })
+//         .then(response => {
+//             if (response.status === 200) {
+//                 location.reload();
+//             } else {
+//                 console.log("Could not change the status")
+//             }
+//         })
+//         .catch(error => {
+//             console.error('Error changing the status:', error);
+//         });
+//     }
+// }
+
+function resolveTicket(ticketId) {
+    // Check if the ticket is already resolved
+    fetch(`${ticketId}`)
         .then(response => {
             if (response.status === 200) {
-                location.reload();
+                return response.json();
             } else {
-                console.log("Could not change the status")
+                throw new Error("Failed to check ticket status");
+            }
+        })
+        .then(ticketInfo => {
+            if (ticketInfo.status === "resolved") {
+                // Ticket is already resolved, do nothing
+                console.log("Ticket is already resolved");
+            } else {
+                // Confirm the resolution
+                const confirmed = window.confirm('Are you sure you want to change ticket status to resolve?');
+
+                if (confirmed) {
+                    // If confirmed, proceed with the resolution
+                    fetch(`/resolveTicket/${ticketId}`, {
+                        method: 'POST',
+                    })
+                    .then(response => {
+                        if (response.status === 200) {
+                            location.reload();
+                        } else {
+                            console.log("Could not change the status");
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error changing the status:', error);
+                    });
+                }
             }
         })
         .catch(error => {
-            console.error('Error changing the status:', error);
+            console.error('Error checking ticket status:', error);
         });
-    }
 }
+
 
 function unresolveTicket(ticketId) {
     const confirmed = window.confirm('Are you sure you want to change ticket status to unresolved?');
