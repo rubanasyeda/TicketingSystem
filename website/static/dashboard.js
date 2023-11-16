@@ -1,3 +1,4 @@
+
 async function fetchAllTickets() {
     try {
         const response = await fetch('/getAllTickets');
@@ -10,7 +11,6 @@ async function fetchAllTickets() {
         return null;
     }
 }
-
 
 function displayTickets(ticketList, status) {
     const ticketListContainer = document.querySelector('.ticket-list');
@@ -31,16 +31,16 @@ function displayTickets(ticketList, status) {
                     <strong>Date:</strong> ${ticket.date}
                     <a href="${getTicketPageLink(ticket.id)}" class="ticket-link" target="_blank">Ticket Details</a>
                     <td>
-                        <button class="unresolved-button" onclick="unresolveTicket(${ticket.id})">Unresolve</button>
+                        <button class="unresolved-button" onclick="unresolveTicket(${ticket.id}, '${ticket.status}')">Unresolve</button>
                     </td>
                     <td>
-                        <button class="resolve-button" onclick="resolveTicket(${ticket.id})">Resolve</button>
+                        <button class="resolve-button" onclick="resolveTicket(${ticket.id}, '${ticket.status}')">Resolve</button>
                     </td>
                     <td>
-                        <button class="highpriority-button" onclick="highPriorityTicket(${ticket.id})">HighPriority</button>
+                        <button class="highpriority-button" onclick="highPriorityTicket(${ticket.id}, '${ticket.priority}')">HighPriority</button>
                     </td>
                     <td>
-                        <button class="lowpriority-button" onclick="lowPriorityTicket(${ticket.id})">LowPriority</button>
+                        <button class="lowpriority-button" onclick="lowPriorityTicket(${ticket.id}, '${ticket.priority}')">LowPriority</button>
                     </td>
                 </div>
             `;
@@ -51,85 +51,93 @@ function displayTickets(ticketList, status) {
 }
 
 
-function resolveTicket(ticketId) {
-    const confirmed = window.confirm('Are you sure you want to change ticket status to resolve?');
+function resolveTicket(ticketId, currentStatus) {
+    if(currentStatus !== "resolved"){
+            const confirmed = window.confirm('Are you sure you want to change ticket status to resolve?');
 
-    if(confirmed){
-        fetch(`/resolveTicket/${ticketId}`, {
-        method: 'POST',
-        })
-        .then(response => {
-            if (response.status === 200) {
-                location.reload();
-            } else {
-                console.log("Could not change the status")
-            }
-        })
-        .catch(error => {
-            console.error('Error changing the status:', error);
-        });
-    }
-}
-
-function unresolveTicket(ticketId) {
-    const confirmed = window.confirm('Are you sure you want to change ticket status to unresolved?');
-
-    if(confirmed){
-        fetch(`/unresolveTicket/${ticketId}`, {
-        method: 'POST',
-        })
-        .then(response => {
-            if (response.status === 200) {
-                location.reload();
-            } else {
-                console.log("Could not change the status")
-            }
-        })
-        .catch(error => {
-            console.error('Error changing the status:', error);
-        });
+        if(confirmed){
+            fetch(`/resolveTicket/${ticketId}`, {
+            method: 'POST',
+            })
+            .then(response => {
+                if (response.status === 200) {
+                    location.reload();
+                } else {
+                    console.log("Could not change the status")
+                }
+            })
+            .catch(error => {
+                console.error('Error changing the status:', error);
+            });
+        }
     }
 }
 
 
-function highPriorityTicket(ticketId) {
-    const confirmed = window.confirm('Are you sure you want to change ticket status to highpriority?');
+function unresolveTicket(ticketId, currentStatus) {
+    if(currentStatus !== "unresolved"){
+        const confirmed = window.confirm('Are you sure you want to change ticket status to unresolved?');
 
-    if(confirmed){
-        fetch(`/highPriorityTicket/${ticketId}`, {
-        method: 'POST',
-        })
-        .then(response => {
-            if (response.status === 200) {
-                location.reload();
-            } else {
-                console.log("Could not change the status")
-            }
-        })
-        .catch(error => {
-            console.error('Error changing the status:', error);
-        });
+        if(confirmed){
+            fetch(`/unresolveTicket/${ticketId}`, {
+            method: 'POST',
+            })
+            .then(response => {
+                if (response.status === 200) {
+                    location.reload();
+                } else {
+                    console.log("Could not change the status")
+                }
+            })
+            .catch(error => {
+                console.error('Error changing the status:', error);
+            });
+        }
     }
 }
 
 
-function lowPriorityTicket(ticketId) {
-    const confirmed = window.confirm('Are you sure you want to change ticket status to lowpriority?');
+function highPriorityTicket(ticketId, currentStatus) {
+    if(currentStatus !== "highpriority"){
+        const confirmed = window.confirm('Are you sure you want to change ticket status to highpriority?');
 
-    if(confirmed){
-        fetch(`/lowPriorityTicket/${ticketId}`, {
-        method: 'POST',
-        })
-        .then(response => {
-            if (response.status === 200) {
-                location.reload();
-            } else {
-                console.log("Could not change the status")
-            }
-        })
-        .catch(error => {
-            console.error('Error changing the status:', error);
-        });
+        if(confirmed){
+            fetch(`/highPriorityTicket/${ticketId}`, {
+            method: 'POST',
+            })
+            .then(response => {
+                if (response.status === 200) {
+                    location.reload();
+                } else {
+                    console.log("Could not change the status")
+                }
+            })
+            .catch(error => {
+                console.error('Error changing the status:', error);
+            });
+        }
+    }
+}
+
+function lowPriorityTicket(ticketId, currentStatus) {
+    if(currentStatus !== "lowpriority"){
+        const confirmed = window.confirm('Are you sure you want to change ticket status to lowpriority?');
+
+        if(confirmed){
+            fetch(`/lowPriorityTicket/${ticketId}`, {
+            method: 'POST',
+            })
+            .then(response => {
+                if (response.status === 200) {
+                    location.reload();
+                } else {
+                    console.log("Could not change the status")
+                }
+            })
+            .catch(error => {
+                console.error('Error changing the status:', error);
+            });
+        }
     }
 }
 

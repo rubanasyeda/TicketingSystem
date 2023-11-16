@@ -153,6 +153,6 @@ function addMessage(sender, text, time) {
 }
 
 
-
+// export { fetchDataFromBackend, sendDataToBackend };
 
 
