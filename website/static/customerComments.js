@@ -102,7 +102,7 @@ try {
  * @param {*} data data to send
  * @returns succesful message if data was sent successfully
  */
-export async function sendDataToBackend(route, data) {
+async function sendDataToBackend(route, data) {
     try {
         const url = `${route}`; // Customize the base URL
         const response = await fetch(url, {
