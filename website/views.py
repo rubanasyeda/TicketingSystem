@@ -307,7 +307,7 @@ def submitInternalMessage():
 
 #Assigning user Routes
 
-@views.route('/assignTicket/<int:ticketId>/<int:employeeId>',methods=['POST'])
+@views.route('/assignTicket/<int:ticketId>/<int:employeeId>',methods=['POST','GET'])
 def assignTicket(ticketId,employeeId):
     ticket = CustomerTicketInformation.query.get(ticketId)
     employee = User.query.get(employeeId)
