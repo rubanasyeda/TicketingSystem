@@ -46,8 +46,6 @@ function displayTickets(ticketList, status) {
             `;
 
             ticketItem.innerHTML += `
-
-                ${generateTeamMembersDropdown()}
             `;
             
             ticketListContainer.appendChild(ticketItem);
