@@ -167,3 +167,56 @@ footer {
 .ticket-info button {
     margin-left: 10px;
 }
+
+/*  new stuff */
+
+
+
+.dropdown-container {
+    position: relative;
+    display: inline-block;
+}
+
+.team-dropdown {
+    display: none;
+    position: absolute;
+    background-color: #ffffff;
+    box-shadow: 0px 0px 10px rgba(0,0,0,0.3);
+    top: 100%; 
+    left: 0;
+    z-index: 10; 
+
+}
+
+.dropdown-container:hover .team-dropdown {
+    display: block;
+}
+
+.team-member {
+    padding: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.assign-ticket-btn:hover + .team-dropdown {
+    display: block;
+}
+
+.assign-btn {
+    background-color: green;
+    color: white;
+    border: none;
+    cursor: pointer;
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+
+.unassign-btn {
+    background-color: red;
+    cursor: pointer;
+}
+
+
+
+

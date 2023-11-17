@@ -58,6 +58,7 @@ function deleteEmployee(employeeId) {
   }
 }
 
+// Function to fetch all tickets
 async function fetchAllTickets() {
   try {
     const response = await fetch('/getAllTickets');
@@ -72,6 +73,7 @@ async function fetchAllTickets() {
 }
 
 async function displayTickets(ticketDetails) {
+  console.log('Displaying tickets:',ticketDetails);
   const ticketlistContainer = document.querySelector('.ticket-list');
   ticketlistContainer.innerHTML = '';
 
@@ -86,27 +88,95 @@ async function displayTickets(ticketDetails) {
 
 
 
+
+
+// Function to create a row for a ticket
 function createTicketRow(ticket, employees) {
   const ticketRow = document.createElement('tr');
-  
-  // e dropdown menu for assigning employees
+
+  // Dropdown menu for assigning employees
   let dropdown = '<select class="assign-to-dropdown">';
-  dropdown += '<option value="">Assign to..</option>'; // Default option
+  dropdown += '<option value="">Assign to...</option>'; // Default option
   for (let employee of employees) {
-    dropdown += `<option value="${employee.id}">${employee.name}</option>`;
+      dropdown += `<option value="${employee.id}">${employee.name}</option>`;
   }
   dropdown += '</select>';
 
-  ticketRow.innerHTML = `
-    <td>${ticket.name}</td>
-    <td>${ticket.email}</td>
-    <td>${ticket.businessName}</td>
-    <td>${ticket.phoneNumber}</td>
-    <td>${dropdown}</td> 
-  `;
+  // Assign button
+  const assignButton = `<button class="assign-button" onclick="assignEmployeeToTicket(${ticket.id}, this)">Assign</button>`;
 
+
+  // Placeholder for assigned users
+  const assignedUsers = `<div class="assigned-users" id="assigned-users-${ticket.id}"></div>`;
+  
+  ticketRow.innerHTML = `
+      <td>${ticket.name}</td>
+      <td>${ticket.email}</td>
+      <td>${ticket.businessName}</td>
+      <td>${ticket.phoneNumber}</td>
+      <td>${dropdown} ${assignButton}</td>
+      <td>${assignedUsers}</td>
+  `;
   return ticketRow;
 }
+
+
+function assignEmployeeToTicket(ticketId, buttonElement) {
+  const dropdown = buttonElement.previousElementSibling;
+  const employeeId = dropdown.value;
+  if (employeeId) {
+      // Send a POST request to the backend
+      // Harsh :-> have to create this post method
+      fetch(`/assignTicket/${ticketId}/${employeeId}`, {
+          method: 'POST',
+      })
+      .then(response => {
+          if (response.ok) {
+              // Update the assigned users list
+              fetchAssignedUsers(ticketId);
+          } else {
+              console.error('Failed to assign ticket');
+          }
+      })
+      .catch(error => {
+          console.error('Error assigning ticket:', error);
+      });
+  }
+}
+
+
+function fetchAssignedUsers(ticketId) {
+  fetch(`/getAssignedUsers/${ticketId}`, {
+      method: 'POST'
+  })
+  .then(response => response.json())
+  .then(assignedUsers => {
+      if (assignedUsers) {
+          updateAssignedUsersList(ticketId, assignedUsers);
+      }
+  })
+  .catch(error => {
+      console.error('Error fetching assigned users:', error);
+  });
+}
+
+function updateAssignedUsersList(ticketId, assignedUsers) {
+  const assignedUsersDiv = document.getElementById(`assigned-users-${ticketId}`);
+  if (assignedUsersDiv) {
+      // Clear current list
+      assignedUsersDiv.innerHTML = '';
+
+      // Add each assigned user to the list
+      assignedUsers.forEach(user => {
+          let userSpan = document.createElement('span');
+          userSpan.textContent = user.name; // Assuming 'name' is a property of user
+          userSpan.className = 'assigned-user';
+          assignedUsersDiv.appendChild(userSpan);
+      });
+  }
+}
+
+
 
 
 document.getElementById('getUsers').addEventListener('click', async function () {
@@ -117,6 +187,7 @@ document.getElementById('getUsers').addEventListener('click', async function () 
   document.querySelector('.ticket-table').style.display = 'none';
 });
 
+// Event listener for fetching and displaying tickets
 document.getElementById('assignTickets').addEventListener('click', async function () {
   const ticketData = await fetchAllTickets();
   displayTickets(ticketData);
@@ -125,4 +196,15 @@ document.getElementById('assignTickets').addEventListener('click', async functio
   document.querySelector('.ticket-table').style.display = 'table';
 });
 
+// Event listener for assigning and removing employees
+document.addEventListener('click', function (event) {
+  if (event.target.classList.contains('assign-button')) {
+    const ticketId = event.target.getAttribute('data-ticket-id');
+    assignEmployeesToTicket(ticketId);
+  }
 
+  if (event.target.classList.contains('remove-button')) {
+    const ticketId = event.target.getAttribute('data-ticket-id');
+    removeEmployeesFromTicket(ticketId);
+  }
+});
