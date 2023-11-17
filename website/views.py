@@ -48,7 +48,7 @@ def createTicket():
         db.session.commit()
         now = datetime.utcnow()
         date_time = now.strftime("%m/%d/%Y")
-        emailToCustomer = sendEmail(businessName,date_time,reciever_email=customerEmail,subject=subject)
+        emailToCustomer = sendEmail(businessName,date_time,reciever_email=customerEmail,subject=subject,ticketId=customerInfo.id)
         try:
             emailToCustomer.tickets_recieved_email()
             flash('Ticket created successfully', 'success')
