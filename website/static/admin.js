@@ -117,6 +117,7 @@ function createTicketRow(ticket, employees) {
       <td>${dropdown} ${assignButton}</td>
       <td>${assignedUsers}</td>
   `;
+  fetchAssignedUsers(ticket.id)
   return ticketRow;
 }
 
@@ -200,11 +201,6 @@ document.getElementById('assignTickets').addEventListener('click', async functio
 document.addEventListener('click', function (event) {
   if (event.target.classList.contains('assign-button')) {
     const ticketId = event.target.getAttribute('data-ticket-id');
-    assignEmployeesToTicket(ticketId);
-  }
-
-  if (event.target.classList.contains('remove-button')) {
-    const ticketId = event.target.getAttribute('data-ticket-id');
-    removeEmployeesFromTicket(ticketId);
+    assignEmployeeToTicket(ticketId);
   }
 });

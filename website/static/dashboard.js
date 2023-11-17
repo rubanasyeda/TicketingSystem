@@ -12,6 +12,20 @@ async function fetchAllTickets() {
     }
 }
 
+
+async function fecthCurrentUserTickets(){
+    try {
+        const response = await fetch('/getCurrentUserTickets');
+        if (!response.ok){
+            throw new Error("Failed to Fetch Data")
+        }
+        return await response.json();
+    }catch (error){
+        console.error('Error fetching data:', error);
+        return null;
+    }
+}
+
 function displayTickets(ticketList, status) {
     const ticketListContainer = document.querySelector('.ticket-list');
     ticketListContainer.innerHTML = '';
@@ -171,10 +185,10 @@ document.getElementById('lowPriorityTickets').addEventListener('click', async fu
     displayTickets(ticketData, "lowpriority");
 });
 
-///////Will change////
-// function getTicketPageLink(ticketId) {
-//     return `/ticketDetails/${ticketId}`;
-// }
+document.getElementById('assignedTickets').addEventListener('click', async function () {
+    const ticketData = await fecthCurrentUserTickets();
+    displayTickets(ticketData, "all");
+});
 
 function getTicketPageLink(ticketId) {
     return `adminComments?ticketId=${ticketId}`;

@@ -107,7 +107,7 @@ class sendEmail:
                             <p> Greetings {self.businessName}, <br><br>
                                 We have received your ticket on {self.date} regarding the following subject:<br>{self.subject}<br><br>
                                 Please use the following information when referencing your request:<br>
-                                Ticket ID : <a href="{self.link}">{self.ticketId}</a><br><br>
+                                Ticket ID : <a href="{self.link}">YourTicket</a><br><br>
                                 We will resolve this issue as soon as possible.<br><br> 
                                 Regards,<br> TRT Support
                             </p>
@@ -138,7 +138,7 @@ class sendEmail:
                             <p> Greetings {self.businessName}, <br><br>
                                 A new comment has been added to your ticket regarding the following subject:<br>{self.subject}<br><br>
                                 Please use the following information when referencing your request:<br>
-                                Ticket ID : <a href="{self.link}">{self.ticketId}</a><br><br>
+                                Ticket ID : <a href="{self.link}">YourTicket</a><br><br>
                                 Regards,<br> TRT Support
                             </p>
                         </body>
@@ -168,7 +168,7 @@ class sendEmail:
                             <p> Greetings {self.businessName}, <br><br>
                                 There has been a Status change to your ticket regarding the following subject:<br>{self.subject}<br><br>
                                 Please use the following information when referencing your request:<br>
-                                Ticket ID : <a href="{self.link}">{self.ticketId}</a><br><br>
+                                Ticket ID : <a href="{self.link}">YourTicket</a><br><br>
                                 Regards,<br> TRT Support
                             </p>
                         </body>
