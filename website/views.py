@@ -5,7 +5,7 @@ from datetime import datetime
 from . import db
 from .models import CustomerTicketInformation,sendEmail,User, Message, InternalMessage
 from .models import statusEnum,priorityOrder
-from flask_login import login_required
+from flask_login import login_required,current_user
 
 views = Blueprint('views', __name__)
 
@@ -58,8 +58,21 @@ def createTicket():
     return render_template("createTicket.html")
 
 
+@views.route("/getCurrentUserTickets",methods=["GET"])
+@login_required
+def getCurrentUserTickets():
 
+    if current_user.is_authenticated == False:
+        return "ERROR"
+    
+    user = User.query.filter_by(id=current_user.get_id()).first()
+    ticketDetails = user.tickets
 
+    curtickets = [{'id': ticket.id , 'subject':ticket.subject,'name':ticket.firstName, 'email':ticket.email,"phoneNumber":ticket.phoneNumber,
+                "businessName":ticket.businessName,'date':ticket.date,"status":ticket.status.value,"priority":ticket.priority.value,
+                'description':ticket.description} for ticket in ticketDetails]
+    
+    return jsonify(curtickets)
 
 @views.route("/getAllTickets")
 def getAllTickets():
