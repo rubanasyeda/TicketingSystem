@@ -1,3 +1,4 @@
+// import {sendDataToBackend} from "./adminComments"
 
 async function fetchAllTickets() {
     try {
@@ -74,19 +75,58 @@ function resolveTicket(ticketId, currentStatus) {
             const confirmed = window.confirm('Are you sure you want to change ticket status to resolve?');
 
         if(confirmed){
-            fetch(`/resolveTicket/${ticketId}`, {
-            method: 'POST',
-            })
-            .then(response => {
-                if (response.status === 200) {
-                    location.reload();
-                } else {
-                    console.log("Could not change the status")
-                }
-            })
-            .catch(error => {
-                console.error('Error changing the status:', error);
-            });
+
+            const autoSender = "auto";
+            const selectedValue = "Resolved"; // Get the selected value
+            const autoMesage = "The status has been changed to: " + selectedValue;
+            const currentTime = new Date().toLocaleString(); // Use "new Date()" to get the current date and time
+
+            const messageData = {
+                ticketNum: ticketId,
+                status: selectedValue,
+                text: autoMesage,
+                sender: autoSender,
+                timestamp: currentTime
+            };
+            // sendDataToBackend("submitNewMessage", messageData);
+
+            fetch("/statusChange", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-Page': 'adminComments',
+                },
+                body: JSON.stringify(messageData),
+                })
+                .then(response => {
+                    if (response.status === 200) {
+                        location.reload();
+                    } else {
+                        console.log("Could not change the status")
+                    }
+                })
+                .catch(error => {
+                    console.error('Error changing the status:', error);
+                });
+                // if (!response.ok) {
+                //     throw new Error(`HTTP Error! Status: ${response.status}`);
+                // }
+                // const responseData = response.json();
+                // return responseData;
+
+            // fetch(`/resolveTicket/${ticketId}`, {
+            // method: 'POST',
+            // })
+            // .then(response => {
+            //     if (response.status === 200) {
+            //         location.reload();
+            //     } else {
+            //         console.log("Could not change the status")
+            //     }
+            // })
+            // .catch(error => {
+            //     console.error('Error changing the status:', error);
+            // });
         }
     }
 }
@@ -97,19 +137,52 @@ function unresolveTicket(ticketId, currentStatus) {
         const confirmed = window.confirm('Are you sure you want to change ticket status to unresolved?');
 
         if(confirmed){
-            fetch(`/unresolveTicket/${ticketId}`, {
-            method: 'POST',
-            })
-            .then(response => {
-                if (response.status === 200) {
-                    location.reload();
-                } else {
-                    console.log("Could not change the status")
-                }
-            })
-            .catch(error => {
-                console.error('Error changing the status:', error);
-            });
+
+            const autoSender = "auto";
+            const selectedValue = "Unresolved"; // Get the selected value
+            const autoMesage = "The status has been changed to: " + selectedValue;
+            const currentTime = new Date().toLocaleString(); // Use "new Date()" to get the current date and time
+
+            const messageData = {
+                ticketNum: ticketId,
+                status: selectedValue,
+                text: autoMesage,
+                sender: autoSender,
+                timestamp: currentTime
+            };
+            // sendDataToBackend("submitNewMessage", messageData);
+
+            fetch("/statusChange", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-Page': 'adminComments',
+                },
+                body: JSON.stringify(messageData),
+                })
+                .then(response => {
+                    if (response.status === 200) {
+                        location.reload();
+                    } else {
+                        console.log("Could not change the status")
+                    }
+                })
+                .catch(error => {
+                    console.error('Error changing the status:', error);
+                });
+            // fetch(`/unresolveTicket/${ticketId}`, {
+            // method: 'POST',
+            // })
+            // .then(response => {
+            //     if (response.status === 200) {
+            //         location.reload();
+            //     } else {
+            //         console.log("Could not change the status")
+            //     }
+            // })
+            // .catch(error => {
+            //     console.error('Error changing the status:', error);
+            // });
         }
     }
 }
