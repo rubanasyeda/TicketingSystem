@@ -88,7 +88,6 @@ function resolveTicket(ticketId, currentStatus) {
                 sender: autoSender,
                 timestamp: currentTime
             };
-            // sendDataToBackend("submitNewMessage", messageData);
 
             fetch("/statusChange", {
                 method: 'POST',
@@ -108,25 +107,6 @@ function resolveTicket(ticketId, currentStatus) {
                 .catch(error => {
                     console.error('Error changing the status:', error);
                 });
-                // if (!response.ok) {
-                //     throw new Error(`HTTP Error! Status: ${response.status}`);
-                // }
-                // const responseData = response.json();
-                // return responseData;
-
-            // fetch(`/resolveTicket/${ticketId}`, {
-            // method: 'POST',
-            // })
-            // .then(response => {
-            //     if (response.status === 200) {
-            //         location.reload();
-            //     } else {
-            //         console.log("Could not change the status")
-            //     }
-            // })
-            // .catch(error => {
-            //     console.error('Error changing the status:', error);
-            // });
         }
     }
 }
@@ -170,19 +150,6 @@ function unresolveTicket(ticketId, currentStatus) {
                 .catch(error => {
                     console.error('Error changing the status:', error);
                 });
-            // fetch(`/unresolveTicket/${ticketId}`, {
-            // method: 'POST',
-            // })
-            // .then(response => {
-            //     if (response.status === 200) {
-            //         location.reload();
-            //     } else {
-            //         console.log("Could not change the status")
-            //     }
-            // })
-            // .catch(error => {
-            //     console.error('Error changing the status:', error);
-            // });
         }
     }
 }
