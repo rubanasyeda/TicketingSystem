@@ -101,13 +101,14 @@ class sendEmail:
         self.msg = MIMEMultipart()
         self.msg['From'] = smtp_username
         self.msg['To'] = self.email
-        self.msg['Subject'] = "Ticket Recieved"
+        subject = "Ticket Recieved ID: "+ str(self.ticketId)
+        self.msg['Subject'] = subject
         self.html = f"""<html>
                         <body>
                             <p> Greetings {self.businessName}, <br><br>
                                 We have received your ticket on {self.date} regarding the following subject:<br>{self.subject}<br><br>
-                                Please use the following information when referencing your request:<br>
-                                Ticket ID : <a href="{self.link}">YourTicket</a><br><br>
+                                Please use the following link to view your request:<br>
+                                Ticket ID : <a href="{self.link}">{self.ticketId}</a><br><br>
                                 We will resolve this issue as soon as possible.<br><br> 
                                 Regards,<br> TRT Support
                             </p>
@@ -137,8 +138,8 @@ class sendEmail:
                         <body>
                             <p> Greetings {self.businessName}, <br><br>
                                 A new comment has been added to your ticket regarding the following subject:<br>{self.subject}<br><br>
-                                Please use the following information when referencing your request:<br>
-                                Ticket ID : <a href="{self.link}">YourTicket</a><br><br>
+                                Please use the following link to view your request:<br><br>
+                                Ticket ID : <a href="{self.link}">{self.ticketId}</a><br><br>
                                 Regards,<br> TRT Support
                             </p>
                         </body>
