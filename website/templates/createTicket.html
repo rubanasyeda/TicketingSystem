@@ -8,22 +8,40 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-size: cover;
             background: black no-repeat fixed;
             color: #fff;
             margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            padding: 0px;
             height: 100vh;
+            display: center;
+            flex-direction: column;
+        }
+
+        header {
+            padding: 10px;
+            background: #333;
+            text-align: left;
+
+        }
+
+        .logo {
+            color: rgb(202 164 66);
+            font-weight: 600;
+            font-size: 2rem;
+            text-decoration: none;
         }
 
         .form-container {
-            background-color: rgba(0, 0, 0, 0.7); /* Dark overlay on the background image */
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            flex-grow: 1;
+            background-color: rgba(0, 0, 0, 0.7); 
             padding: 30px;
             border-radius: 10px;
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
+            margin-top: 10px;
+            margin: auto; 
             width: 400px;
             text-align: center;
         }
@@ -86,6 +104,9 @@
 </head>
 
 <body>
+    <header>
+        <a href="/" class="logo">TRT TECHNOLOGIES</a>
+    </header>
     <div class="form-container">
         <h2>Create New Ticket</h2>
         <form action="#" method="post">
