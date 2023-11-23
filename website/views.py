@@ -118,31 +118,6 @@ def deleteUser(employee_id):
         return jsonify({"error": "User not found"}, 404)
 
 
-#route created for resolveTicket
-# @views.route("/resolveTicket/<int:ticket_id>",methods=['POST'])
-# def resolveTicket(ticket_id):
-#     ticket = CustomerTicketInformation.query.get(ticket_id)
-#     if ticket is None:
-#         return "Ticket not found", 404
-#     ticket.status = statusEnum.RESOLVED
-#     ticket.priority = priorityOrder.NONE
-#     now = datetime.now()
-#     date_time = now.strftime("%m/%d/%Y")
-#     emailToCustomer = sendEmail(ticket.businessName,date_time,reciever_email=ticket.email,subject=ticket.subject,ticketId=ticket.id)
-#     emailToCustomer.statusChange()
-#     db.session.commit()
-#     return "Ticket resolved successfully"
-
-# #added routes for unresolve Ticket
-# @views.route("/unresolveTicket/<int:ticket_id>",methods=['POST'])
-# def unresolveTicket(ticket_id):
-#     ticket = CustomerTicketInformation.query.get(ticket_id)
-#     if ticket is None:
-#         return "Ticket not found", 404
-#     ticket.status = statusEnum.UNRESOLVED
-#     db.session.commit()
-#     return "Ticket resolved successfully"
-
 #added routes for highPriority Ticket
 @views.route("/highPriorityTicket/<int:ticket_id>",methods=['POST'])
 def highPriorityTicket(ticket_id):
