@@ -73,6 +73,7 @@ body {
 }
 
 #user-message {
+    font-family:Arial, sans-serif;
     flex-grow: 1;
     border: none;
     padding: 8px;
@@ -132,6 +133,7 @@ body {
 }
 
 #admin-comment-input {
+    font-family:Arial, sans-serif;
     margin-top: 10px; /* Adjust this margin as needed for spacing */
 }
 

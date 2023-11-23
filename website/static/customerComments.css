@@ -67,6 +67,7 @@ body {
 }
 
 #user-message {
+    font-family:Arial, sans-serif;
     flex-grow: 1;
     border: none;
     padding: 8px;
