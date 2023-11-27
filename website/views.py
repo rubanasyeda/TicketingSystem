@@ -89,7 +89,7 @@ def getCurrentUserName():
     user_name = user.name
 
     
-    return jsonify({'user_name': user_name})
+    return jsonify({'name': user_name})
 
 
 @views.route("/getAllTickets")
