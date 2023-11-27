@@ -14,7 +14,7 @@ async function fetchCurrentUserName(){
         }
 
         const data = await response.json();
-        return data.user_name;
+        return data.name;
     } catch (error) {
         console.error('Error fetching current user name:', error);
         throw error;
@@ -80,46 +80,58 @@ userMessage.addEventListener("keydown", function (event) {
 });
 
 const mainSendButton = document.getElementById("send-button");
-mainSendButton.addEventListener("click", function () {
-    const userMessage = document.getElementById("user-message");
-    const messageText = userMessage.value.trim();
-    const now = new Date();
+mainSendButton.addEventListener("click", async function () {
+    try {
 
-    if (messageText !== "") {
-        const currentSender = "Admin";
-        const currentTime = now.toLocaleString();
+        const userMessage = document.getElementById("user-message");
+        const messageText = userMessage.value.trim();
+        const now = new Date();
+        const userName = await fetchCurrentUserName();
 
-        addMainMessage(currentSender, messageText, currentTime);
-        userMessage.value = "";
-        const messageData = {
-            ticketNum: customerTicketId,
-            text: messageText,
-            sender: currentSender,
-            timestamp: currentTime
-        };
-        sendDataToBackend("submitNewMessage", messageData);
+        if (messageText !== "") {
+            const currentSender = userName;
+            const currentTime = now.toLocaleString();
+
+            addMainMessage(currentSender, messageText, currentTime);
+            userMessage.value = "";
+            const messageData = {
+                ticketNum: customerTicketId,
+                text: messageText,
+                sender: currentSender,
+                timestamp: currentTime
+            };
+            sendDataToBackend("submitNewMessage", messageData);
+        }
+    } catch (error) {
+        console.log("Error -- fetching user name")
     }
 });
 
 const internalSendButton = document.getElementById("admin-comment-upload");
-internalSendButton.addEventListener("click", function () {
-    const internalUserMessage = document.getElementById("admin-comment-input");
-    const internalMessageText = internalUserMessage.value.trim();
-    internalUserMessage.value = "";
-    const now = new Date();
+internalSendButton.addEventListener("click", async function () {
+    try {
 
-    if (internalMessageText !== "") {
-        const currentInternalSender = "Admin";
-        const currentTime = now.toLocaleString();
-        addInternalMessage(currentInternalSender, internalMessageText, currentTime);
+        const internalUserMessage = document.getElementById("admin-comment-input");
+        const internalMessageText = internalUserMessage.value.trim();
+        internalUserMessage.value = "";
+        const now = new Date();
+        const userName = await fetchCurrentUserName();
 
-        const messageData = {
-            ticketNum: customerTicketId,
-            text: internalMessageText,
-            sender: currentInternalSender,
-            timestamp: currentTime
-        };
-        sendDataToBackend("submitNewInternalMessage", messageData);
+        if (internalMessageText !== "") {
+            const currentInternalSender = userName;
+            const currentTime = now.toLocaleString();
+            addInternalMessage(currentInternalSender, internalMessageText, currentTime);
+
+            const messageData = {
+                ticketNum: customerTicketId,
+                text: internalMessageText,
+                sender: currentInternalSender,
+                timestamp: currentTime
+            };
+            sendDataToBackend("submitNewInternalMessage", messageData);
+        }
+    } catch (error) {
+        console.log("Error -- fetching user name")
     }
 });
 
