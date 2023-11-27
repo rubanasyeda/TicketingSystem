@@ -38,25 +38,24 @@ function displayTickets(ticketList, status) {
             ticketItem.classList.add('ticket-item');
             ticketItem.innerHTML = `
                 <div class="ticket-info">
-                    <strong>Subject:</strong> ${ticket.subject}
-                    <strong>FirstName:</strong> ${ticket.name}
-                    <strong>BusinessName:</strong> ${ticket.businessName}
-                    <strong>Status:</strong> ${ticket.status}
-                    <strong>Priority:</strong> ${ticket.priority}
-                    <strong>Date:</strong> ${ticket.date}
-                    <a href="${getTicketPageLink(ticket.id)}" class="ticket-link" target="_blank">Ticket Details</a>
+                    ${ticket.subject.length > 10 ? '<strong>' + ticket.subject.substring(0, 1) + '</strong>' + ticket.subject.substring(1, 10) + "..." : '<strong>' + ticket.subject.substring(0, 1) + '</strong>' + ticket.subject.substring(1)}   
+                    ${ticket.name.length > 10 ? '<strong>' + ticket.name.substring(0, 1) + '</strong>' + ticket.name.substring(1, 10) + "..." : '<strong>' + ticket.name.substring(0, 1) + '</strong>' + ticket.name.substring(1)}   
+                    ${ticket.businessName.length > 10 ? '<strong>' + ticket.businessName.substring(0, 1) + '</strong>' + ticket.businessName.substring(1, 10) + "..." : '<strong>' + ticket.businessName.substring(0, 1) + '</strong>' + ticket.businessName.substring(1)}   
+                    ${ticket.status === 'unresolved' ? '<strong>Unresolved</strong>' : ticket.status === 'resolved' ? '<strong>Resolved</strong>' : (ticket.status.length > 10 ? '<strong>' + ticket.status.substring(0, 1) + '</strong>' + ticket.status.substring(1, 10) + "..." : '<strong>' + ticket.status.substring(0, 1) + '</strong>' + ticket.status.substring(1))}
+                    ${ticket.priority === 'lowpriority' ? '<strong>Low</strong>' : ticket.priority === 'highpriority' ? '<strong>High</strong>' : (ticket.priority.length > 10 ? '<strong>' + ticket.priority.substring(0, 1) + '</strong>' + ticket.priority.substring(1, 10) + "..." : '<strong>' + ticket.priority.substring(0, 1) + '</strong>' + ticket.priority.substring(1))}                    
+                    <strong></strong> ${ticket.date}
+                    <select class="priority-dropdown" onchange="changePriority(${ticket.id}, this.value)">
+                    <option value="">Select Priority</option>
+                    <option value="highpriority">High Priority</option>
+                    <option value="lowpriority">Low Priority</option>
+                </select>
                     <td>
                         <button class="unresolved-button" onclick="unresolveTicket(${ticket.id}, '${ticket.status}')">Unresolve</button>
                     </td>
                     <td>
                         <button class="resolve-button" onclick="resolveTicket(${ticket.id}, '${ticket.status}')">Resolve</button>
                     </td>
-                    <td>
-                        <button class="highpriority-button" onclick="highPriorityTicket(${ticket.id}, '${ticket.priority}')">HighPriority</button>
-                    </td>
-                    <td>
-                        <button class="lowpriority-button" onclick="lowPriorityTicket(${ticket.id}, '${ticket.priority}')">LowPriority</button>
-                    </td>
+                    <a href="${getTicketPageLink(ticket.id)}" class="ticket-link" target="_blank">Ticket Details</a>
                 </div>
             `;
 
@@ -68,6 +67,7 @@ function displayTickets(ticketList, status) {
         });
     }
 }
+
 
 
 function resolveTicket(ticketId, currentStatus) {
@@ -154,48 +154,22 @@ function unresolveTicket(ticketId, currentStatus) {
     }
 }
 
-
-function highPriorityTicket(ticketId, currentStatus) {
-    if(currentStatus !== "highpriority"){
-        const confirmed = window.confirm('Are you sure you want to change ticket status to highpriority?');
-
-        if(confirmed){
-            fetch(`/highPriorityTicket/${ticketId}`, {
+function changePriority(ticketId, priority) {
+    const confirmed = window.confirm(`Are you sure you want to change ticket priority to ${priority}?`);
+    if (confirmed) {
+        fetch(`/changePriority/${ticketId}/${priority}`, {
             method: 'POST',
-            })
-            .then(response => {
-                if (response.status === 200) {
-                    location.reload();
-                } else {
-                    console.log("Could not change the status")
-                }
-            })
-            .catch(error => {
-                console.error('Error changing the status:', error);
-            });
-        }
-    }
-}
-
-function lowPriorityTicket(ticketId, currentStatus) {
-    if(currentStatus !== "lowpriority"){
-        const confirmed = window.confirm('Are you sure you want to change ticket status to lowpriority?');
-
-        if(confirmed){
-            fetch(`/lowPriorityTicket/${ticketId}`, {
-            method: 'POST',
-            })
-            .then(response => {
-                if (response.status === 200) {
-                    location.reload();
-                } else {
-                    console.log("Could not change the status")
-                }
-            })
-            .catch(error => {
-                console.error('Error changing the status:', error);
-            });
-        }
+        })
+        .then(response => {
+            if (response.status === 200) {
+                location.reload();
+            } else {
+                console.log("Could not change the priority")
+            }
+        })
+        .catch(error => {
+            console.error('Error changing the priority:', error);
+        });
     }
 }
 

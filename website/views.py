@@ -158,6 +158,23 @@ def lowPriorityTicket(ticket_id):
     db.session.commit()
     return "Ticket resolved successfully"
 
+@views.route("/changePriority/<int:ticket_id>/<priority>", methods=['POST'])
+def changeTicketPriority(ticket_id, priority):
+    ticket = CustomerTicketInformation.query.get(ticket_id)
+    if ticket is None:
+        return "Ticket not found", 404
+
+    # Assign the priority based on the received parameter
+    if priority == 'highpriority':
+        ticket.priority = priorityOrder.HIGHPRIORITY
+    elif priority == 'lowpriority':
+        ticket.priority = priorityOrder.LOWPRIORITY
+    else:
+        return "Invalid priority value", 400
+
+    db.session.commit()
+    return "Ticket priority updated successfully"
+
 # #completed the changing the status and the priority of the tickets
 
 ######Ticket Commenting####
