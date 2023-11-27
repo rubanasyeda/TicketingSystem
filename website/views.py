@@ -78,9 +78,9 @@ def getCurrentUserTickets():
 
 
 #Current User Name
-@views.route("/getCurrentUserTickets",methods=["GET"])
+@views.route("/getCurrentUserName",methods=["GET"])
 @login_required
-def getCurrentUserTickets():
+def getCurrentUserName():
 
     if current_user.is_authenticated == False:
         return "ERROR"
