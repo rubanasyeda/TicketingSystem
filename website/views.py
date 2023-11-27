@@ -1,5 +1,6 @@
 #will have all the routes for pages that does not have authorization#
 
+import random
 from flask import Blueprint,render_template,request,redirect,url_for,jsonify,flash
 from datetime import datetime
 from . import db
@@ -33,7 +34,8 @@ def createTicket():
         customerNumber = request.form.get('customer_phone')
         problemDescription = request.form.get('description')
 
-        customerInfo = CustomerTicketInformation(subject=subject,firstName=customerFirstName,lastName=customerLastName,
+        customerInfo = CustomerTicketInformation(id=random.randint(0,10000000000000),
+                                                 subject=subject,firstName=customerFirstName,lastName=customerLastName,
                                                  email=customerEmail,businessName=businessName,phoneNumber=customerNumber,
                                                  description=problemDescription)
         
