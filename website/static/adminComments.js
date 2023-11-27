@@ -27,6 +27,10 @@ async function init(ticketId){
         const mainMessages = await fetchDataFromBackend(`${ticketId}/getMessages`);
         const internalmessages = await fetchDataFromBackend(`${ticketId}/getInternalMessages`);
 
+        //getSTatus
+        ticketStatus = await fetchDataFromBackend(`${ticketId}/getStatus`);
+        showStatusChange(ticketStatus.status);
+
         function renderMessages() {
             mainMessages.sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
             mainMessages.forEach((message) => {
@@ -98,6 +102,28 @@ internalSendButton.addEventListener("click", function () {
     }
 });
 
+
+const statusDropdown = document.getElementById("status-dropdown");
+
+statusDropdown.addEventListener("change", function() {
+    const autoSender = "auto";
+    const selectedValue = statusDropdown.value; // Get the selected value
+    const autoMesage = "The status has been changed to: " + selectedValue;
+    const currentTime = new Date().toLocaleString(); // Use "new Date()" to get the current date and time
+
+    addMainMessage(autoSender, autoMesage , currentTime);
+
+    const messageData = {
+        ticketNum: customerTicketId,
+        status: selectedValue,
+        text: autoMesage,
+        sender: autoSender,
+        timestamp: currentTime
+    };
+    sendDataToBackend("statusChange", messageData);
+
+});
+
 /**
  * General method to get data fromt he backend
  * @param {*} route that has the data
@@ -143,6 +169,15 @@ async function sendDataToBackend(route, data) {
         return responseData;
     } catch (error) {
         throw new Error(`Request failed: ${error.message}`);
+    }
+}
+
+// Only two options
+function showStatusChange(newStatus){
+    if(newStatus === 1)
+        document.getElementById('status-dropdown').selectedIndex=1;
+    else{
+        document.getElementById('status-dropdown').selectedIndex=0;
     }
 }
 
@@ -205,5 +240,5 @@ function addInternalMessage(sender, text, time) {
 }
 
 
-
+// export {sendDataToBackend};
 
