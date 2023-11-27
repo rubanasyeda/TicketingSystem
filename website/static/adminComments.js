@@ -1,4 +1,25 @@
 var customerTicketId
+
+async function fetchCurrentUserName(){
+     try {
+        const response = await fetch('/getCurrentUserName', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to fetch current user name');
+        }
+
+        const data = await response.json();
+        return data.user_name;
+    } catch (error) {
+        console.error('Error fetching current user name:', error);
+        throw error;
+    }
+}
 document.addEventListener('DOMContentLoaded', function() {
     function getQueryParameter(name) {
       const urlParams = new URLSearchParams(window.location.search);
