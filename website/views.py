@@ -314,6 +314,8 @@ def submitStatusChange():
 
             if(ticketStatus == "Resolved"):
                 ticket.status = statusEnum.RESOLVED
+                if(ticket.priority != priorityOrder.NONE):
+                    ticket.priority = priorityOrder.NONE
             else:
                 ticket.status = statusEnum.UNRESOLVED
 
