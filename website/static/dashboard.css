@@ -34,6 +34,13 @@ header h2{
     text-align: center;
 }
 
+top {
+    text-align: left;
+    word-spacing: 50px;
+    padding-left: 40px;
+    padding-bottom: 17px;
+}
+
 ::-webkit-scrollbar {
     width: 5px;
 }
@@ -154,10 +161,12 @@ footer {
     margin-bottom: 10px; /* Add margin to separate tickets vertically */
 }
 
+
 .ticket-info {
     display: inline-block;
     flex-wrap: nowrap;
     align-items: center;
+    
 }
 
 .ticket-info strong {
