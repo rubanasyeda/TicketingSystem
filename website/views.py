@@ -76,6 +76,22 @@ def getCurrentUserTickets():
     
     return jsonify(curtickets)
 
+
+#Current User Name
+@views.route("/getCurrentUserTickets",methods=["GET"])
+@login_required
+def getCurrentUserTickets():
+
+    if current_user.is_authenticated == False:
+        return "ERROR"
+    
+    user = User.query.filter_by(id=current_user.get_id()).first()
+    user_name = user.name
+
+    
+    return jsonify({'user_name': user_name})
+
+
 @views.route("/getAllTickets")
 def getAllTickets():
     ticketDetails = CustomerTicketInformation.query.all()
