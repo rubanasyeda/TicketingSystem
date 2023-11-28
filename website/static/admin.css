@@ -1,180 +1,63 @@
-* {
-    margin: 0;
-    padding: 0;
-    outline: none;
-    border: none;
-    font-family: 'Roboto', sans-serif;
-    box-sizing: border-box;
-    scroll-behavior: smooth;
-    list-style: none;
-    text-decoration: none;
-}
 
-:root {
-    --main-color: rgb(202, 164, 66);
-    --text-color: #fff;
-    --bg-color: #000000;
-    --big-font: 5rem;
-    --h2-font: 2.5rem;
-    --p-font: 0.9rem;
-}
+
 
 body {
-    color: var(--main-color);
-    background-color: #000000;
-    background-image: url(../static/trt.png);
-    background-size: auto;
-    background-repeat: repeat;
-    min-height: 100vh;
-}
-/*side bar options*/
-nav {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    height: 100%;
-    left: 0;
-    background: #ffffff94;
-    width: 75px;
-    overflow: hidden;
-    transition: width 0.2s linear;
-    box-shadow: 0 20px 35px #000;
+    font-family: 'Roboto', sans-serif;
 }
 
-.logo {
-    text-align: center;
-    display: flex;
-    transition: all 0.5s ease;
-    margin: 10px 0 0 10px;
+
+.navbar-brand img {
+    margin-right: 10px;
 }
 
-.logo img{
-    width: 45px;
-    height: 45px;
-    border-radius: 50%;
-    
-}
 
-.logo span{
-    font-weight: bold;
-    padding-left: 15px;
-    font-size: 18px;
-    text-transform: uppercase;
-}
-/*text within sidebar*/
-a {
-    position: relative;
-    color: #000;
-    font-size: 14px;
-    width: 300px;
-    padding: 10px;
-    display: block;
-}
-/*icons*/
-.bx {
-    position: relative;
-    width: 70px;
-    height: 40px;
-    top: 4px;
-    font-size: 20px;
-    text-align: center;
-}
-
-.nav-item {
-    position: relative;
-    top: 0;
-    margin-left: 10px;
-}
-
-a:hover{
-    background: #4c47477f;
-}
-nav:hover{
-    width: 200px;
-    transition: all 0.5s ease;
-}
-
-.logout {
-    position: absolute;
-    bottom: 0;
-}
-
-/*main ticket display
-/* Main content area */
 .main {
-    margin-left: 300px; /* Adjust for the width of the left and sidebar columns */
     padding: 20px;
 }
 
-/* CSS for the table */
-.employee-table {
+
+.employee-table, .ticket-table {
     width: 100%;
-    border-collapse: collapse;
-    display: none; /* Hide the table initially */
+    margin-top: 20px;
 }
 
-.employee-table th, .employee-table td {
-    border: 1px solid #000;
-    padding: 10px;
-    text-align: left;
+
+.employee-table thead, .ticket-table thead {
+    background-color: #f8f9fa; 
+    color: #333; 
 }
 
-/* Style the buttons in the Action column */
-.employee-table button {
-    background-color: #d9534f;
+
+.employee-table tr, .ticket-table tr {
+    border-bottom: 1px solid #dee2e6; 
+}
+
+
+.btn-primary {
+    background-color: #007bff; 
+    border-color: #007bff;
+}
+
+.delete-button {
     color: #fff;
-    border: none;
-    padding: 5px 10px;
-    cursor: pointer;
-}
-
-.employee-table td .delete-button {
-    margin: 0;
+    background-color: #dc3545; 
+    border-color: #dc3545;
 }
 
 
-.Employee-list {
-    display: inline-block;
-    flex-wrap: nowrap;
-    overflow-x: auto;
+.form-control {
+    box-shadow: none; 
 }
 
-.employee-item {
-    background-color: #000000cc;
-    padding: 10px;
-    border: 2px solid #dddddd;
-    margin-bottom: 10px;
+
+@media (max-width: 768px) {
+    .navbar-nav {
+        text-align: center;
+    }
+
+    .main {
+        padding: 10px;
+    }
 }
 
-.employee-info {
-    display: inline-block;
-    flex-wrap: nowrap;
-    align-items: center;
-}
 
-.employee-info strong {
-    display: inline-block;
-}
-
-.employee-info button {
-    margin-left: 10px;
-}
-
-.ticket-table {
-    width: 85%;
-}
-.ticket-table td,th{
-    padding: 10px;
-    text-align: left;
-}
-
-/* new */
-
-.assign-ticket-dropdown {
-    width: 100%;
-    padding: 5px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-
-  }
-  
