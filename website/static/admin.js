@@ -1,3 +1,4 @@
+// Function to fetch all employees
 async function fetchAllEmployees() {
   try {
     const response = await fetch('/getAllEmployees');
@@ -10,7 +11,7 @@ async function fetchAllEmployees() {
     return null;
   }
 }
-
+// Function to display emolyees
 function displayEmployees(employeeDetails) {
   const employeelistContainer = document.querySelector('.employee-list');
   employeelistContainer.innerHTML = '';
@@ -22,7 +23,7 @@ function displayEmployees(employeeDetails) {
     });
   }
 }
-
+// Function to create employee
 function createEmployeeRow(employee) {
   const employeeRow = document.createElement('tr');
   employeeRow.innerHTML = `
@@ -37,7 +38,7 @@ function createEmployeeRow(employee) {
 
   return employeeRow;
 }
-
+// Function to delete employee
 function deleteEmployee(employeeId) {
   const confirmed = window.confirm('Are you sure you want to delete this user?');
 

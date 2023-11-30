@@ -105,13 +105,6 @@ def getAllEmployees():
 
     return jsonify(companyWorkers)
 
-
-
-
-
-
-
-
 @views.route("/deleteUser/<int:employee_id>", methods=['DELETE'])
 def deleteUser(employee_id):
     user = User.query.filter_by(id=employee_id).first()

@@ -1,4 +1,4 @@
-
+/*ficntction for fetching tickets*/
 async function fetchAllTickets() {
     try {
         const response = await fetch('/getAllTickets');
@@ -12,7 +12,7 @@ async function fetchAllTickets() {
     }
 }
 
-
+/*function for fetching user tickets*/
 async function fecthCurrentUserTickets(){
     try {
         const response = await fetch('/getCurrentUserTickets');
@@ -25,7 +25,7 @@ async function fecthCurrentUserTickets(){
         return null;
     }
 }
-
+/* fucntion to display tickets*/
 function displayTickets(ticketList, status) {
     const ticketListContainer = document.querySelector('.ticket-list');
     ticketListContainer.innerHTML = '';
@@ -68,7 +68,7 @@ function displayTickets(ticketList, status) {
 }
 
 
-
+/* fucntion to resolve ticket*/
 function resolveTicket(ticketId, currentStatus) {
     if(currentStatus !== "resolved"){
             const confirmed = window.confirm('Are you sure you want to change ticket status to resolve?');
@@ -90,8 +90,7 @@ function resolveTicket(ticketId, currentStatus) {
         }
     }
 }
-
-
+/* fucntion to unresolve ticket*/
 function unresolveTicket(ticketId, currentStatus) {
     if(currentStatus !== "unresolved"){
         const confirmed = window.confirm('Are you sure you want to change ticket status to unresolved?');
@@ -113,7 +112,7 @@ function unresolveTicket(ticketId, currentStatus) {
         }
     }
 }
-
+/*functioon to change ticket priority */
 function changePriority(ticketId, priority) {
     const confirmed = window.confirm(`Are you sure you want to change ticket priority to ${priority}?`);
     if (confirmed) {
@@ -133,7 +132,7 @@ function changePriority(ticketId, priority) {
     }
 }
 
-
+/*event listeners to sort tickets*/
 document.getElementById('allTickets').addEventListener('click', async function () {
     const ticketData = await fetchAllTickets();
     displayTickets(ticketData, "all");
