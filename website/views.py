@@ -10,6 +10,66 @@ from flask_login import login_required,current_user
 
 views = Blueprint('views', __name__)
 
+
+@views.route('/generateTestTickets', methods=['GET'])
+def generate_test_tickets():
+    # Generate 10 random tickets
+    for _ in range(10):
+        subject = f"Random Subject {_}"
+        customerFirstName = f"Customer{_}"
+        customerLastName = "Lastname"
+        customerEmail = f"customer{_}@example.com"
+        businessName = f"Business {_}"
+        customerNumber = f"123456{_}"
+        problemDescription = f"Random problem description {_}"
+
+        customerInfo = CustomerTicketInformation(
+            id=random.randint(0, 10000000000000),
+            subject=subject, firstName=customerFirstName, lastName=customerLastName,
+            email=customerEmail, businessName=businessName, phoneNumber=customerNumber,
+            description=problemDescription
+        )
+
+        # Assign random status and priority
+        customerInfo.status = random.choice(list(statusEnum))
+        customerInfo.priority = random.choice(list(priorityOrder))
+        admin_users = User.query.filter(User.role == 'admin').all()
+        
+        if admin_users:
+            customerInfo.users.extend(admin_users)
+        db.session.add(customerInfo)
+    
+
+    db.session.commit()
+
+    return "Test data generated successfully"
+
+
+@views.route('/deleteTestTickets', methods=['GET'])
+def delete_test_tickets():
+    # Check if the current user is authenticated and an admin
+    if not current_user.is_authenticated or current_user.role != "admin":
+        return redirect(url_for('auth.login'))
+
+    # Find and delete all test tickets
+    test_tickets = CustomerTicketInformation.query.filter(CustomerTicketInformation.description.like('Random problem description%')).all()
+    for ticket in test_tickets:
+        # Remove user associations with the ticket
+        for user in ticket.users:
+            ticket.users.remove(user)
+
+        # Delete the ticket
+        db.session.delete(ticket)
+
+    db.session.commit()
+
+    return "Test tickets and their user associations deleted successfully"
+
+
+
+
+
+
 @views.route('/', methods=['GET', 'POST'])
 def home():
     return render_template("landing.html")
