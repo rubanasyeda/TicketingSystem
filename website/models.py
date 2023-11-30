@@ -108,7 +108,7 @@ class sendEmail:
                             <p> Greetings {self.businessName}, <br><br>
                                 We have received your ticket on {self.date} regarding the following subject:<br>{self.subject}<br><br>
                                 Please use the following link to view your request:<br>
-                                Ticket ID : <a href="{self.link}">{self.ticketId}</a><br><br>
+                                Ticket ID : <a href="{self.link}">Your Ticket</a><br><br>
                                 We will resolve this issue as soon as possible.<br><br> 
                                 Regards,<br> TRT Support
                             </p>
