@@ -7,6 +7,7 @@ from flask_login import login_user,login_required, current_user, logout_user
 auth = Blueprint('auth',__name__)
 
 
+#test route (this route is not used within regular activity flow)
 @auth.route('/generateTestUsers', methods=['GET'])
 def generate_test_users():
     # Check if the current user is authenticated and an admin
@@ -52,6 +53,7 @@ def generate_test_users():
     return f"{num_users} test users generated successfully"
 
 
+#test route (this route is not used within regular activity flow)
 @auth.route('/deleteTestUsers', methods=['GET'])
 def delete_test_users():
     # Check if the current user is authenticated and an admin

@@ -10,7 +10,7 @@ from flask_login import login_required,current_user
 
 views = Blueprint('views', __name__)
 
-
+#test route (this route is not used within regular activity flow)
 @views.route('/generateTestTickets', methods=['GET'])
 def generate_test_tickets():
     # Generate 10 random tickets
@@ -44,7 +44,7 @@ def generate_test_tickets():
 
     return "Test data generated successfully"
 
-
+#test route (this route is not used within regular activity flow)
 @views.route('/deleteTestTickets', methods=['GET'])
 def delete_test_tickets():
     # Check if the current user is authenticated and an admin
