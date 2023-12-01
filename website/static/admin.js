@@ -131,7 +131,7 @@ function assignEmployeeToTicket(ticketId, buttonElement) {
           if (response.ok) {
               fetchAssignedUsers(ticketId);
           } else {
-              console.error('Failed to assign ticket');
+              alert('User already assigned to ticket');
           }
       })
       .catch(error => {
