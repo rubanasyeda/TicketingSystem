@@ -1,5 +1,6 @@
 #will have all the routes for pages that does not have authorization#
 
+import random
 from flask import Blueprint,render_template,request,redirect,url_for,jsonify,flash
 from datetime import datetime
 from . import db
@@ -33,7 +34,8 @@ def createTicket():
         customerNumber = request.form.get('customer_phone')
         problemDescription = request.form.get('description')
 
-        customerInfo = CustomerTicketInformation(subject=subject,firstName=customerFirstName,lastName=customerLastName,
+        customerInfo = CustomerTicketInformation(id=random.randint(0,10000000000000),
+                                                 subject=subject,firstName=customerFirstName,lastName=customerLastName,
                                                  email=customerEmail,businessName=businessName,phoneNumber=customerNumber,
                                                  description=problemDescription)
         
@@ -74,6 +76,22 @@ def getCurrentUserTickets():
     
     return jsonify(curtickets)
 
+
+#Current User Name
+@views.route("/getCurrentUserName",methods=["GET"])
+@login_required
+def getCurrentUserName():
+
+    if current_user.is_authenticated == False:
+        return "ERROR"
+    
+    user = User.query.filter_by(id=current_user.get_id()).first()
+    user_name = user.name
+
+    
+    return jsonify({'name': user_name})
+
+
 @views.route("/getAllTickets")
 def getAllTickets():
     ticketDetails = CustomerTicketInformation.query.all()
@@ -105,6 +123,7 @@ def getAllEmployees():
 
     return jsonify(companyWorkers)
 
+
 @views.route("/deleteUser/<int:employee_id>", methods=['DELETE'])
 def deleteUser(employee_id):
     user = User.query.filter_by(id=employee_id).first()
@@ -116,33 +135,6 @@ def deleteUser(employee_id):
     else:
         return jsonify({"error": "User not found"}, 404)
 
-
-#route created for resolveTicket
-@views.route("/resolveTicket/<int:ticket_id>",methods=['POST'])
-def resolveTicket(ticket_id):
-    ticket = CustomerTicketInformation.query.get(ticket_id)
-    ticket = CustomerTicketInformation.query.get(ticket_id)
-    if ticket is None:
-        return "Ticket not found", 404
-    ticket.status = statusEnum.RESOLVED
-    ticket.priority = priorityOrder.NONE
-    now = datetime.now()
-    date_time = now.strftime("%m/%d/%Y")
-    emailToCustomer = sendEmail(ticket.businessName,date_time,reciever_email=ticket.email,subject=ticket.subject,ticketId=ticket.id)
-    emailToCustomer.statusChange()
-    db.session.commit()
-    return "Ticket resolved successfully"
-
-#added routes for unresolve Ticket
-@views.route("/unresolveTicket/<int:ticket_id>",methods=['POST'])
-def unresolveTicket(ticket_id):
-    ticket = CustomerTicketInformation.query.get(ticket_id)
-    ticket = CustomerTicketInformation.query.get(ticket_id)
-    if ticket is None:
-        return "Ticket not found", 404
-    ticket.status = statusEnum.UNRESOLVED
-    db.session.commit()
-    return "Ticket resolved successfully"
 
 #added routes for highPriority Ticket
 @views.route("/highPriorityTicket/<int:ticket_id>",methods=['POST'])
@@ -184,14 +176,6 @@ def changeTicketPriority(ticket_id, priority):
     return "Ticket priority updated successfully"
 
 # #completed the changing the status and the priority of the tickets
-
-# @views.route('/customerComment/<int:ticket_id>',methods=['GET'])
-# def customerComments(ticket_id):
-#     ticket = CustomerTicketInformation.query.get(ticket_id)
-#     if ticket is None:
-#         return "Ticket not found",404
-#     return jsonify(ticket)
-
 
 ######Ticket Commenting####
 
@@ -312,6 +296,58 @@ def submitInternalMessage():
 
     return jsonify({"message": "Invalid request"})
 
+@views.route("/<int:ticket_id>/getStatus")
+def getStatusById(ticket_id):
+    ticket = db.session.query(CustomerTicketInformation).filter(CustomerTicketInformation.id == ticket_id).first()
+    if ticket:
+        # Access the ARRAY of JSON strings
+        if(ticket.status == statusEnum.RESOLVED):
+            status = {"status" : 1 }
+        else:
+           status = {"status" : 0 } 
+           
+        return jsonify(status)
+    else:
+        return []
+
+@views.route('/statusChange', methods=['POST'])
+def submitStatusChange():
+    if request.method == "POST":
+        message = request.get_json()  
+
+        messageText = message.get("text")
+        currentSender = message.get("sender")
+        currentTime = message.get("timestamp")
+        ticketNum = message.get("ticketNum") 
+        ticketStatus = message.get("status") 
+        
+        ticket = db.session.query(CustomerTicketInformation).filter(CustomerTicketInformation.id == ticketNum).first()
+
+        if ticket:
+            # Create a new message object
+            new_message = Message(text=messageText, sender=currentSender, timestamp=currentTime)
+            new_message.ticket = ticket
+            ticket.messages.append(new_message)
+
+            if(ticketStatus == "Resolved"):
+                ticket.status = statusEnum.RESOLVED
+                if(ticket.priority != priorityOrder.NONE):
+                    ticket.priority = priorityOrder.NONE
+            else:
+                ticket.status = statusEnum.UNRESOLVED
+
+            db.session.commit()
+            # Check if the custom header 'X-Page' is present and has the value 'adminComments'
+            if request.headers.get('X-Page') == 'adminComments':
+                # The request was sent from the "adminComments.html" page #send email update
+                emailToCustomer = sendEmail(ticket.businessName,ticket.date,ticket.email,ticket.subject,ticket.id)
+                emailToCustomer.adminAddedNewMessage_email()
+
+            return jsonify({"message": "Message added successfully"})
+        else:
+            return jsonify({"message": "Not a valid ticket number"})
+
+    return jsonify({"message": "Invalid request"})
 
 
 

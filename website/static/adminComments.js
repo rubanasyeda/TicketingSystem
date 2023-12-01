@@ -1,4 +1,25 @@
 var customerTicketId
+
+async function fetchCurrentUserName(){
+     try {
+        const response = await fetch('/getCurrentUserName', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to fetch current user name');
+        }
+
+        const data = await response.json();
+        return data.name;
+    } catch (error) {
+        console.error('Error fetching current user name:', error);
+        throw error;
+    }
+}
 document.addEventListener('DOMContentLoaded', function() {
     function getQueryParameter(name) {
       const urlParams = new URLSearchParams(window.location.search);
@@ -26,6 +47,10 @@ async function init(ticketId){
         // get the messages and internal comments of that ticket
         const mainMessages = await fetchDataFromBackend(`${ticketId}/getMessages`);
         const internalmessages = await fetchDataFromBackend(`${ticketId}/getInternalMessages`);
+
+        //getSTatus
+        ticketStatus = await fetchDataFromBackend(`${ticketId}/getStatus`);
+        showStatusChange(ticketStatus.status);
 
         function renderMessages() {
             mainMessages.sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
@@ -55,47 +80,81 @@ userMessage.addEventListener("keydown", function (event) {
 });
 
 const mainSendButton = document.getElementById("send-button");
-mainSendButton.addEventListener("click", function () {
-    const userMessage = document.getElementById("user-message");
-    const messageText = userMessage.value.trim();
-    const now = new Date();
+mainSendButton.addEventListener("click", async function () {
+    try {
 
-    if (messageText !== "") {
-        const currentSender = "Admin";
-        const currentTime = now.toLocaleString();
+        const userMessage = document.getElementById("user-message");
+        const messageText = userMessage.value.trim();
+        const now = new Date();
+        const userName = await fetchCurrentUserName();
 
-        addMainMessage(currentSender, messageText, currentTime);
-        userMessage.value = "";
-        const messageData = {
-            ticketNum: customerTicketId,
-            text: messageText,
-            sender: currentSender,
-            timestamp: currentTime
-        };
-        sendDataToBackend("submitNewMessage", messageData);
+        if (messageText !== "") {
+            const currentSender = userName;
+            const currentTime = now.toLocaleString();
+
+            addMainMessage(currentSender, messageText, currentTime);
+            userMessage.value = "";
+            const messageData = {
+                ticketNum: customerTicketId,
+                text: messageText,
+                sender: currentSender,
+                timestamp: currentTime
+            };
+            sendDataToBackend("submitNewMessage", messageData);
+        }
+    } catch (error) {
+        console.log("Error -- fetching user name")
     }
 });
 
 const internalSendButton = document.getElementById("admin-comment-upload");
-internalSendButton.addEventListener("click", function () {
-    const internalUserMessage = document.getElementById("admin-comment-input");
-    const internalMessageText = internalUserMessage.value.trim();
-    internalUserMessage.value = "";
-    const now = new Date();
+internalSendButton.addEventListener("click", async function () {
+    try {
 
-    if (internalMessageText !== "") {
-        const currentInternalSender = "Admin";
-        const currentTime = now.toLocaleString();
-        addInternalMessage(currentInternalSender, internalMessageText, currentTime);
+        const internalUserMessage = document.getElementById("admin-comment-input");
+        const internalMessageText = internalUserMessage.value.trim();
+        internalUserMessage.value = "";
+        const now = new Date();
+        const userName = await fetchCurrentUserName();
 
-        const messageData = {
-            ticketNum: customerTicketId,
-            text: internalMessageText,
-            sender: currentInternalSender,
-            timestamp: currentTime
-        };
-        sendDataToBackend("submitNewInternalMessage", messageData);
+        if (internalMessageText !== "") {
+            const currentInternalSender = userName;
+            const currentTime = now.toLocaleString();
+            addInternalMessage(currentInternalSender, internalMessageText, currentTime);
+
+            const messageData = {
+                ticketNum: customerTicketId,
+                text: internalMessageText,
+                sender: currentInternalSender,
+                timestamp: currentTime
+            };
+            sendDataToBackend("submitNewInternalMessage", messageData);
+        }
+    } catch (error) {
+        console.log("Error -- fetching user name")
     }
+});
+
+
+const statusDropdown = document.getElementById("status-dropdown");
+
+statusDropdown.addEventListener("change", function() {
+    const autoSender = "auto";
+    const selectedValue = statusDropdown.value; // Get the selected value
+    const autoMesage = "The status has been changed to: " + selectedValue;
+    const currentTime = new Date().toLocaleString(); // Use "new Date()" to get the current date and time
+
+    addMainMessage(autoSender, autoMesage , currentTime);
+
+    const messageData = {
+        ticketNum: customerTicketId,
+        status: selectedValue,
+        text: autoMesage,
+        sender: autoSender,
+        timestamp: currentTime
+    };
+    sendDataToBackend("statusChange", messageData);
+
 });
 
 /**
@@ -143,6 +202,15 @@ async function sendDataToBackend(route, data) {
         return responseData;
     } catch (error) {
         throw new Error(`Request failed: ${error.message}`);
+    }
+}
+
+// Only two options
+function showStatusChange(newStatus){
+    if(newStatus === 1)
+        document.getElementById('status-dropdown').selectedIndex=1;
+    else{
+        document.getElementById('status-dropdown').selectedIndex=0;
     }
 }
 
@@ -205,5 +273,5 @@ function addInternalMessage(sender, text, time) {
 }
 
 
-
+// export {sendDataToBackend};
 

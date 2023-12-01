@@ -31,19 +31,13 @@ body {
 }
 
 .chat-messages {
-    padding: 10px;
-    /* text-align: center; */
-    overflow-y: scroll;
-    white-space: pre-wrap;
-    /* max-height: 300px; */
+    margin: 0;
+    padding: 0;
+    white-space: pre-line; /* Preserve line breaks */
+    line-height: 1.2; /* Adjust line height as needed */
 }
 
 .message {
-    /* margin-bottom: 10px;
-    padding: 10px;
-    border-radius: 5px;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1); /* Add a faded line 
-    overflow-x: auto; */
 
     margin-bottom: 10px;
     padding: 10px;
@@ -57,10 +51,6 @@ body {
     margin-bottom: 5px;
 }
 
-/* .message-text {
-    word-wrap: break-word;
-} */
-
 .message-text-auto{
     text-align: center;
 }
@@ -73,6 +63,7 @@ body {
 }
 
 #user-message {
+    font-family:Arial, sans-serif;
     flex-grow: 1;
     border: none;
     padding: 8px;
@@ -132,6 +123,7 @@ body {
 }
 
 #admin-comment-input {
+    font-family:Arial, sans-serif;
     margin-top: 10px; /* Adjust this margin as needed for spacing */
 }
 
