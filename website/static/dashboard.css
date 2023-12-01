@@ -1,21 +1,8 @@
-/* Basic styling */
+/* Resetting some default styles */
 * {
     margin: 0;
     padding: 0;
-    font-family: 'Roboto', sans-serif;
     box-sizing: border-box;
-    scroll-behavior: smooth;
-    list-style: none;
-    text-decoration: none;
-}
-
-:root {
-    --main-color: rgb(202, 164, 66);
-    --text-color: #fff;
-    --bg-color: #000000;
-    --big-font: 5rem;
-    --h2-font: 2.5rem;
-    --p-font: 0.9rem;
 }
 
 body {
@@ -26,30 +13,8 @@ body {
     background-repeat: repeat;
     min-height: 100vh;
 }
-/*side bar header*/
-header h2{
-    font-size: 32px;
-    color: VAR(--main-color);
-    text-shadow: 2px 4px 3px #000000;
-    text-align: center;
-}
 
-top {
-    text-align: left;
-    word-spacing: 50px;
-    padding-left: 40px;
-    padding-bottom: 17px;
-}
-
-::-webkit-scrollbar {
-    width: 5px;
-}
-
-::-webkit-scrollbar-thumb {
-    background: #fff;
-    border-radius: 10px;
-}
-/*sidebar*/
+/* Sidebar styling */
 .sidebar {
     text-align: center;
     left: 5px;
@@ -63,9 +28,17 @@ top {
     flex-direction: column;
 }
 
+.sidebar header {
+    font-size: 32px;
+    color: var(--main-color);
+    text-shadow: 2px 4px 3px #000000;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
 .sidebar ul {
     list-style: none;
-    padding-top: 25px;
+    padding-top: 15px;
 }
 
 .sidebar li {
@@ -74,99 +47,67 @@ top {
 
 .sidebar a {
     text-decoration: none;
-    color: #fff;
+    color: #000;
     display: block;
-    padding: 5px 10px;
-    color: black;
+    padding: 10px;
     font-size: 1.1rem;
-    padding: 10px 20px;
     font-weight: 500;
 }
-
 
 .sidebar a:hover {
     color: rgb(202, 164, 66);
-    transition: .8s;
-}
-
-
-.sidebar a:hover {
     background-color: #dddddd9a;
-}
-/*inside text*/
-.scrollbox {
-    overflow: auto;
-    padding-right: 10px;
-    visibility: hidden;
+    transition: 0.8s;
 }
 
-.scrollbox-inner,
-.scrollbox:hover {
-    visibility: visible;
-}
-
-.scrollbox-inner ul{
-    font-size: 16px;
-    color: #fff;
-}
-
-/*bottom part of side bar(logout, admin etc)*/
-.navbar {
-    text-align: center;
-
-}
-
-.navbar a{
-    color: black;
-    font-size: 1.1rem;
-    font-weight: 500;
-    text-align: center;
-
-}
-
-.navbar a:hover {
-    color: var(--main-color);
-    transition: .8s;
-}
-
-footer {
-    padding-top: 250px;
-    bottom: 0;
-}
-
-/* Main content area */
-.main {
-    margin-left: 300px; /* Adjust for the width of the left and sidebar columns */
+/* Ticket display styling */
+main {
+    margin-left: 250px; /* Adjust for the width of the sidebar */
     padding: 20px;
+}
+
+.top {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px 40px;
+    background-color: #ffffff8c;
+    box-shadow: 0px 0px 10px rgb(202, 164, 66);
+}
+
+.top h2 {
+    flex-basis: calc(100% / 6);
+    text-align: center;
 }
 
 .ticket-display {
     background-color: #ffffff8c;
     padding: 20px;
     box-shadow: 0px 0px 10px rgb(202, 164, 66);
+    overflow: auto;
 }
 
-/* Horizontal ticket layout */
+.table th, .table td {
+    text-align: center;
+}
+
 .ticket-list {
-    display: inline-block;
-    flex-wrap: nowrap; /* Prevent wrapping to new lines */
-    overflow-x: auto; /* Enable horizontal scrolling if needed */
+    display: flex;
+    flex-wrap: wrap;
 }
 
-/* Vertical ticket layout with horizontal bars */
 .ticket-item {
     background-color: #000000cc;
     padding: 10px;
     border: 1px solid #ddd;
-    margin-bottom: 10px; /* Add margin to separate tickets vertically */
+    margin-bottom: 10px;
+    width: calc(100% - 20px);
+    flex-basis: calc(100% - 20px);
 }
 
-
 .ticket-info {
-    display: inline-block;
-    flex-wrap: nowrap;
+    display: flex;
+    justify-content: space-between;
     align-items: center;
-    
 }
 
 .ticket-info strong {
@@ -177,55 +118,82 @@ footer {
     margin-left: 10px;
 }
 
-/*  new stuff */
-
-
-
-.dropdown-container {
-    position: relative;
-    display: inline-block;
+/* Basic styling */
+:root {
+    --main-color: rgb(202, 164, 66);
+    --text-color: #fff;
+    --bg-color: #000000;
+    --big-font: 5rem;
+    --h2-font: 2.5rem;
+    --p-font: 0.9rem;
 }
 
-.team-dropdown {
-    display: none;
-    position: absolute;
-    background-color: #ffffff;
-    box-shadow: 0px 0px 10px rgba(0,0,0,0.3);
-    top: 100%; 
-    left: 0;
-    z-index: 10; 
-
+/* Scrollbar styling */
+::-webkit-scrollbar {
+    width: 5px;
 }
 
-.dropdown-container:hover .team-dropdown {
-    display: block;
+::-webkit-scrollbar-thumb {
+    background: #fff;
+    border-radius: 10px;
 }
 
-.team-member {
-    padding: 5px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+/* Footer styling */
+footer {
+    padding-top: 200px;
+    bottom: 0;
 }
 
-.assign-ticket-btn:hover + .team-dropdown {
-    display: block;
+/* Navigation bar styling */
+.navbar {
+    text-align: center;
 }
 
-.assign-btn {
-    background-color: green;
-    color: white;
-    border: none;
-    cursor: pointer;
-    padding: 5px 10px;
+.navbar a {
+    color: #000;
+    font-size: 1.1rem;
+    font-weight: 500;
+    text-align: center;
+}
+
+.navbar a:hover {
+    color: var(--main-color);
+    transition: 0.8s;
+}
+
+.ticket-item {
+    border: 1px solid #ccc;
+    margin: 10px;
+    padding: 10px;
     border-radius: 5px;
 }
 
-.unassign-btn {
-    background-color: red;
-    cursor: pointer;
+.ticket-info {
+    display: flex;
+    flex-direction: column;
 }
 
+.ticket-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 10px;
+}
 
+.ticket-detail {
+    padding: 8px;
+    border-bottom: 1px solid #ccc;
+    font-weight: bold;
+}
 
+.priority-dropdown {
+    margin-right: 10px;
+}
+
+.unresolved-button,
+.resolve-button,
+.ticket-link {
+    margin-top: 10px;
+    padding: 5px 10px;
+    cursor: pointer;
+}
 
