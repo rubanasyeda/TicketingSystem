@@ -28,6 +28,7 @@ function displayEmployees(employeeDetails) {
 // Function to create a row for an employee
 function createEmployeeRow(employee) {
   const employeeRow = document.createElement('tr');
+  employeeRow.style.color = "white";
   employeeRow.innerHTML = `
       <td>${employee.name}</td>
       <td>${employee.username}</td>
@@ -93,6 +94,7 @@ async function displayTickets(ticketDetails) {
 // Function to create a row for a ticket
 function createTicketRow(ticket, employees) {
   const ticketRow = document.createElement('tr');
+  ticketRow.style.color = "white";
 
   let dropdown = '<select class="form-control assign-to-dropdown">';
   dropdown += '<option value="">Assign to...</option>';
@@ -155,6 +157,7 @@ function fetchAssignedUsers(ticketId) {
 // Function to update the list of assigned users
 function updateAssignedUsersList(ticketId, assignedUsers) {
   const assignedUsersDiv = document.getElementById(`assigned-users-${ticketId}`);
+  assignedUsersDiv.style.color = "white";
   if (assignedUsersDiv) {
       assignedUsersDiv.innerHTML = '';
       assignedUsers.forEach(user => {
@@ -180,3 +183,28 @@ document.getElementById('assignTickets').addEventListener('click', async functio
   document.querySelector('.employee-table').style.display = 'none';
   document.querySelector('.ticket-table').style.display = 'table';
 });
+
+document.querySelectorAll('.form-control').forEach(dropdown => {
+    dropdown.style.backgroundColor = '#666';
+    dropdown.style.color = 'white'; 
+});
+
+document.addEventListener('DOMContentLoaded', (event) => {
+    document.getElementById('getUsers').click();
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    const navLinks = document.querySelectorAll('.navbar-nav .nav-link');
+
+    navLinks.forEach(link => {
+        link.addEventListener('click', function() {
+           
+            navLinks.forEach(l => l.classList.remove('active-link'));
+
+           
+            this.classList.add('active-link');
+        });
+    });
+});
+
+

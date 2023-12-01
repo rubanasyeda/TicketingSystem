@@ -1,8 +1,10 @@
-
-
-
 body {
     font-family: 'Roboto', sans-serif;
+    background-image: url('../static/TRTTechnology.png'); 
+    background-size: cover; 
+    background-repeat: no-repeat; 
+    background-attachment: fixed;
+    color: white; 
 }
 
 
@@ -10,45 +12,59 @@ body {
     margin-right: 10px;
 }
 
+.navbar {
+    background-color: #343a40; 
+}
+
+
+.navbar-light .navbar-brand, .navbar-light .nav-link {
+    color: white !important; 
+}
+
+
+.navbar-light .navbar-toggler-icon {
+    filter: invert(1);
+}
+
+
 
 .main {
     padding: 20px;
 }
 
-
 .employee-table, .ticket-table {
     width: 100%;
     margin-top: 20px;
+    color: white; 
 }
-
 
 .employee-table thead, .ticket-table thead {
-    background-color: #f8f9fa; 
-    color: #333; 
+    background-color: #555; 
+    color: white; 
 }
-
 
 .employee-table tr, .ticket-table tr {
     border-bottom: 1px solid #dee2e6; 
 }
 
-
 .btn-primary {
     background-color: #007bff; 
     border-color: #007bff;
+    color: white; 
 }
 
 .delete-button {
-    color: #fff;
+    color: white;
     background-color: #dc3545; 
     border-color: #dc3545;
 }
 
-
 .form-control {
     box-shadow: none; 
+    background-color: #666; 
+    color: white; 
+    border-color: #444;
 }
-
 
 @media (max-width: 768px) {
     .navbar-nav {
@@ -60,4 +76,8 @@ body {
     }
 }
 
+.active-link {
+    background-color: #007bff; 
+    color: white; 
+}
 
