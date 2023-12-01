@@ -4,51 +4,63 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TRT DASHBOARD</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="../static/dashboard.css">
-    
-
 </head>
 <body>
-    <div class="sidebar">
-        <header>
-            <h2>TRT TICKETS</h2>
-        </header>
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            <nav class="col-md-2 sidebar">
+                <div class="sidebar-sticky">
+                    <header>
+                        <h2>TRT TICKETS</h2>
+                    </header>
+                    <div class="scrollbox">
+                        <div class="scrollbox-inner">
+                            <ul>
+                                <li><a href="#" id="allTickets">All Tickets</a></li>
+                                <li><a href="#" id="unresolvedTickets">Unresolved</a></li>
+                                <li><a href="#" id="resolvedTickets">Resolved</a></li>
+                                <li><a href="#" id="highPriorityTickets">High Priority</a></li>
+                                <li><a href="#" id="lowPriorityTickets">Low Priority</a></li>
+                                <li><a href="#" id="assignedTickets">Assigned To Me</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <footer>
+                    <ul class="navbar">
+                    <li><a href="{{url_for('views.home') }}" target="_blank">Home-page</a></li>
+                    <li><a href="{{url_for('views.createTicket') }}" target="_blank">Submit A Ticket</a></li>
+                    <li><a href="/admin-dashboard">Admin page</a></li>
+                    <li><a href="/logout">Log-out</a></li>
+                    </ul>
+                </footer>
+                </div>
+            </nav>
 
-        <div class="scrollbox">
-            <div class="scrollbox-inner">
-                <ul>
-                    <li><a href="#" id="allTickets">All Tickets</a></li>
-                    <li><a href="#" id="unresolvedTickets">Unresolved</a></li>
-                    <li><a href="#" id="resolvedTickets">Resolved</a></li>
-                    <li><a href="#" id="highPriorityTickets">High Priority</a></li>
-                    <li><a href="#" id="lowPriorityTickets">Low Priority</a></li>
-                    <li><a href="#" id="assignedTickets">Assigned To Me</a></li>
-                </ul>
-            </div>
+            <!-- Main Content -->
+            <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+                <section class="ticket-display">
+                    <div class="table-responsive">
+                        <table class="table mt-4">
+                            <tbody class="ticket-list">
+                                <!-- Ticket list content goes here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+            </main>
         </div>
-        <footer>
-            <ul class="navbar">
-                <li><a href="{{url_for('views.home') }}" target="_blank">Home-page</a></li>
-                <li><a href="{{url_for('views.createTicket') }}" target="_blank">Submit A Ticket</a></li>
-                <li><a href="/admin-dashboard">Admin page</a></li>
-                <li><a href="/logout">Log-out</a></li>
-            </ul>
-        </footer>
     </div>
-    <div class="main">
-        <top>
-            <th>SUBJECT</th>
-            <th>SENDER</th>
-            <th>BUISNESS</th>
-            <th>STATUS</th>
-            <th>PRIORITY</th>
-            <th>DATE</th>
-        </top>
-        <section class="ticket-display">
-            <div class="ticket-list">
-            </div>
-        </section>
-    </div>
+
+
+
+
+    <!-- Bootstrap and Custom Scripts -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <script src="../static/dashboard.js"></script>
 </body>
 </html>
