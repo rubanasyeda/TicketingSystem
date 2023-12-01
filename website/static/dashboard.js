@@ -44,7 +44,7 @@ function displayTickets(ticketList, status) {
                     ${ticket.status === 'unresolved' ? '<strong>Unresolved</strong>' : ticket.status === 'resolved' ? '<strong>Resolved</strong>' : (ticket.status.length > 10 ? '<strong>' + ticket.status.substring(0, 1) + '</strong>' + ticket.status.substring(1, 10) + "..." : '<strong>' + ticket.status.substring(0, 1) + '</strong>' + ticket.status.substring(1))}
                     ${ticket.priority === 'lowpriority' ? '<strong>Low</strong>' : ticket.priority === 'highpriority' ? '<strong>High</strong>' : (ticket.priority.length > 10 ? '<strong>' + ticket.priority.substring(0, 1) + '</strong>' + ticket.priority.substring(1, 10) + "..." : '<strong>' + ticket.priority.substring(0, 1) + '</strong>' + ticket.priority.substring(1))}                    
                     <strong></strong> ${ticket.date}
-                    <select class="priority-dropdown" onchange="changePriority(${ticket.id}, this.value)">
+                    <select class="priority-dropdown" onchange="changePriority(${ticket.id}, this.value,'${ticket.status}')">
                     <option value="">Select Priority</option>
                     <option value="highpriority">High Priority</option>
                     <option value="lowpriority">Low Priority</option>
@@ -154,22 +154,27 @@ function unresolveTicket(ticketId, currentStatus) {
     }
 }
 
-function changePriority(ticketId, priority) {
-    const confirmed = window.confirm(`Are you sure you want to change ticket priority to ${priority}?`);
-    if (confirmed) {
-        fetch(`/changePriority/${ticketId}/${priority}`, {
-            method: 'POST',
-        })
-        .then(response => {
-            if (response.status === 200) {
-                location.reload();
-            } else {
-                console.log("Could not change the priority")
-            }
-        })
-        .catch(error => {
-            console.error('Error changing the priority:', error);
-        });
+function changePriority(ticketId, priority,status) {
+    if(status === "resolved"){
+        alert("Cannot set priority to Resolved ticket");
+    }
+    else{
+        const confirmed = window.confirm(`Are you sure you want to change ticket priority to ${priority}?`);
+        if (confirmed) {
+            fetch(`/changePriority/${ticketId}/${priority}`, {
+                method: 'POST',
+            })
+            .then(response => {
+                if (response.status === 200) {
+                    location.reload();
+                } else {
+                    console.log("Could not change the priority")
+                }
+            })
+            .catch(error => {
+                console.error('Error changing the priority:', error);
+            });
+        }
     }
 }
 
