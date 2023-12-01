@@ -1,59 +1,64 @@
+// Function to fetch all employees
 async function fetchAllEmployees() {
   try {
-    const response = await fetch('/getAllEmployees');
-    if (!response.ok) {
-      throw new Error('Failed to fetch employee data. Please try again later.');
-    }
-    return await response.json();
+      const response = await fetch('/getAllEmployees');
+      if (!response.ok) {
+          throw new Error('Failed to fetch employee data. Please try again later.');
+      }
+      return await response.json();
   } catch (error) {
-    console.error('Error fetching employee data:', error);
-    return null;
+      console.error('Error fetching employee data:', error);
+      return null;
   }
 }
 
+// Function to display employees
 function displayEmployees(employeeDetails) {
   const employeelistContainer = document.querySelector('.employee-list');
   employeelistContainer.innerHTML = '';
 
   if (employeeDetails) {
-    employeeDetails.forEach(employee => {
-      const employeeRow = createEmployeeRow(employee);
-      employeelistContainer.appendChild(employeeRow);
-    });
+      employeeDetails.forEach(employee => {
+          const employeeRow = createEmployeeRow(employee);
+          employeelistContainer.appendChild(employeeRow);
+      });
   }
 }
 
+// Function to create a row for an employee
 function createEmployeeRow(employee) {
   const employeeRow = document.createElement('tr');
+  employeeRow.style.color = "white";
   employeeRow.innerHTML = `
-    <td>${employee.name}</td>
-    <td>${employee.username}</td>
-    <td>${employee.role}</td>
-    <td>
-      ${employee.role !== 'admin' ? 
-        `<button class="delete-button" onclick="deleteEmployee(${employee.id})">Delete</button>` : ''}
-    </td>
+      <td>${employee.name}</td>
+      <td>${employee.username}</td>
+      <td>${employee.role}</td>
+      <td>
+          ${employee.role !== 'admin' ? 
+              `<button class="btn btn-danger delete-button" onclick="deleteEmployee(${employee.id})">Delete</button>` : ''}
+      </td>
   `;
 
   return employeeRow;
 }
 
+// Function to delete an employee
 function deleteEmployee(employeeId) {
   const confirmed = window.confirm('Are you sure you want to delete this user?');
 
   if (confirmed) {
-    fetch(`/deleteUser/${employeeId}`, {
-      method: 'DELETE',
-    })
+      fetch(`/deleteUser/${employeeId}`, {
+          method: 'DELETE',
+      })
       .then(response => {
-        if (response.status === 200) {
-          location.reload();
-        } else {
-          console.log("Could not delete user")
-        }
+          if (response.status === 200) {
+              location.reload();
+          } else {
+              console.log("Could not delete user");
+          }
       })
       .catch(error => {
-        console.error('Error deleting employee:', error);
+          console.error('Error deleting employee:', error);
       });
   }
 }
@@ -61,54 +66,47 @@ function deleteEmployee(employeeId) {
 // Function to fetch all tickets
 async function fetchAllTickets() {
   try {
-    const response = await fetch('/getAllTickets');
-    if (!response.ok) {
-      throw new Error('Failed to fetch ticket data. Please try again later.');
-    }
-    return await response.json();
+      const response = await fetch('/getAllTickets');
+      if (!response.ok) {
+          throw new Error('Failed to fetch ticket data. Please try again later.');
+      }
+      return await response.json();
   } catch (error) {
-    console.error('Error fetching ticket data:', error);
-    return null;
+      console.error('Error fetching ticket data:', error);
+      return null;
   }
 }
 
+// Function to display tickets
 async function displayTickets(ticketDetails) {
-  console.log('Displaying tickets:',ticketDetails);
   const ticketlistContainer = document.querySelector('.ticket-list');
   ticketlistContainer.innerHTML = '';
 
   const employees = await fetchAllEmployees();
   if (ticketDetails) {
-    ticketDetails.forEach(ticket => {
-      const ticketRow = createTicketRow(ticket, employees);
-      ticketlistContainer.appendChild(ticketRow);
-    });
+      ticketDetails.forEach(ticket => {
+          const ticketRow = createTicketRow(ticket, employees);
+          ticketlistContainer.appendChild(ticketRow);
+      });
   }
 }
-
-
-
-
 
 // Function to create a row for a ticket
 function createTicketRow(ticket, employees) {
   const ticketRow = document.createElement('tr');
+  ticketRow.style.color = "white";
 
-  // Dropdown menu for assigning employees
-  let dropdown = '<select class="assign-to-dropdown">';
-  dropdown += '<option value="">Assign to...</option>'; // Default option
+  let dropdown = '<select class="form-control assign-to-dropdown">';
+  dropdown += '<option value="">Assign to...</option>';
   for (let employee of employees) {
       dropdown += `<option value="${employee.id}">${employee.name}</option>`;
   }
   dropdown += '</select>';
 
-  // Assign button
-  const assignButton = `<button class="assign-button" onclick="assignEmployeeToTicket(${ticket.id}, this)">Assign</button>`;
+  const assignButton = `<button class="btn btn-primary assign-button" onclick="assignEmployeeToTicket(${ticket.id}, this)">Assign</button>`;
 
-
-  // Placeholder for assigned users
   const assignedUsers = `<div class="assigned-users" id="assigned-users-${ticket.id}"></div>`;
-  
+
   ticketRow.innerHTML = `
       <td>${ticket.name}</td>
       <td>${ticket.email}</td>
@@ -121,19 +119,16 @@ function createTicketRow(ticket, employees) {
   return ticketRow;
 }
 
-
+// Function to assign an employee to a ticket
 function assignEmployeeToTicket(ticketId, buttonElement) {
   const dropdown = buttonElement.previousElementSibling;
   const employeeId = dropdown.value;
   if (employeeId) {
-      // Send a POST request to the backend
-      // Harsh :-> have to create this post method
       fetch(`/assignTicket/${ticketId}/${employeeId}`, {
           method: 'POST',
       })
       .then(response => {
           if (response.ok) {
-              // Update the assigned users list
               fetchAssignedUsers(ticketId);
           } else {
               console.error('Failed to assign ticket');
@@ -145,62 +140,71 @@ function assignEmployeeToTicket(ticketId, buttonElement) {
   }
 }
 
-
+// Function to fetch assigned users
 function fetchAssignedUsers(ticketId) {
   fetch(`/getAssignedUsers/${ticketId}`, {
-      method: 'POST'
+      method: 'GET'
   })
   .then(response => response.json())
   .then(assignedUsers => {
-      if (assignedUsers) {
-          updateAssignedUsersList(ticketId, assignedUsers);
-      }
+      updateAssignedUsersList(ticketId, assignedUsers);
   })
   .catch(error => {
       console.error('Error fetching assigned users:', error);
   });
 }
 
+// Function to update the list of assigned users
 function updateAssignedUsersList(ticketId, assignedUsers) {
   const assignedUsersDiv = document.getElementById(`assigned-users-${ticketId}`);
+  assignedUsersDiv.style.color = "white";
   if (assignedUsersDiv) {
-      // Clear current list
       assignedUsersDiv.innerHTML = '';
-
-      // Add each assigned user to the list
       assignedUsers.forEach(user => {
           let userSpan = document.createElement('span');
-          userSpan.textContent = user.name; // Assuming 'name' is a property of user
-          userSpan.className = 'assigned-user';
+          userSpan.textContent = user.name;
+          userSpan.className = 'assigned-user badge badge-secondary';
           assignedUsersDiv.appendChild(userSpan);
       });
   }
 }
 
-
-
-
+// Event listeners
 document.getElementById('getUsers').addEventListener('click', async function () {
   const employeeData = await fetchAllEmployees();
   displayEmployees(employeeData);
-
   document.querySelector('.employee-table').style.display = 'table';
   document.querySelector('.ticket-table').style.display = 'none';
 });
 
-// Event listener for fetching and displaying tickets
 document.getElementById('assignTickets').addEventListener('click', async function () {
   const ticketData = await fetchAllTickets();
   displayTickets(ticketData);
-
   document.querySelector('.employee-table').style.display = 'none';
   document.querySelector('.ticket-table').style.display = 'table';
 });
 
-// Event listener for assigning and removing employees
-document.addEventListener('click', function (event) {
-  if (event.target.classList.contains('assign-button')) {
-    const ticketId = event.target.getAttribute('data-ticket-id');
-    assignEmployeeToTicket(ticketId);
-  }
+document.querySelectorAll('.form-control').forEach(dropdown => {
+    dropdown.style.backgroundColor = '#666';
+    dropdown.style.color = 'white'; 
 });
+
+document.addEventListener('DOMContentLoaded', (event) => {
+    document.getElementById('getUsers').click();
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    const navLinks = document.querySelectorAll('.navbar-nav .nav-link');
+
+    navLinks.forEach(link => {
+        link.addEventListener('click', function() {
+           
+            navLinks.forEach(l => l.classList.remove('active-link'));
+
+           
+            this.classList.add('active-link');
+        });
+    });
+});
+
+
