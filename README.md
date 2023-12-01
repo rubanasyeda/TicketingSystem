@@ -34,8 +34,12 @@ FLASK WEB APPLICATION
 
 ```bash
 git clone https://git.cs.usask.ca/wbj741/team_43_cmpt370.git
-python3 -m venv myenv
+python -m venv myenv
+##For activating enviornemnt in mac###
 source myenv/bin/activate
+###For activating enviornemnt on windows###
+.\myenv\Scripts\activate
+###Go in the project folder and then run the code below###
 pip install -r requirements.txt
 python main.py
 ```
@@ -43,19 +47,41 @@ python main.py
 
 ## Installation
 
-Install my-project 
+Install my Web application
+### Please Read Carefully 
 
 ```bash
 git clone https://git.cs.usask.ca/wbj741/team_43_cmpt370.git
-python3 -m venv myenv
+python -m venv myenv
+##For activating enviornemnt in mac###
 source myenv/bin/activate
+###For activating enviornemnt on windows###
+.\myenv\Scripts\activate
+###Go in the project folder and then run the code below###
 pip install -r requirements.txt
 python main.py
+
+###PLEASE READ BELOW###
+-In our web application, only admin can create accounts, 
+not anybody else, so we have provided some intial use 
+admin accounts.Please use that to make sure that it works 
+and you are able to use our application
+Accounts Info:
+Admin 1 : 
+username : mail@trttech.ca 
+password : team43
+Admin 2 : 
+username : admin@admin.com 
+Password : admin123
 ```
     
 ## Documentation
 
-[FlaskDocumentation](https://flask.palletsprojects.com/en/3.0.x/api/)
+[FlaskDocumentation](https://flask.palletsprojects.com/en/3.0.x/api)  
+[FlaskSQLAlchemy](https://flask-sqlalchemy.palletsprojects.com/en/3.1.x/)  
+[FlaskLogin](https://pypi.org/project/Flask-Login/)  
+[FlaskAdmin](https://flask-admin.readthedocs.io/en/latest/)  
+[Werkzeug](https://werkzeug.palletsprojects.com/en/3.0.x/)
 
 
 ## API Reference
@@ -245,6 +271,17 @@ python main.py
 
 
 
+## Running Tests
+
+To run tests, run the following command
+
+```bash
+  Made Manual Testing Files, submitted on wikki
+  #To test authentication of web application:
+  python testing_auth.py
+```
+
+
 ## Appendix
 
 --Make Sure you follow the installation steps properly, cause there is dependency between modules, so create a new enviornment and run reuirements.txt to install all required modules.
@@ -271,5 +308,10 @@ For support, wbj741@usask.ca or join our Slack channel.
 
 **FrontEnd:** HTML,CSS,Javascript 
 
-**BACKEND:** Flask, Flask_login,Flask_admin,Flask_sqlalchemy, Flask_cors
+**Backend:** Flask, Flask_login,Flask_admin,Flask_sqlalchemy, Flask_cors
+
+
+## Screenshots
+
+![App Screenshot](https://via.placeholder.com/468x300?text=App+Screenshot+Here)
 

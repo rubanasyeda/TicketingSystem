@@ -1,4 +1,3 @@
-// import {sendDataToBackend} from "./adminComments"
 
 async function fetchAllTickets() {
     try {
@@ -32,42 +31,76 @@ function displayTickets(ticketList, status) {
     ticketListContainer.innerHTML = '';
 
     if (ticketList) {
+        const table = document.createElement('table');
+        table.classList.add('table', 'mt-4');
+
+        const tableHeader = document.createElement('thead');
+        tableHeader.innerHTML = `
+            <tr>
+                <th>SUBJECT</th>
+                <th>SENDER</th>
+                <th>BUISNESS</th>
+                <th>STATUS</th>
+                <th>PRIORITY</th>
+                <th>DATE</th>
+                <th>OPERATIONS</th>
+                <th>TICKET DETAILS</th>
+            </tr>
+        `;
+        table.appendChild(tableHeader);
+
+        const tableBody = document.createElement('tbody');
         ticketList.forEach(ticket => {
-            if (status === 'all' || ticket.status === status || ticket.priority === status){
-                const ticketItem = document.createElement('div');
-            ticketItem.classList.add('ticket-item');
-            ticketItem.innerHTML = `
-                <div class="ticket-info">
-                    ${ticket.subject.length > 10 ? '<strong>' + ticket.subject.substring(0, 1) + '</strong>' + ticket.subject.substring(1, 10) + "..." : '<strong>' + ticket.subject.substring(0, 1) + '</strong>' + ticket.subject.substring(1)}   
-                    ${ticket.name.length > 10 ? '<strong>' + ticket.name.substring(0, 1) + '</strong>' + ticket.name.substring(1, 10) + "..." : '<strong>' + ticket.name.substring(0, 1) + '</strong>' + ticket.name.substring(1)}   
-                    ${ticket.businessName.length > 10 ? '<strong>' + ticket.businessName.substring(0, 1) + '</strong>' + ticket.businessName.substring(1, 10) + "..." : '<strong>' + ticket.businessName.substring(0, 1) + '</strong>' + ticket.businessName.substring(1)}   
-                    ${ticket.status === 'unresolved' ? '<strong>Unresolved</strong>' : ticket.status === 'resolved' ? '<strong>Resolved</strong>' : (ticket.status.length > 10 ? '<strong>' + ticket.status.substring(0, 1) + '</strong>' + ticket.status.substring(1, 10) + "..." : '<strong>' + ticket.status.substring(0, 1) + '</strong>' + ticket.status.substring(1))}
-                    ${ticket.priority === 'lowpriority' ? '<strong>Low</strong>' : ticket.priority === 'highpriority' ? '<strong>High</strong>' : (ticket.priority.length > 10 ? '<strong>' + ticket.priority.substring(0, 1) + '</strong>' + ticket.priority.substring(1, 10) + "..." : '<strong>' + ticket.priority.substring(0, 1) + '</strong>' + ticket.priority.substring(1))}                    
-                    <strong></strong> ${ticket.date}
-                    <select class="priority-dropdown" onchange="changePriority(${ticket.id}, this.value)">
-                    <option value="">Select Priority</option>
-                    <option value="highpriority">High Priority</option>
-                    <option value="lowpriority">Low Priority</option>
-                </select>
+            if (status === 'all' || ticket.status === status || ticket.priority === status) {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${truncateText(ticket.subject, 15)}</td>
+                    <td>${truncateText(ticket.name, 15)}</td>
+                    <td>${truncateText(ticket.businessName, 15)}</td>
+                    <td>${truncateText(getStatusText(ticket.status), 15)}</td>
+                    <td>${truncateText(getPriorityText(ticket.priority), 15)}</td>
+                    <td>${ticket.date}</td>
                     <td>
+                        <select class="priority-dropdown" onchange="changePriority(${ticket.id}, this.value)">
+                            <option value="">Select Priority</option>
+                            <option value="highpriority">High Priority</option>
+                            <option value="lowpriority">Low Priority</option>
+                        </select>
                         <button class="unresolved-button" onclick="unresolveTicket(${ticket.id}, '${ticket.status}')">Unresolve</button>
-                    </td>
-                    <td>
                         <button class="resolve-button" onclick="resolveTicket(${ticket.id}, '${ticket.status}')">Resolve</button>
                     </td>
-                    <a href="${getTicketPageLink(ticket.id)}" class="ticket-link" target="_blank">Ticket Details</a>
-                </div>
-            `;
+                    <td>
+                        <button class="details-button" onclick="showTicketDetails(${ticket.id})">Show Details</button>
+                    </td>
 
-            ticketItem.innerHTML += `
-            `;
-            
-            ticketListContainer.appendChild(ticketItem);
+                `;
+                tableBody.appendChild(row);
             }
         });
+        table.appendChild(tableBody);
+
+        ticketListContainer.appendChild(table);
     }
 }
 
+
+function showTicketDetails(ticketId) {
+    const ticketPageLink = getTicketPageLink(ticketId);
+    window.open(ticketPageLink, '_blank');
+}
+
+
+function truncateText(text, maxLength) {
+    return text.length > maxLength ? text.substring(0, maxLength - 3) + '...' : text;
+}
+
+function getStatusText(status) {
+    return status === 'unresolved' ? 'Unresolved' : status === 'resolved' ? 'Resolved' : status;
+}
+
+function getPriorityText(priority) {
+    return priority === 'lowpriority' ? 'Low' : priority === 'highpriority' ? 'High' : priority;
+}
 
 
 function resolveTicket(ticketId, currentStatus) {
@@ -154,6 +187,7 @@ function unresolveTicket(ticketId, currentStatus) {
     }
 }
 
+
 function changePriority(ticketId, priority) {
     const confirmed = window.confirm(`Are you sure you want to change ticket priority to ${priority}?`);
     if (confirmed) {
@@ -172,7 +206,6 @@ function changePriority(ticketId, priority) {
         });
     }
 }
-
 
 document.getElementById('allTickets').addEventListener('click', async function () {
     const ticketData = await fetchAllTickets();
