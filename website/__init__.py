@@ -13,11 +13,12 @@ def create_app():
      CORS(app, expose_headers=['X-Page'])
      app.config['SECRET_KEY'] = "Team_43_CMPT_370"
      app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_NAME}'
-     db.init_app(app)
-
      login_manager = LoginManager()
      login_manager.login_view = 'auth.login'
      login_manager.init_app(app)
+     db.init_app(app)
+
+
 
      from .models import User
 

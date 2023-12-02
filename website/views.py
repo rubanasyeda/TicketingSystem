@@ -71,7 +71,8 @@ def delete_test_tickets():
 def home():
     return render_template("landing.html")
 
-@views.route("/dashboard",methods=['GET'])
+@views.route("/dashboard", methods=['GET'])
+@login_required
 def dashboard():
     return render_template("dashboard.html")
 

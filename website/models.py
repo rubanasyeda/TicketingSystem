@@ -101,7 +101,7 @@ class sendEmail:
         self.msg = MIMEMultipart()
         self.msg['From'] = smtp_username
         self.msg['To'] = self.email
-        subject = "Ticket Recieved ID: "+ str(self.ticketId)
+        subject = "Ticket Recieved ID: "+ str(self.businessName)
         self.msg['Subject'] = subject
         self.html = f"""<html>
                         <body>
@@ -133,13 +133,13 @@ class sendEmail:
         self.msg = MIMEMultipart()
         self.msg['From'] = smtp_username
         self.msg['To'] = self.email
-        self.msg['Subject'] = f"Update on Ticket ID: {self.ticketId}" 
+        self.msg['Subject'] = f"Update on Ticket ID: {self.businessName}"
         self.html = f"""<html>
                         <body>
                             <p> Greetings {self.businessName}, <br><br>
                                 A new comment has been added to your ticket regarding the following subject:<br>{self.subject}<br><br>
                                 Please use the following link to view your request:<br><br>
-                                Ticket ID : <a href="{self.link}">{self.ticketId}</a><br><br>
+                                Ticket ID : <a href="{self.link}">Your Ticket</a><br><br>
                                 Regards,<br> TRT Support
                             </p>
                         </body>
@@ -163,7 +163,7 @@ class sendEmail:
         self.msg = MIMEMultipart()
         self.msg['From'] = smtp_username
         self.msg['To'] = self.email
-        self.msg['Subject'] = f"Update on Ticket ID: {self.ticketId}" 
+        self.msg['Subject'] = f"Update on Ticket ID: {self.businessName}"
         self.html = f"""<html>
                         <body>
                             <p> Greetings {self.businessName}, <br><br>
