@@ -153,6 +153,7 @@ def getCurrentUserName():
 
 
 @views.route("/getAllTickets")
+@login_required
 def getAllTickets():
     ticketDetails = CustomerTicketInformation.query.all()
     tickets = [{'id': ticket.id , 'subject':ticket.subject,'name':ticket.firstName, 'email':ticket.email,"phoneNumber":ticket.phoneNumber,
@@ -162,6 +163,7 @@ def getAllTickets():
 
 
 @views.route("/getAllEmployees")
+@login_required
 def getAllEmployees():
     workers = User.query.all()
     companyWorkers = []
@@ -185,6 +187,7 @@ def getAllEmployees():
 
 
 @views.route("/deleteUser/<int:employee_id>", methods=['DELETE'])
+@login_required
 def deleteUser(employee_id):
     user = User.query.filter_by(id=employee_id).first()
 
@@ -198,6 +201,7 @@ def deleteUser(employee_id):
 
 #added routes for highPriority Ticket
 @views.route("/highPriorityTicket/<int:ticket_id>",methods=['POST'])
+@login_required
 def highPriorityTicket(ticket_id):
     ticket = CustomerTicketInformation.query.get(ticket_id)
     ticket = CustomerTicketInformation.query.get(ticket_id)
@@ -209,6 +213,7 @@ def highPriorityTicket(ticket_id):
 
 #added routes for lowPriority Ticket
 @views.route("/lowPriorityTicket/<int:ticket_id>",methods=['POST'])
+@login_required
 def lowPriorityTicket(ticket_id):
     ticket = CustomerTicketInformation.query.get(ticket_id)
     ticket = CustomerTicketInformation.query.get(ticket_id)
@@ -219,6 +224,7 @@ def lowPriorityTicket(ticket_id):
     return "Ticket resolved successfully"
 
 @views.route("/changePriority/<int:ticket_id>/<priority>", methods=['POST'])
+@login_required
 def changeTicketPriority(ticket_id, priority):
     ticket = CustomerTicketInformation.query.get(ticket_id)
     if ticket is None:
@@ -262,6 +268,7 @@ def getTicketMessagesById(ticket_id):
 
 #This will get the internal messages for a ticket --> the internal messages are not seen by customers only team members can see those messages
 @views.route("/<int:ticket_id>/getInternalMessages")
+@login_required
 def getInternalMessagesById(ticket_id):
     ticket = db.session.query(CustomerTicketInformation).filter(CustomerTicketInformation.id == ticket_id).first()
     if ticket:
@@ -331,6 +338,7 @@ def submitMessage():
 
 #this will store the internal comments that customer cannot see, only team members can see those messages
 @views.route('/submitNewInternalMessage', methods=['POST'])
+@login_required
 def submitInternalMessage():
     if request.method == "POST":
         message = request.get_json()
@@ -414,6 +422,7 @@ def submitStatusChange():
 #Assigning user Routes
 
 @views.route('/assignTicket/<int:ticketId>/<int:employeeId>',methods=['POST','GET'])
+@login_required
 def assignTicket(ticketId,employeeId):
     ticket = CustomerTicketInformation.query.get(ticketId)
     employee = User.query.get(employeeId)
@@ -428,6 +437,7 @@ def assignTicket(ticketId,employeeId):
 
 
 @views.route('/getAssignedUsers/<int:ticketId>',methods=['GET','POST']) #/getAssignedUsers/${ticketId}
+@login_required
 def getAssignedUsers(ticketId):
     ticket = CustomerTicketInformation.query.get(ticketId)
     if (ticket is None):
