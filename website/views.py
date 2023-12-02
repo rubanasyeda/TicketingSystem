@@ -67,9 +67,6 @@ def delete_test_tickets():
 
 
 
-
-
-
 @views.route('/', methods=['GET', 'POST'])
 def home():
     return render_template("landing.html")
@@ -108,8 +105,10 @@ def createTicket():
 
         db.session.add(customerInfo)
         db.session.commit()
+        
         now = datetime.utcnow()
         date_time = now.strftime("%m/%d/%Y")
+
         emailToCustomer = sendEmail(businessName,date_time,reciever_email=customerEmail,subject=subject,ticketId=customerInfo.id)
         try:
             emailToCustomer.tickets_recieved_email()

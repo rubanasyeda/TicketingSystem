@@ -61,7 +61,7 @@ function displayTickets(ticketList, status) {
                     <td>${truncateText(getPriorityText(ticket.priority), 15)}</td>
                     <td>${ticket.date}</td>
                     <td>
-                        <select class="priority-dropdown" onchange="changePriority(${ticket.id}, this.value)">
+                        <select class="priority-dropdown" onchange="changePriority(${ticket.id}, this.value,'${ticket.status}')">
                             <option value="">Select Priority</option>
                             <option value="highpriority">High Priority</option>
                             <option value="lowpriority">Low Priority</option>
@@ -188,7 +188,11 @@ function unresolveTicket(ticketId, currentStatus) {
 }
 
 
-function changePriority(ticketId, priority) {
+function changePriority(ticketId, priority,status) {
+    if(status == "resolved"){
+        alert("Cannot set priority to resolved tickets. Change status to Unresolved first");
+        return;
+    }
     const confirmed = window.confirm(`Are you sure you want to change ticket priority to ${priority}?`);
     if (confirmed) {
         fetch(`/changePriority/${ticketId}/${priority}`, {
@@ -206,6 +210,7 @@ function changePriority(ticketId, priority) {
         });
     }
 }
+
 
 document.getElementById('allTickets').addEventListener('click', async function () {
     const ticketData = await fetchAllTickets();
