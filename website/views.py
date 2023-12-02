@@ -222,6 +222,8 @@ def deleteUser(employee_id):
     user = User.query.filter_by(id=employee_id).first()
 
     if user is not None:
+        for ticket in user.tickets:
+            ticket.users.remove(user)
         db.session.delete(user)  # Mark the user for deletion
         db.session.commit()  # Commit the transaction
         return jsonify({"message": "User deleted successfully"})
