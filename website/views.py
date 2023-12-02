@@ -1,5 +1,3 @@
-#will have all the routes for pages that does not have authorization#
-
 import random
 from flask import Blueprint,render_template,request,redirect,url_for,jsonify,flash
 from datetime import datetime
@@ -7,10 +5,14 @@ from . import db
 from .models import CustomerTicketInformation,sendEmail,User, Message, InternalMessage
 from .models import statusEnum,priorityOrder
 from flask_login import login_required,current_user
-
 views = Blueprint('views', __name__)
 
 #test route (this route is not used within regular activity flow)
+"""
+This route for testing : if you do not want to manually create ticket jus run this route
+it will create 10 tickets for you, but make sure to use a valid email address here
+if you want to test email address as well
+"""
 @views.route('/generateTestTickets', methods=['GET'])
 def generate_test_tickets():
     # Generate 10 random tickets
@@ -44,6 +46,9 @@ def generate_test_tickets():
 
     return "Test data generated successfully"
 
+"""
+ for testing purpose : if you want to delete all tickets in database run this route
+"""
 #test route (this route is not used within regular activity flow)
 @views.route('/deleteTestTickets', methods=['GET'])
 def delete_test_tickets():
@@ -67,20 +72,32 @@ def delete_test_tickets():
 
 
 
+"""
+Loading the landing page : the home page
+"""
 @views.route('/', methods=['GET', 'POST'])
 def home():
     return render_template("landing.html")
 
+"""
+Loading the dashboard page
+"""
 @views.route("/dashboard", methods=['GET'])
 @login_required
 def dashboard():
     return render_template("dashboard.html")
 
+"""
+Loading this page after submitting a ticket
+"""
 @views.route('/submitted',methods=['GET','POST'])
 def submitted():
     return render_template("submitted.html")
 
 
+"""
+will be called when customer or worker create a ticket and hit submit
+"""
 @views.route('/createTicket',methods=['GET','POST'])
 def createTicket():
     if request.method == "POST":
@@ -120,6 +137,10 @@ def createTicket():
     return render_template("createTicket.html")
 
 
+"""
+the current user who is logged in get their tickets
+"""
+
 @views.route("/getCurrentUserTickets",methods=["GET"])
 @login_required
 def getCurrentUserTickets():
@@ -152,6 +173,9 @@ def getCurrentUserName():
     return jsonify({'name': user_name})
 
 
+"""
+get all tickets in the database
+"""
 @views.route("/getAllTickets")
 @login_required
 def getAllTickets():
@@ -162,6 +186,9 @@ def getAllTickets():
     return jsonify(tickets)
 
 
+"""
+get all employees in the company
+"""
 @views.route("/getAllEmployees")
 @login_required
 def getAllEmployees():
@@ -186,6 +213,9 @@ def getAllEmployees():
     return jsonify(companyWorkers)
 
 
+"""
+Delete a user from the company 
+"""
 @views.route("/deleteUser/<int:employee_id>", methods=['DELETE'])
 @login_required
 def deleteUser(employee_id):
@@ -223,6 +253,9 @@ def lowPriorityTicket(ticket_id):
     db.session.commit()
     return "Ticket resolved successfully"
 
+"""
+change priority of the ticket
+"""
 @views.route("/changePriority/<int:ticket_id>/<priority>", methods=['POST'])
 @login_required
 def changeTicketPriority(ticket_id, priority):
@@ -241,15 +274,19 @@ def changeTicketPriority(ticket_id, priority):
     db.session.commit()
     return "Ticket priority updated successfully"
 
-# #completed the changing the status and the priority of the tickets
 
-######Ticket Commenting####
-
+"""
+load customer comments page 
+"""
 @views.route("/customerComments",methods=['GET'])
 def customerComments():
     return render_template("customerComments.html")
 
+"""
+load admin or company comments page for company 
+"""
 @views.route("/adminComments",methods=['GET'])
+@login_required
 def adminComments():
     return render_template('adminComments.html')
 
@@ -364,6 +401,9 @@ def submitInternalMessage():
 
     return jsonify({"message": "Invalid request"})
 
+"""
+get the status of the ticket if it is resolved or unresolved
+"""
 @views.route("/<int:ticket_id>/getStatus")
 def getStatusById(ticket_id):
     ticket = db.session.query(CustomerTicketInformation).filter(CustomerTicketInformation.id == ticket_id).first()
@@ -378,7 +418,11 @@ def getStatusById(ticket_id):
     else:
         return []
 
+"""
+If there is any status change requested
+"""
 @views.route('/statusChange', methods=['POST'])
+@login_required
 def submitStatusChange():
     if request.method == "POST":
         message = request.get_json()  
@@ -420,7 +464,6 @@ def submitStatusChange():
 
 
 #Assigning user Routes
-
 @views.route('/assignTicket/<int:ticketId>/<int:employeeId>',methods=['POST','GET'])
 @login_required
 def assignTicket(ticketId,employeeId):
@@ -435,7 +478,9 @@ def assignTicket(ticketId,employeeId):
     db.session.commit()
     return "Ticket assigned successfully"
 
-
+"""
+get assigned user
+"""
 @views.route('/getAssignedUsers/<int:ticketId>',methods=['GET','POST']) #/getAssignedUsers/${ticketId}
 @login_required
 def getAssignedUsers(ticketId):

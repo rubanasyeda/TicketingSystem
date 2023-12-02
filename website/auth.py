@@ -131,8 +131,11 @@ def signup():
         return render_template('signup.html')
 
 
+"""
+Please use logout to end a session
+"""
+
 @auth.route('/logout')
-@login_required
 def logout():
     logout_user()
     return redirect(url_for('views.home'))

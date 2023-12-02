@@ -2,7 +2,7 @@
 from website import create_app
 
 
-
+#To initialize our app and run it
 app = create_app()
 
 

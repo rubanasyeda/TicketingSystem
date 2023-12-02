@@ -1,13 +1,11 @@
-/* styles.css */
+
 body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
     background-color: #f0f0f0;
-    /* display: flex; */
     align-items: center;
     justify-content: center;
-    /* min-height: 100vh; */
 }
 
 .chat-container {
@@ -18,8 +16,8 @@ body {
     max-width: 1000px;
     margin: 0 auto; 
     padding: 20px;
-    background-color: #ffffff; /* Set the background color */
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Add a subtle shadow */
+    background-color: #ffffff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 }
 
 .chat-header {
@@ -33,8 +31,8 @@ body {
 .chat-messages {
     margin: 0;
     padding: 0;
-    white-space: pre-line; /* Preserve line breaks */
-    line-height: 1.2; /* Adjust line height as needed */
+    white-space: pre-line;
+    line-height: 1.2;
 }
 
 .message {
@@ -42,7 +40,7 @@ body {
     margin-bottom: 10px;
     padding: 10px;
     border-radius: 5px;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1); /* Add a faded line */
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
     word-wrap: break-word;
 }
 
@@ -84,37 +82,29 @@ body {
     font-size:x-small;
 }
 
-/* Styles for the chat container */
+
 .chat-container {
     display: flex;
 }
 
-/* Style for the left section (customer interaction)
-.chat-left {
-    flex: 1;
-    padding: 30px;
-    border-right: 1px solid #ccc;
-} */
 
-/* Style for the left section (customer interaction) */
 .chat-left {
     flex: 1;
     padding: 30px;
     border-right: 1px solid #ccc;
-    max-width: 70%; /* Set a maximum width for the left chat */
-    overflow-y: auto; /* Add a vertical scroll bar when content overflows */
+    max-width: 70%;
+    overflow-y: auto;
 }
 
 
-/* Style for the right section (admin comments) */
+
 .chat-right {
     flex: 1;
     padding: 20px;
     max-width: 200px
 }
 
-/* .chat-left, .chat-right {
-    max-height: 100%; /* Set a maximum height for both chat sections */
+
     
 #admin-comments {
     display: flex;
@@ -124,7 +114,7 @@ body {
 
 #admin-comment-input {
     font-family:Arial, sans-serif;
-    margin-top: 10px; /* Adjust this margin as needed for spacing */
+    margin-top: 10px;
 }
 
 #status-dropdown{

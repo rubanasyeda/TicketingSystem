@@ -1,4 +1,3 @@
-/* styles.css */
 body {
     font-family: Arial, sans-serif;
     margin: 0;
@@ -15,11 +14,11 @@ body {
     background-color: rgb(255, 255, 255);
     border-radius: 5px;
     overflow: hidden;
-    max-width: 800px; /* Adjust as needed */
-    margin: 0 auto; /* Center the page horizontally */
+    max-width: 800px;
+    margin: 0 auto;
     padding: 20px;
-    background-color: #ffffff; /* Set the background color */
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Add a subtle shadow */
+    background-color: #ffffff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 }
 
 .chat-header {
@@ -33,8 +32,8 @@ body {
 .chat-messages {
     margin: 0;
     padding: 0;
-    white-space: pre-line; /* Preserve line breaks */
-    line-height: 1.2; /* Adjust line height as needed */
+    white-space: pre-line;
+    line-height: 1.2;
 }
 
 .message {

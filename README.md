@@ -34,11 +34,19 @@ FLASK WEB APPLICATION
 
 ```bash
 git clone https://git.cs.usask.ca/wbj741/team_43_cmpt370.git
+###With creating a new virtual env###
 python -m venv myenv
+### If python does not work use : ###
+python3 -m venv myenv
 ##For activating enviornemnt in mac###
 source myenv/bin/activate
 ###For activating enviornemnt on windows###
 .\myenv\Scripts\activate
+###Go in the project folder and then run the code below###
+pip install -r requirements.txt
+python main.py
+
+###Wihtout creating virtual env###
 ###Go in the project folder and then run the code below###
 pip install -r requirements.txt
 python main.py
@@ -52,11 +60,19 @@ Install my Web application
 
 ```bash
 git clone https://git.cs.usask.ca/wbj741/team_43_cmpt370.git
+###With creating a new virtual env###
 python -m venv myenv
+### If python does not work : ###
+python3 -m venv myenv
 ##For activating enviornemnt in mac###
 source myenv/bin/activate
 ###For activating enviornemnt on windows###
 .\myenv\Scripts\activate
+###Go in the project folder and then run the code below###
+pip install -r requirements.txt
+python main.py
+
+###Wihtout creating virtual env###
 ###Go in the project folder and then run the code below###
 pip install -r requirements.txt
 python main.py

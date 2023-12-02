@@ -5,7 +5,9 @@ from flask_login import LoginManager
 from flask_cors import CORS
 
 
-
+"""
+our init.py that will run whenever main loads
+"""
 db = SQLAlchemy()
 DB_NAME = "database.db"
 def create_app():
