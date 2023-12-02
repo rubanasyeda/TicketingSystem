@@ -50,6 +50,8 @@ python main.py
 ###Go in the project folder and then run the code below###
 pip install -r requirements.txt
 python main.py
+
+###Make sure to run testing_auth.py on new env###
 ```
 
 
