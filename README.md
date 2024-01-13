@@ -314,12 +314,12 @@ Contributions are always welcome!
 
 ## Feedback
 
-If you have any feedback, please reach out to us at wbj741@usask.ca
+If you have any feedback, please reach out to us at gnk231@usask.ca
 
 
 ## Support
 
-For support, wbj741@usask.ca or join our Slack channel.
+For support, gnk231@usask.ca or join our Slack channel.
 
 
 ## Tech Stack
@@ -329,7 +329,5 @@ For support, wbj741@usask.ca or join our Slack channel.
 **Backend:** Flask, Flask_login,Flask_admin,Flask_sqlalchemy, Flask_cors
 
 
-## Screenshots
 
-![App Screenshot](https://via.placeholder.com/468x300?text=App+Screenshot+Here)
 
